@@ -2,28 +2,25 @@
 /* eslint-disable import/extensions */
 /* eslint-disable linebreak-style */
 const Category = require('../../models/categoryModel.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************Category list section*************************//
 const categorylist = async (req, res) => {
   try {
     const category = await Category.find();
     res.render('admin/categorylist', { category, title: 'Category' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    errorHandler(error, req, res);
   }
 };
 
 // ************************add category section*************************//
 const addcategory = async (req, res) => {
   const category = await Category.find();
-
   const images = req.files.map((file) => file.filename);
-
   if (req.body.category !== '') {
     const exist = await Category.find({
       category: { $regex: new RegExp(req.body.category, 'i') },
     });
-
     if (exist.length > 0) {
       res.render('admin/categorylist', {
         category,
@@ -34,7 +31,6 @@ const addcategory = async (req, res) => {
         category: req.body.category,
         imageUrl: images,
       });
-
       categorydata
         .save()
         .then(() => {
@@ -58,7 +54,7 @@ const updateCategorypage = async (req, res) => {
       category, param, errorDetail: '', title: 'Update category',
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    errorHandler(error, req, res);
   }
 };
 
@@ -69,9 +65,7 @@ const updatecategory = async (req, res) => {
     const categorys = await Category.findById(proId);
     const exImage = categorys.imageUrl;
     const { files } = req;
-
     let updImages = [];
-
     const { category } = req.body;
     const exist = await Category.find({
       category: { $regex: new RegExp(category, 'i') },
@@ -85,7 +79,6 @@ const updatecategory = async (req, res) => {
       } else {
         updImages = exImage;
       }
-
       await Category.findByIdAndUpdate(
         proId,
         {
@@ -99,10 +92,9 @@ const updatecategory = async (req, res) => {
       res.redirect('/furnica/admin/addcategory');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
-
 module.exports = {
   categorylist,
   addcategory,

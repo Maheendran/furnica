@@ -1,5 +1,8 @@
-const argon2 = require("argon2");
-const nodemailer = require("nodemailer");
+/* eslint-disable linebreak-style */
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+const argon2 = require('argon2');
+const nodemailer = require('nodemailer');
 
 // ************************hashing section*************************//
 const hashPassword = async (password) => {
@@ -13,31 +16,30 @@ const hashPassword = async (password) => {
 
 // ************************generate otp section*************************//
 const verifyEmail = async (email, otp) => {
-  console.log("nodemil",email,otp)
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
-        user: "maheendrankp100@gmail.com",
-        pass: "oqqmaiffrvyoiqwp",
+        user: 'maheendrankp100@gmail.com',
+        pass: 'oqqmaiffrvyoiqwp',
       },
     });
     const mailOptions = {
-      from: "maheendrankp100@gmail.com",
+      from: 'maheendrankp100@gmail.com',
       to: email,
-      subject: "For reset Password",
+      subject: 'For reset Password',
       html:
-        "<p> Your Furnica registration one time password is  " + otp + " </p>",
+        `<p> Your Furnica registration one time password is  ${otp} </p>`,
     };
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error)
+        console.log(error);
       } else {
-        console.log("Email has been sent :-", info.response);
+        console.log('Email has been sent :-', info.response);
       }
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 

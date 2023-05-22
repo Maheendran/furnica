@@ -13,17 +13,14 @@ const Upload = require('../middleware/multer.js');
 const adminAuth = require('../middleware/adminAuth.js');
 
 const adminRoute = express.Router();
-
 adminRoute.get('/image', (req, res) => {
   res.render('admin/images');
 });
-
 // ************************login section*************************//
 
 adminRoute.get('/login', adminAuth.isLogout, userController.adminlogin);
 adminRoute.post('/login', userController.adminlogedin);
 adminRoute.get('/logout', userController.adminlogout);
-
 // ************************dashboard section*************************//
 
 adminRoute.get('/dashboard', adminAuth.isLogin, dashboardController.dashboard);
@@ -34,7 +31,6 @@ adminRoute.get('/salesreport/:duration', adminAuth.isLogin, dashboardController.
 
 adminRoute.get('/addproduct', adminAuth.isLogin, productController.getProducts);
 adminRoute.post('/addproduct', Upload.array('image', 3), productController.createProduct);
-
 adminRoute.get('/productlist', adminAuth.isLogin, productController.productlist);
 adminRoute.get('/updateproduct/:id', Upload.array('image', 3), adminAuth.isLogin, productController.updateproduct);
 adminRoute.post('/updateproduct/:id', Upload.array('image', 3), productController.productUpdated);

@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-undef */
 /* eslint-disable import/extensions */
 /* eslint-disable no-console */
 const express = require('express');
@@ -34,8 +35,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/furnica/admin', adminRoute);
 app.use('/furnica', userRoute);
 
+connectDB();
 app.listen(5000, () => {
   console.log('port is connected');
 });
-
-connectDB();

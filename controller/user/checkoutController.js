@@ -12,7 +12,7 @@ const Address = require('../../models/addressMode');
 const Order = require('../../models/orderModel.js');
 const Coupon = require('../../models/couponModel.js');
 const Product = require('../../models/productModel.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************checkout page section*************************//
 const checkout = async (req, res) => {
   try {
@@ -23,13 +23,10 @@ const checkout = async (req, res) => {
       .lean();
     const { cart } = user;
     let subTotal = 0;
-
     cart.forEach((val) => {
       val.total = val.product.price * val.quantity;
       subTotal += val.total;
     });
-
-    // // Get the current date
     const currentDate = new Date();
     const fiveDaysLater = new Date(
       currentDate.getTime() + 5 * 24 * 60 * 60 * 1000,
@@ -40,7 +37,6 @@ const checkout = async (req, res) => {
     if (req.session.mycoupon != null) {
       const couponId = req.session.mycoupon;
       const coupondata = await Coupon.findById(couponId._id);
-
       if (subTotal > coupondata.maximum) {
         discounamount = Math.ceil(
           coupondata.maximum * (coupondata.percent / 100),
@@ -54,7 +50,6 @@ const checkout = async (req, res) => {
       lastprice = subTotal;
       discounamount = 0;
     }
-    // wallet cuurent balance
     const walletBalance = await User.findById(userdata);
     const { wallet } = walletBalance;
     res.render('user/checkout', {
@@ -69,7 +64,7 @@ const checkout = async (req, res) => {
       title: 'Checkout',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -107,12 +102,9 @@ const orderConfirm = async (req, res) => {
     req.body.status = 'Order placed';
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().slice(0, 10);
-
     req.body.date = formattedDate;
-
     const order = new Order(req.body);
     await order.save();
-
     if (paymentMethod === 'Wallet') {
       const currentDate = new Date();
       const day = String(currentDate.getDate()).padStart(2, '0');
@@ -128,15 +120,12 @@ const orderConfirm = async (req, res) => {
       };
       await User.findByIdAndUpdate(userData._id, { $push: { walletHistory: history } });
     }
-
-    // stock amount reducing
     order.product.forEach(async (prod) => {
       const updatedProd = await Product.findOneAndUpdate(
         { _id: prod.id },
         { $inc: { stock: -prod.quantity } },
         { new: true },
       );
-
       if (updatedProd.stock === 0) {
         await Product.findOneAndUpdate(
           { _id: prod.id },
@@ -144,10 +133,7 @@ const orderConfirm = async (req, res) => {
         );
       }
     });
-
-    // cart empty
     await User.updateOne({ _id: userData._id }, { cart: [] });
-
     if (walletpayed === 'true') {
       const userId = userData._id;
       const updatedUser = await User.findByIdAndUpdate(
@@ -164,7 +150,7 @@ const orderConfirm = async (req, res) => {
 
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // =======checkStock==============//
@@ -185,7 +171,7 @@ const checkStock = async (req, res) => {
       }
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -202,7 +188,7 @@ const orderlist = async (req, res) => {
       orders: orderData, userdata, currentDate, title: 'Orders',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -210,7 +196,6 @@ const orderlist = async (req, res) => {
 const ordercancel = async (req, res) => {
   try {
     const orderid = req.body.orderid.trim();
-
     const orderdetail = await Order.find({
       _id: orderid,
       paymentMethod: { $in: ['Gpay', 'Wallet'] },
@@ -220,7 +205,6 @@ const ordercancel = async (req, res) => {
       const userdata = req.session.user;
       const userId = userdata._id;
       const walletAmount = orderdetail[0].total;
-
       await User.findByIdAndUpdate(
         userId,
         { $inc: { wallet: walletAmount } },
@@ -238,7 +222,6 @@ const ordercancel = async (req, res) => {
         date: formattedDate,
         time: currentDate,
       };
-
       await User.findByIdAndUpdate(userId, { $push: { walletHistory: history } });
     }
 
@@ -247,10 +230,9 @@ const ordercancel = async (req, res) => {
       { status: 'Cancelled' },
       { new: true },
     );
-
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -258,13 +240,10 @@ const ordercancel = async (req, res) => {
 const orderReturn = async (req, res) => {
   try {
     const orderid = req.body.orderid.trim();
-    // addmoney to wallet only for gapy order
     const orderdetail = await Order.find({ _id: orderid });
-
     const userdata = req.session.user;
     const userId = userdata._id;
     const walletAmount = orderdetail[0].total;
-
     if (orderdetail.length > 0) {
       const currentDate = new Date();
       const day = String(currentDate.getDate()).padStart(2, '0');
@@ -278,7 +257,6 @@ const orderReturn = async (req, res) => {
         date: formattedDate,
         time: currentDate,
       };
-
       await User.findByIdAndUpdate(
         userId,
         { $inc: { wallet: walletAmount }, $push: { walletHistory: history } },
@@ -292,7 +270,7 @@ const orderReturn = async (req, res) => {
     }
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -301,7 +279,7 @@ const success = async (req, res) => {
   try {
     res.render('user/successorder', { title: 'Order success' });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -318,7 +296,7 @@ const orderdetail = async (req, res) => {
       orders, userdata, currentDate, address, title: 'Order detail',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -332,24 +310,20 @@ const walletamount = async (req, res) => {
       { $inc: { wallet: -amount } },
       { new: true },
     );
-
     if (updatedUser.wallet < 0) {
       updatedUser.wallet = 0;
       await updatedUser.save();
     }
-
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 const invoicedownload = async (req, res) => {
   try {
     const { orderId } = req.query;
-
     const orders = await Order.findById(orderId);
     const address = await Address.findById(orders.address);
-
     const data = {
       orders,
       address,
@@ -358,13 +332,11 @@ const invoicedownload = async (req, res) => {
       __dirname,
       '../../views/user/invoice.ejs',
     );
-
     const htmlString = fs.readFileSync(filePathName).toString();
     const options = {
       format: 'Letter',
     };
     const ejsData = ejs.render(htmlString, data);
-
     pdf.create(ejsData, options).toFile('Invoice.pdf', (err, res) => {
       if (err) {
         res.render('user/error');
@@ -372,7 +344,7 @@ const invoicedownload = async (req, res) => {
     });
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 module.exports = {

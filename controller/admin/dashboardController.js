@@ -13,20 +13,18 @@ const Orders = require('../../models/orderModel.js');
 const User = require('../../models/userModel.js');
 const Category = require('../../models/categoryModel.js');
 const Product = require('../../models/productModel.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************Dashboard section*************************//
 const dashboard = async (req, res) => {
   try {
     const today = new Date();
-    var oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-    // weekly
+    const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
     const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
     const weeklyorder = await Orders.find({
       status: { $ne: 'cancelled' },
       createdAt: { $gte: oneWeekAgo },
     });
-    // daily
-    var oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
     const dailyorder = await Orders.find({
       status: { $ne: 'cancelled' },
       createdAt: { $gte: oneDayAgo },
@@ -40,10 +38,7 @@ const dashboard = async (req, res) => {
       status: { $ne: 'cancelled' },
       createdAt: { $gte: oneYearAgo },
     });
-
-    // weekly total price
     const totalPrice = weeklyorder.reduce((acc, curr) => acc + curr.total, 0);
-    // overall total price
     const allprice = await Orders.find({ status: { $ne: 'cancelled' } });
     const overallprice = allprice.reduce((acc, curr) => acc + curr.total, 0);
     res.render('admin/dashboard', {
@@ -55,7 +50,7 @@ const dashboard = async (req, res) => {
       title: 'Dasboard',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -99,8 +94,6 @@ const chartdata = async (req, res) => {
       },
     ];
     const result = await Orders.aggregate(pipeline);
-
-    // per day user count
     const perdayuser = await User.aggregate([
       {
         $group: {
@@ -114,8 +107,6 @@ const chartdata = async (req, res) => {
         },
       },
     ]);
-
-    // payment method
     const paymentmethod = await Orders.aggregate([
       {
         $group: {
@@ -124,15 +115,12 @@ const chartdata = async (req, res) => {
         },
       },
     ]);
-
-    // most seeling product
     const mostSellingProduct = await Orders.aggregate([
       { $unwind: '$product' },
       { $group: { _id: '$product.name', count: { $sum: 1 } } },
       { $sort: { count: -1 } },
       { $limit: 5 },
     ]);
-    // stock leassthan 10 products
     const leaststock = await Product.aggregate([
       { $match: { stock: { $lte: 10 } } },
       {
@@ -143,7 +131,6 @@ const chartdata = async (req, res) => {
         },
       },
     ]);
-
     res.json({
       result,
       perdayuser,
@@ -152,7 +139,7 @@ const chartdata = async (req, res) => {
       leaststock,
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -162,7 +149,6 @@ const pdfconvert = async (req, res) => {
     const { duration } = req.query;
     const today = new Date();
     let durationDate;
-
     if (duration === 'Daily') {
       durationDate = new Date(today.getTime() - 24 * 60 * 60 * 1000);
     } else if (duration === 'Weekly') {
@@ -174,7 +160,6 @@ const pdfconvert = async (req, res) => {
         today.getDate(),
       );
     }
-
     const filteredDocs = await Orders.find({
       status: { $ne: 'cancelled' },
       createdAt: { $gte: durationDate },
@@ -199,7 +184,7 @@ const pdfconvert = async (req, res) => {
     });
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************sales report section*************************//
@@ -239,7 +224,7 @@ const salesreport = async (req, res) => {
       title: 'Sales report',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 

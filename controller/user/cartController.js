@@ -8,19 +8,20 @@
 const Product = require('../../models/productModel.js');
 const User = require('../../models/userModel.js');
 const Coupon = require('../../models/couponModel.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************cart page section*************************//
 const cartLoading = async (req, res) => {
   try {
     const userdata = req.session.user;
     const products = await Product.find();
-
-    const user = await User.findOne({ _id: userdata._id }).populate('cart.product').lean();
+    const user = await User.findOne({ _id: userdata._id })
+      .populate('cart.product')
+      .lean();
     const updatedCart = user.cart.filter((item) => item);
-
     updatedCart.map(async (item) => {
-      const product = products.find((p) => p._id.toString() === item.product._id.toString());
-
+      const product = products.find(
+        (p) => p._id.toString() === item.product._id.toString(),
+      );
       if (product && !product.outofstock) {
         item.quantity = Math.min(item.quantity, product.stock);
         const stockes = product.stock;
@@ -37,7 +38,6 @@ const cartLoading = async (req, res) => {
         await User.findOneAndUpdate(
           {
             _id: userdata._id,
-
           },
           {
             $pull: { cart: { product: product._id } },
@@ -47,7 +47,6 @@ const cartLoading = async (req, res) => {
 
       return item;
     });
-
     req.session.mycoupon = null;
     const cart = updatedCart;
     if (cart.length === 0) {
@@ -60,7 +59,6 @@ const cartLoading = async (req, res) => {
         subTotal += val.total;
       });
       const cartCategories = cart.map((item) => item.product.category);
-
       const avilableCoupon = await Coupon.find({
         userId: { $nin: [userdata._id] },
         status: { $ne: 'Inactive' },
@@ -91,7 +89,7 @@ const cartLoading = async (req, res) => {
       });
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -102,7 +100,6 @@ const addToCart = async (req, res) => {
     const userId = req.session.user._id;
     const product = await Product.findById(proId);
     const existed = await User.findOne({ _id: userId, 'cart.product': proId });
-
     if (existed) {
       await User.findOneAndUpdate(
         { _id: userId, 'cart.product': proId },
@@ -119,7 +116,7 @@ const addToCart = async (req, res) => {
       res.json('Added');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -128,7 +125,6 @@ const removecart = async (req, res) => {
   try {
     const userId = req.session.user._id;
     const { prodId } = req.body;
-
     await User.updateOne(
       { _id: userId },
       { $pull: { cart: { product: prodId } } },
@@ -136,7 +132,7 @@ const removecart = async (req, res) => {
 
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -144,12 +140,12 @@ const removecart = async (req, res) => {
 const quantityIncrement = async (req, res) => {
   try {
     const { prodId, method, coupon } = req.body;
-
     const userId = req.session.user._id;
     const productStock = await Product.findById(prodId);
-
-    const CartProductStock = await User.findOne({ 'cart.product': prodId, _id: userId });
-
+    const CartProductStock = await User.findOne({
+      'cart.product': prodId,
+      _id: userId,
+    });
     const cartlist = CartProductStock.cart;
     // eslint-disable-next-line no-inner-declarations
     function findquantity(prodId) {
@@ -159,13 +155,10 @@ const quantityIncrement = async (req, res) => {
         }
       }
     }
-
     let cartquantity = findquantity(prodId);
-
     if (method !== 'increment') {
       cartquantity -= 1;
     }
-
     if (cartquantity < productStock.stock) {
       if (method === 'increment') {
         await User.findOneAndUpdate(
@@ -180,7 +173,6 @@ const quantityIncrement = async (req, res) => {
           { new: true },
         );
       }
-
       const quant = await User.findOne(
         { _id: userId, 'cart.product': prodId },
         { 'cart.$': 1 },
@@ -188,7 +180,6 @@ const quantityIncrement = async (req, res) => {
       const user = await User.findOne({ _id: userId })
         .populate('cart.product')
         .lean();
-
       const { cart } = user;
       let subTotal = 0;
       cart.forEach((val) => {
@@ -213,7 +204,6 @@ const quantityIncrement = async (req, res) => {
         lastprice = subTotal;
         discounamount = 0;
       }
-
       const totalQuantity = quant.cart[0].quantity;
       if (totalQuantity < 1) {
         await User.updateOne(
@@ -223,14 +213,17 @@ const quantityIncrement = async (req, res) => {
         res.json('success');
       } else {
         res.json({
-          quantity: quant.cart, subTotal, lastprice, discounamount,
+          quantity: quant.cart,
+          subTotal,
+          lastprice,
+          discounamount,
         });
       }
     } else {
       res.json({ stocklimit: 'stocklimit' });
     }
-  } catch {
-    res.render('user/error');
+  } catch (error) {
+    errorHandler(error, req, res);
   }
 };
 
@@ -243,9 +236,13 @@ const wishlist = async (req, res) => {
     if (wishlistProducts.length === 0) {
       res.render('user/emptywishlist', { userdata, title: 'Wishlist' });
     }
-    res.render('user/wishlist', { wishlistProducts, userdata, title: 'Wishlist' });
+    res.render('user/wishlist', {
+      wishlistProducts,
+      userdata,
+      title: 'Wishlist',
+    });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -255,11 +252,9 @@ const wishlistToCart = async (req, res) => {
     const userId = req.session.user._id;
     const prodId = req.params.id;
     const { index } = req.params;
-
     const userDatas = await User.findById(userId);
     userDatas.wishlist.splice(index, 1);
     const existed = await User.findOne({ _id: userId, 'cart.product': prodId });
-
     if (!existed) {
       await User.findByIdAndUpdate(
         userId,
@@ -270,7 +265,7 @@ const wishlistToCart = async (req, res) => {
     await userDatas.save();
     res.redirect('/furnica/wishlist');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -280,14 +275,12 @@ const addwishlist = async (req, res) => {
     const productId = req.body.data;
     const userId = req.session.user._id;
     const existed = await User.findOne({ _id: userId, wishlist: productId });
-
     if (existed) {
       await User.findByIdAndUpdate(
         { _id: userId },
         { $pull: { wishlist: productId } },
         { new: true },
       );
-
       res.json('removed');
     } else {
       await User.findByIdAndUpdate(
@@ -295,36 +288,31 @@ const addwishlist = async (req, res) => {
         { $addToSet: { wishlist: productId } },
         { new: true },
       );
-
       res.json('Added');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
-
 // ************************remove wishlist section*************************//
 const removeWishlist = async (req, res) => {
   try {
     const userId = req.session.user._id;
-    // const param = req.params.id;
     const { index } = req.params;
     const userData = await User.findById(userId);
     userData.wishlist.splice(index, 1);
     await userData.save();
     res.redirect('/furnica/wishlist');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************my coupon section*************************//
 const mycoupon = async (req, res) => {
   try {
     const { coupon } = req.body;
-
     const userdata = req.session.user;
     const checkcoupon = await Coupon.find({ code: coupon });
-
     if (checkcoupon.length > 0) {
       const coupondata = await Coupon.findOne({
         code: coupon,
@@ -344,8 +332,8 @@ const mycoupon = async (req, res) => {
           val.total = val.product.price * val.quantity;
           subTotal += val.total;
         });
-        let discounamount; let lastprice;
-
+        let discounamount;
+        let lastprice;
         if (subTotal > coupondata.minimum) {
           if (subTotal > coupondata.maximum) {
             discounamount = Math.ceil(
@@ -353,12 +341,9 @@ const mycoupon = async (req, res) => {
             );
             lastprice = subTotal - discounamount;
           } else {
-            discounamount = Math.ceil(
-              subTotal * (coupondata.percent / 100),
-            );
+            discounamount = Math.ceil(subTotal * (coupondata.percent / 100));
             lastprice = subTotal - discounamount;
           }
-          // }
           res.json({
             subTotal,
             lastprice,
@@ -375,10 +360,8 @@ const mycoupon = async (req, res) => {
       res.json('nocoupon');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
-
-  //
 };
 
 const clearCoupon = async (req, res) => {
@@ -398,7 +381,7 @@ const clearCoupon = async (req, res) => {
       res.json('clear');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 

@@ -1,13 +1,16 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/extensions */
+const errorHandler = require('./errorHandler.js');
+
 const isLogin = async (req, res, next) => {
   try {
-    if (req.session.admin === undefined) {
+    if (!req.session.admin) {
       res.render('admin/login');
     } else {
       next();
     }
   } catch (error) {
-    console.log(error.message);
+    errorHandler(error, req, res);
   }
 };
 
@@ -18,7 +21,7 @@ const isLogout = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log(error.message);
+    errorHandler(error, req, res);
   }
 };
 

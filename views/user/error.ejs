@@ -4,7 +4,8 @@
   <div class="col-5 m-auto">
     <img class="img-fluid" src="/assests/warning.gif" alt="" />
     <div class="col-12 text-center">
-      <h3 style="color: rgb(226, 82, 82)">Something Went Wrong</h3>
+     
+      <h3 style="color: rgb(226, 82, 82)"> <%= locals.error  %></h3>
       <p>Please try again later.</p>
       <button class="btn" onclick="window.location.href='/furnica/home'">
         Go to Homepage

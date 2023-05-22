@@ -1,6 +1,9 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/extensions */
+
 const userHelper = require('../../helper/userHelper');
 const usermodel = require('../../models/userModel');
+const errorHandler = require('../../middleware/errorHandler.js');
 
 const generateOtp = () => {
   const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
@@ -17,7 +20,7 @@ const mailSubmit = async (req, res) => {
       res.render('user/forgotpassword/mailSubmittion', { title: 'Registred Email' });
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -28,7 +31,6 @@ const postMailSubmit = async (req, res) => {
     const { email } = req.body;
     req.session.otpEmail = email;
     const userdata = await usermodel.findOne({ email: req.session.otpEmail });
-
     if (userdata) {
       const otp = generateOtp();
       req.session.otpsession = true;
@@ -53,7 +55,7 @@ const postMailSubmit = async (req, res) => {
       res.redirect('/furnica/forgotPassword');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -66,7 +68,7 @@ const otpPage = async (req, res) => {
       title: 'Otp',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -75,19 +77,17 @@ const postOtppage = async (req, res) => {
   const enterOtp = req.body.otp;
   try {
     const DBopt = await usermodel.findOne({ email: req.session.otpEmail });
-
     if (enterOtp === DBopt.otp) {
       await usermodel.updateOne(
         { email: req.session.otpEmail },
         { $set: { otp: '' } },
       );
-
       res.redirect('/furnica/resetPassword');
     } else {
       res.render('user/forgotpassword/otpPage', { errorotps: 'Invalid OTP' });
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -103,7 +103,7 @@ const resendOtp = async (req, res) => {
     await userHelper.verifyEmail(req.session.otpEmail, dbotp.otp);
     res.redirect('/furnica/otp');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -112,7 +112,7 @@ const resetPasswordpage = async (req, res) => {
   try {
     res.render('user/forgotpassword/resetPassword', { title: 'Reset password' });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -129,10 +129,9 @@ const postResetpass = async (req, res) => {
     req.session.user = userData;
     req.session.otpEmail = null;
     req.session.otpsession = null;
-
     res.redirect('/furnica/login');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 

@@ -10,9 +10,9 @@ const cron = require('node-cron');
 const Category = require('../../models/categoryModel.js');
 const Product = require('../../models/productModel.js');
 const Offer = require('../../models/offerModerl.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************offer page section*************************//
-const offerManagement = async (_req, res) => {
+const offerManagement = async (req, res) => {
   try {
     const offer = await Offer.find();
     const products = await Product.find();
@@ -21,10 +21,10 @@ const offerManagement = async (_req, res) => {
       category, offer, products, title: 'Offers',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
-// */10 * * * * *
+// per sec */10 * * * * *
 // ************************automatic running section*************************//
 cron.schedule(' 0 0 * * * *', async () => {
   const currentDate = new Date();
@@ -59,10 +59,8 @@ cron.schedule(' 0 0 * * * *', async () => {
     for (const offer of inactiveOffers) {
       offer.status = 'end';
       await offer.save();
-
       if (offer.offerfor === 'category') {
         const products = await Product.find({ category: offer.offerid });
-
         for (const product of products) {
           product.price = product.offer.realprice;
           product.offer.offerpercent = 0;
@@ -70,7 +68,6 @@ cron.schedule(' 0 0 * * * *', async () => {
         }
       } else {
         const products = await Product.find({ name: offer.offerid });
-
         products[0].price = products[0].offer.realprice;
         products[0].offer.offerpercent = 0;
         await products[0].save();
@@ -88,7 +85,6 @@ const categoryOffer = async (req, res) => {
       const month = String(currentDate.getMonth() + 1).padStart(2, '0');
       const day = String(currentDate.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-
       const offerDetails = {
         offerfor: 'category',
         offerid: req.body.categoryId,
@@ -97,7 +93,6 @@ const categoryOffer = async (req, res) => {
         enddate: req.body.enddate,
         status: '',
       };
-
       if (req.body.startdate >= formattedDate) {
         offerDetails.status = 'inactive';
       } else {
@@ -105,8 +100,6 @@ const categoryOffer = async (req, res) => {
       }
       const data = new Offer(offerDetails);
       data.save();
-
-      // if active offer
       if (data.status === 'active') {
         Product.find({ category: data.offerid })
           .then((products) => {
@@ -130,7 +123,7 @@ const categoryOffer = async (req, res) => {
       res.json('existing');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -138,9 +131,7 @@ const categoryOffer = async (req, res) => {
 const deleteOffer = async (req, res) => {
   try {
     const { offerID } = req.body;
-
     const offerlist = await Offer.findById(offerID);
-
     Product.find({ category: offerlist.offerid })
       .then((products) => {
         products.forEach((product) => {
@@ -155,7 +146,7 @@ const deleteOffer = async (req, res) => {
     await Offer.findByIdAndDelete(offerlist._id);
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************product offer section*************************//
@@ -168,7 +159,6 @@ const productOffer = async (req, res) => {
       const month = String(currentDate.getMonth() + 1).padStart(2, '0');
       const day = String(currentDate.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-
       const offerDetails = {
         offerfor: 'product',
         offerid: req.body.productname,
@@ -185,7 +175,6 @@ const productOffer = async (req, res) => {
       const data = new Offer(offerDetails);
       data.save();
       const productdetail = await Product.find({ name: req.body.productname });
-
       const currentprice = Math.floor(
         productdetail[0].price - productdetail[0].price * (data.percent / 100),
       );
@@ -203,7 +192,7 @@ const productOffer = async (req, res) => {
       res.json('existing');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -211,9 +200,7 @@ const productOffer = async (req, res) => {
 const deleteProductOffer = async (req, res) => {
   try {
     const { offerID } = req.body;
-
     const offerlist = await Offer.findById(offerID);
-
     Product.find({ name: offerlist.offerid })
       .then((products) => {
         products[0].price = products[0].offer.realprice;
@@ -226,7 +213,7 @@ const deleteProductOffer = async (req, res) => {
     await Offer.findByIdAndDelete(offerlist._id);
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 

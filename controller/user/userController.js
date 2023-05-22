@@ -15,13 +15,13 @@ const userHelper = require('../../helper/userHelper.js');
 const Banner = require('../../models/bannerModel.js');
 const User = require('../../models/userModel.js');
 const Order = require('../../models/orderModel.js');
-
+const errorHandler = require('../../middleware/errorHandler.js');
 // ************************signup section*************************//
 const usersignup = (req, res) => {
   try {
     res.render('user/signup');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************do signup section*************************//
@@ -31,7 +31,6 @@ const doSignup = async (req, res) => {
     if (referral !== null) {
       req.session.refferal = referral;
     }
-
     const hashedPassword = await userHelper.hashPassword(req.body.password);
     req.body.password = hashedPassword;
 
@@ -67,13 +66,17 @@ const doSignup = async (req, res) => {
       res.render('user/signup', { errorDetail: 'email already exist' });
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 const referralLink = async (req, res) => {
-  const refferalcode = req.query.code;
-  req.session.user = false;
-  res.render('user/signup', { refferalcode });
+  try {
+    const refferalcode = req.query.code;
+    req.session.user = false;
+    res.render('user/signup', { refferalcode });
+  } catch (error) {
+    errorHandler(error, req, res);
+  }
 };
 // ************************ signup otp section*************************//
 const generateOtp = () => {
@@ -83,7 +86,6 @@ const generateOtp = () => {
 const submitOtp = async (req, res) => {
   try {
     const enterOtp = req.body.otp;
-
     const DBopt = await User.findOne({ email: req.session.signupOtp });
     if (enterOtp === DBopt.otp) {
       req.session.sigupUser.isVerified = true;
@@ -142,32 +144,35 @@ const submitOtp = async (req, res) => {
       res.render('user/Otpsubmit', { errorotps: 'Invalid OTP' });
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
 // ************************login section*************************//
 const userLogin = async (req, res) => {
-  const successMsg = 'User registered sucessfully';
-  const accountBlock = 'Temporarily account blocked';
-  const mailErr = 'Incorrect email or password';
-  if (req.session.successMsg) {
-    res.render('user/login', { successMsg });
-    req.session.successMsg = false;
-  } else if (req.session.userBlocked) {
-    res.render('user/login', { accountBlock });
-    req.session.accountBlock = false;
-  } else if (req.session.mailErr) {
-    res.render('user/login', { mailErr });
-    req.session.mailErr = false;
-  } else {
-    res.render('user/login');
+  try {
+    const successMsg = 'User registered sucessfully';
+    const accountBlock = 'Temporarily account blocked';
+    const mailErr = 'Incorrect email or password';
+    if (req.session.successMsg) {
+      res.render('user/login', { successMsg });
+      req.session.successMsg = false;
+    } else if (req.session.userBlocked) {
+      res.render('user/login', { accountBlock });
+      req.session.accountBlock = false;
+    } else if (req.session.mailErr) {
+      res.render('user/login', { mailErr });
+      req.session.mailErr = false;
+    } else {
+      res.render('user/login');
+    }
+  } catch (error) {
+    errorHandler(error, req, res);
   }
 };
 const doLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (email && password) {
       let userData = await usermodel.findOne({ email });
       if (userData) {
@@ -194,25 +199,22 @@ const doLogin = async (req, res) => {
       res.render('user/login');
     }
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
 const resendOtop = async (req, res) => {
   try {
     const otp = generateOtp();
-
     await User.updateOne(
       { email: req.session.signupOtp },
       { $set: { otp } },
     );
     const DBopt = await usermodel.findOne({ email: req.session.signupOtp });
-
     await userHelper.verifyEmail(req.session.signupOtp, DBopt.otp);
-
     res.redirect('/furnica/getOtp');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -220,7 +222,7 @@ const getOtp = async (req, res) => {
   try {
     res.render('user/otpSubmit');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -229,7 +231,7 @@ const userlogout = async (req, res) => {
     req.session.user = null;
     res.redirect('/furnica/login');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -244,19 +246,17 @@ const homePage = async (req, res) => {
       category, product, userdata, bannerdata, title: 'Home',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************products section*************************//
 
 const Allproducts = async (req, res) => {
   try {
-    // const productList = await Product.find({stock:{$gt:0}});
     const productList = await Product.find();
     const userdata = req.session.user;
     const pageNumber = req.query.page;
     const pageSize = 4;
-
     const totalItems = productList.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const startIndex = (pageNumber - 1) * pageSize;
@@ -270,7 +270,7 @@ const Allproducts = async (req, res) => {
       title: 'Products',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -279,12 +279,9 @@ const quaryProducts = async (req, res) => {
 
   try {
     const productList = await Product.find({ category: param });
-
     const userdata = req.session.user;
-
     const pageNumber = 1;
     const pageSize = 4;
-
     const totalItems = productList.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const startIndex = (pageNumber - 1) * pageSize;
@@ -297,7 +294,7 @@ const quaryProducts = async (req, res) => {
       pageNumber,
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -305,9 +302,7 @@ const productDetail = async (req, res) => {
   const param = req.params.id;
   try {
     const details = await Product.findOne({ _id: param });
-
     const categoryData = await Category.findOne({ _id: details.category });
-    // review check
     let userdata = req.session.user;
     let reviewlist;
     if (req.session.user) {
@@ -326,7 +321,7 @@ const productDetail = async (req, res) => {
       details, categoryData, reviewlist, userdata, Listreview, title: 'Product detail',
     });
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
@@ -341,7 +336,6 @@ const Addreview = async (req, res) => {
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
     const isoDateString = `${day}-${month}-${year}`;
-
     const currentTime = new Date();
     const review = {
       userId,
@@ -357,7 +351,7 @@ const Addreview = async (req, res) => {
     );
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************delete review section*************************//
@@ -369,7 +363,7 @@ const deletereview = async (req, res) => {
     await productData.save();
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 // ************************update review section*************************//
@@ -380,10 +374,9 @@ const editreview = async (req, res) => {
       { _id: prodId },
       { $set: { [`review.${reviewIndex}.message`]: reviewInput } },
     );
-
     res.json('success');
   } catch (error) {
-    res.render('user/error');
+    errorHandler(error, req, res);
   }
 };
 
