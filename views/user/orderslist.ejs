@@ -1,0 +1,355 @@
+
+<%- include('../htmlbody/header') -%>
+<style>
+    .orderdtailbtn{
+        background-color: rgb(25, 142, 97);
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+      transition: 0.5s ease-in-out;
+    }
+ 
+    .returnbtn{
+        background-color: rgb(255, 85, 0);
+        color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+    }
+    .cancelledbtn{
+        background-color: rgb(244, 110, 44);
+        color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+    }
+.img_scroll::-webkit-scrollbar{
+display: none;
+}
+.row_box{
+margin-bottom: 1rem;
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+padding: 15px;
+}
+.rturnbars{
+     display: flex;
+    width: 100%;
+    height: 30px;
+
+}
+.bars{
+    display: flex;
+    width: 100%;
+    height: 30px;
+    animation: colrslide 1s linear forwards 1;
+    transform: translate(-10rem);  
+}
+@keyframes colrslide{
+    100%{
+        transform: translate(0rem);
+    }
+}
+
+.animationcolr{
+  width: 10px;
+  height: 10px;
+  background-color: rgb(25, 142, 97);
+  border-radius: 50%;
+  animation:  glowing 3s linear infinite;
+  position: absolute;
+  right: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+}
+.canelanimationcolr{
+    width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(244, 110, 44);
+  position: absolute;
+  right: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+@keyframes glowing{
+    40%{
+        transform: scale(1.8);
+   background-color: rgb(47, 232, 23);
+box-shadow:rgb(47, 232, 23) 0px 0px 5px ;
+border: 1px solid white;
+border-style: dotted;
+    }
+
+}
+.whiteball{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+background-color: white;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+animation:  whiteball 1s linear infinite;
+}
+
+@keyframes whiteball{
+    70%{
+        transform: scale(1.2);
+      
+    }
+}
+.progressbar{
+    height:10px;
+    border-radius: 20px;
+background-color: rgb(25, 142, 97);
+box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+}
+.cancelprogressbar{
+    height:10px;
+    border-radius: 20px;
+    background-color: rgb(244, 110, 44);
+box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;  
+}
+.retunprogressbar{
+    height:10px;
+    border-radius: 20px;
+    background-color: rgb(255, 85, 0);
+box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px; 
+}
+</style>
+<%- include('../htmlbody/navbar') -%>
+
+<section class="h-100 gradient-custom">
+<div class="container ">
+<div class="row d-flex justify-content-center my-4">
+<div class="col-md-8">
+<div class="card mb-4">
+<div class="card-header py-3">
+<h5 class="mb-0">   Orders</h5>
+</div>
+
+<div class="card-body" >
+<hr />
+
+<!-- Single item -->
+<%for(let i=0; i<orders.length; i++){%> 
+<div class="row row_box">
+<div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+<div class="col-12 img_scroll" 
+style="display: flex;overflow: scroll; ">
+<% for( let index = 0; index < orders[i].product.length; index++) { %>
+
+<img  class="img-fluid  " style="width: 100%;height: 100%;border-radius: 10px;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
+
+<% } %>     
+</div>
+<a href="#!">
+<div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+</a>
+</div>
+
+</div>
+
+<div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+<!--  -->
+
+<p>Name:
+<%= locals.orders[i].product[0].name %>
+</p>
+
+<p>Total:
+Rs <%= orders[i].total %>
+</p>
+<p >Status: <span id="status">
+<%= orders[i].status %>
+</span>
+
+</p>
+<p>Payment Method:
+<%= orders[i].paymentMethod %>
+</p>
+</div>
+
+<div class="col-lg-2 col-md-6 mb-4 mb-lg-0 m-auto text-center">
+   
+    <% if (orders[i].status!="Order Arrived" && orders[i].status!="Returned") { %>
+        <div class="col-12 m-auto ">
+       
+            <% if (orders[i].status=="Cancelled") { %>
+        <button type="button" disabled class=" cancelledbtn mb-2">
+        Cancelled
+        </button>
+        <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+        <button type="button" class="cancelledbtn mb-2 ">Orderdetail</button></a>
+        <% } else { %>
+        <button type="button" class="btndanger mb-2 "
+        onclick="handleCancel('<%= orders[i]._id %>')" >
+        Cancel
+        </button>
+        <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+            <button type="button" class="orderdtailbtn  ">Orderdetail</button></a>
+        
+            <% } %>
+        </div>
+          
+        <% } else if (orders[i].status=="Returned") { %>
+        
+             <button type="button" class="returnbtn  mb-2 " disabled>Returned</button>
+
+                <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+                    <button type="button" class="returnbtn mb-2 ">Orderdetail</button></a>
+        <% }else { %>
+            <% if ( orders[i].returndate > locals.currentDate) { %>
+                <button type="button" onclick="handleReturn('<%= orders[i]._id %>')" class="btndanger  mb-2 ">Return</button>
+                <% } %>
+                <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+                    <button type="button" class="orderdtailbtn mb-2 ">Orderdetail</button></a>
+            <% } %>
+
+</div>
+<div class="row bg-light" style="position: relative;overflow: hidden;">
+<div class="col-12 d-flex justify-content-between ordercurrent" >
+    <p class="ordercurrent"> Order placed</p>
+    <p class="ordercurrent"> Order Shipped</p>
+    <p class="ordercurrent">Out for delivery</p>
+    <p class="ordercurrent">Order Arrived</p>
+
+</div>
+
+
+<% if ( orders[i].status ==="Order placed") { %>
+    <div class="bars" style="width: 20%;">
+<div  style="width: 100%;" class="progressbar"></div>
+<div class="animationcolr">
+    <div class="whiteball"></div>
+</div>
+    </div>
+
+<% } %>
+<% if ( orders[i].status ==="Order Shipped") { %>
+    <div class="bars" style="width: 41%;">
+        <div  style="width: 100%;" class="progressbar"></div>
+        <div class="animationcolr">
+            <div class="whiteball"></div>
+        </div>
+            </div>
+<% } %>
+<% if ( orders[i].status ==="Out for delivery") { %>
+    <div class="bars" style="width: 65%;">
+        <div  style="width: 100%;" class="progressbar"></div>
+        <div class="animationcolr">
+            <div class="whiteball"></div>
+        </div>
+            </div>
+<% } %>
+<% if ( orders[i].status ==="Order Arrived") { %>
+    <div class="bars" style="width: 100%;">
+        <div  style="width: 100%;" class="progressbar"></div>
+        <div class="animationcolr">
+            <div class="whiteball"></div>
+        </div>
+            </div>
+<% } %>
+<% if ( orders[i].status ==="Returned") { %>
+    <div class="rturnbars" style="width: 100%;">
+        <div  style="width: 100%;" class="retunprogressbar"></div>
+      
+            </div>
+    <% } %>
+
+<% if ( orders[i].status ==="Cancelled") { %>
+    <div class="rturnbars" style="width: 100%;">
+        <div  style="width: 100%;" class="cancelprogressbar"></div>
+  
+            </div>
+<% } %>
+<div class="col-12 d-flex justify-content-around mb-3" >
+    <i class="fa-solid fa-file-pen" style="font-size: 1.6rem;"></i>
+
+    <i class="fa-solid fa-box-open" style="font-size: 1.6rem;"></i>
+
+    <i class="fa-solid fa-truck-fast"style="font-size: 1.6rem;"></i>
+
+    <i class="fa-solid fa-house"style="font-size: 1.6rem;"></i>
+
+    </div>
+
+</div>
+
+</div>
+
+<% } %>
+</div>
+</div>
+
+
+</div>
+
+</div>
+</div>
+</section>
+</body>
+</html>
+
+<%- include('../htmlbody/bootsfooter') -%>
+<%- include('../htmlbody/footer') -%> 
+<script>
+const handleReturn=async(id)=>{
+await fetch('/furnica/orderReturn', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+orderid:id
+}
+)
+}).then((res)=>res.json()).then((data)=>{
+if(data==="success"){
+window.location.reload()
+}
+})
+
+}
+
+
+const handleCancel=async(id)=>{
+    
+await fetch('/furnica/ordercancel', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+orderid:id
+}
+)
+}).then((res)=>res.json()).then((data)=>{
+if(data==="success"){
+    console.log("data",data)
+window.location.reload()
+}
+})
+
+}
+
+
+
+</script>

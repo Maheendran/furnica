@@ -1,0 +1,195 @@
+<%- include('../htmlbody/Adminheader') -%>
+
+                <main>
+            <div class="container"> 
+              <h3 class="text-center m-3">New Coupon</h3>
+<div class="col-12 col-sm-6 m-auto">
+
+           <div class="row m-auto">
+               
+         
+                <div class="col-12 col-sm-6 mt-2">
+                      <input class="form-control" type="text" name="code" id="code" placeholder="Enter Coupon Code" required>
+                </div>
+               
+              <div class="col-12 col-sm-6 mt-2">
+                 <input class="form-control" type="date" name="date" id="date" placeholder="Enter expiry date of coupon" required>
+              </div>
+              <span id="nameError" style="color: rgb(248, 75, 75);"></span>
+<div class="col-12 col-sm-6  mt-2">
+           <input class="form-control" maxlength="2" type="text" id="percent" name="percent" placeholder="Enter Off Percent" required>
+          
+</div>
+
+<div class="col-12 col-sm-6 mt-2">
+     <select class="form-control"  name="" id="coupontype"style="height: 45px;" >
+                <option value="Common">Common</option>
+                <option value="Restricted">Restricted</option>
+                <option value="Special">Special</option>
+               </select>
+</div>
+          <div class="col-12 col-sm-6  mt-2">
+             <input class="form-control"  type="number" id="minimum"  name="minimum" placeholder="Enter mininum amount" required>
+          </div>    
+          <div class="col-12 col-sm-6  mt-2">
+            <input class="form-control"  type="number" id="maximum" name="maximum" placeholder="Enter maximum amount" required>
+        </div>
+    
+        <div class="col-12 col-sm-6 form-group mt-2">
+            <input class="form-control"  type="text" id="product"  name="product" placeholder="Product name (Optional)" >
+        </div>
+        <div class="form-group col-12 col-sm-6 mt-2">
+            <select class="form-control " id="category" name="category" style="height: 45px;" >
+               <option value="">Choose Category (Optional)</option>
+              <% for( let index = 0; index < category.length; index++ ) { %>
+              <option value="<%= locals.category[index]._id %>"> <%= locals.category[index].category  %> </option>
+              <% } %>
+      
+            </select>
+         
+   
+      
+</div>
+      
+       
+       <div class="col-2 m-auto">
+        <input type="submit" onclick="handleaddcoupon()" value="Add Coupon" class=" btn btn-primary mt-2 rounded-pill">
+       </div>
+    
+        </div>
+</div>
+<!--  -->
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Coupons list</h4>
+    
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>CODE</th>
+              
+                <th>PERCENTAGE </th>
+                <th>EXPIRE DATE</th>
+                <th>STATUS</th>
+                <th>MINIMUM</th>
+                
+                <th>MAXIMUM</th>
+             
+                <th>COUPON TYPE</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for( let index = 0; index < couponlist.length; index++ ) { %>
+                <tr>
+                    <td>
+                        <%= [index+1]  %>
+                    </td>
+                    <td>
+                <%= locals.couponlist[index].code  %>
+            </td>
+            <td>
+                <%= locals.couponlist[index].percent %> %
+            </td>
+            <td>
+                <%= locals.couponlist[index].date  %>
+            </td>
+            
+            <td>
+                <%= locals.couponlist[index].status %> 
+            </td>
+            <td>
+              <i class="fa-solid fa-indian-rupee-sign"></i>  <%= locals.couponlist[index].minimum %> 
+          </td>
+          <td>
+            <i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.couponlist[index].maximum %> 
+        </td>
+            <td>
+                <%= locals.couponlist[index].coupontype %> 
+            </td>
+            <td>
+               <button class="badge badge-danger rounded-pill" style="  border: none;
+               " onclick="handleCoupondelete(' <%= locals.couponlist[index]._id  %>')"> <i class="fa-solid fa-trash"></i></button>
+            </td>
+                </tr>
+            
+            
+            <% } %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+</div>
+
+
+        <!--  -->
+                </main>
+                <%- include('../htmlbody/AdminFooter') -%>
+          
+<script>
+
+
+// delete coupon
+const handleCoupondelete=async(id)=>{
+  
+    await fetch(`/furnica/admin/couponDelete?code=${id}`, {
+   method: "GET",
+   headers: {
+     "Content-Type": "application/json",
+   },
+
+ }).then((res)=>res.json())
+ .then((data)=>{
+    if(data=="success"){
+        window.location.reload()
+    }
+ })
+}
+
+
+// choose coupon type
+
+const handleaddcoupon=async()=>{
+    const coupontype=document.getElementById("coupontype").value
+    const minimum=document.getElementById("minimum").value
+    const maximum=document.getElementById("maximum").value
+    const code=document.getElementById("code").value
+const date=document.getElementById("date").value
+const percent=document.getElementById("percent").value
+const category=document.getElementById("category").value
+const product=document.getElementById("product").value
+await fetch("/furnica/admin/newcoupon", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+    code,
+    date,minimum,maximum,
+    percent,coupontype,category,product
+   }),
+ }).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+    window.location.reload()
+  }
+  else if(data=="nameError"){
+document.getElementById("nameError").innerHTML="Coupon name already exist"
+setTimeout(()=>{
+    document.getElementById("nameError").innerHTML=""
+},3000)
+  }
+})
+    
+}
+</script>
+
+ 

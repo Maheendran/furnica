@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="shortcut icon" type="x-icon" href="/assests/adminlogo.png">
+    <title>signup</title>
+  </head>
+  <body>
+    <!-- =============================== -->
+    <section class="vh-100 login_main mt-4">
+      <div class="container h-100">
+        <a href="/furnica/home">
+          <img class="mt-2" src="/assests/logo.png" alt="" style="position: absolute;top: 10px;z-index:1;"
+        /></a>
+        <div class="row d-flex justify-content-center align-items-center ">
+          <div class="col-lg-12 col-xl-11 ">
+            <div class="card text-black border-0 ">
+              <div class="card-body  login_submain overflow-hidden">
+                <div class="col-12 wave_login">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 1440 320"
+                  >
+                    <path
+                      fill="#a76535"
+                      fill-opacity="1"
+                      d="M0,128L26.7,160C53.3,192,107,256,160,240C213.3,224,267,128,320,106.7C373.3,85,427,139,480,149.3C533.3,160,587,128,640,138.7C693.3,149,747,203,800,192C853.3,181,907,107,960,90.7C1013.3,75,1067,117,1120,149.3C1173.3,181,1227,203,1280,202.7C1333.3,203,1387,181,1413,170.7L1440,160L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="col-12 sub_wave_login">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#d3b29a" fill-opacity="0.5" d="M0,256L17.1,213.3C34.3,171,69,85,103,90.7C137.1,96,171,192,206,192C240,192,274,96,309,53.3C342.9,11,377,21,411,64C445.7,107,480,181,514,213.3C548.6,245,583,235,617,208C651.4,181,686,139,720,112C754.3,85,789,75,823,80C857.1,85,891,107,926,122.7C960,139,994,149,1029,170.7C1062.9,192,1097,224,1131,197.3C1165.7,171,1200,85,1234,48C1268.6,11,1303,21,1337,64C1371.4,107,1406,181,1423,218.7L1440,256L1440,320L1422.9,320C1405.7,320,1371,320,1337,320C1302.9,320,1269,320,1234,320C1200,320,1166,320,1131,320C1097.1,320,1063,320,1029,320C994.3,320,960,320,926,320C891.4,320,857,320,823,320C788.6,320,754,320,720,320C685.7,320,651,320,617,320C582.9,320,549,320,514,320C480,320,446,320,411,320C377.1,320,343,320,309,320C274.3,320,240,320,206,320C171.4,320,137,320,103,320C68.6,320,34,320,17,320L0,320Z"></path></svg>
+                                  </div>
+                <div class="row justify-content-center ">
+                  <div class="col-md-6 col-lg-6 col-xl-5 order-2">
+                    <p class="h2 mb-5 me-auto mx-1 mx-md-4 mt-4">Sign Up</p>
+
+                    <!--  -->
+                    <form
+                      class="mx-1 mx-md-4"
+                      action="/furnica/signup"
+                      method="post"
+                      id="form"
+                      onsubmit="validate()"
+                    >
+                      <div class="row">
+                        <div
+                          class="col-6 d-flex flex-row align-items-center mb-4"
+                        >
+                          <div class="flex-fill mb-0">
+                            <label for="name">Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="name"
+                              placeholder="name"
+                              name="name"
+                              onchange="namevalidate()"
+                            />
+
+                            <span
+                              id="nameError"
+                              style="color: red; font-size: 0.8rem"
+                            ></span>
+                          </div>
+                        </div>
+                        <div
+                          class="col-6 d-flex flex-row align-items-center mb-4"
+                        >
+                          <div class="flex-fill mb-0">
+                            <label for="phone">Phone</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="mobile"
+                              placeholder="Phone"
+                              name="mobile"
+                              onchange="mobilevalidate()"
+                            />
+
+                            <span
+                              id="mobileError"
+                              style="color: red; font-size: 0.8rem"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <div class="flex-fill mb-0">
+                          <label for="email">Email </label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            placeholder="name@example.com"
+                            name="email"
+                            onchange="emailvalidate()"
+                          />
+
+                          <span
+                            id="emailError"
+                            style="color: red; font-size: 0.8rem"
+                          ></span>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div
+                          class="col-6 d-flex flex-row align-items-center mb-2"
+                        >
+                          <div class="flex-fill mb-0">
+                            <label for="Password">Password</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                         
+                              placeholder="Password"
+                              id="password"
+                              name="password"
+                              onchange="passvalidate()"
+                            />
+
+                            <span
+                              id="passError"
+                              style="color: red; font-size: 0.8rem"
+                            ></span>
+                          </div>
+                        </div>
+
+                        <div
+                          class="col-6 d-flex flex-row align-items-center mb-2"
+                        >
+                          <div class="flex-fill mb-0">
+                            <label for="confirmPassword"
+                              >Confirm Password</label
+                            >
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="confirmPassword"
+                              placeholder="Password"
+                              name="confirmPassword"
+                              onkeyup="conpassvalidate()"
+                            />
+
+                            <span
+                              id="conpassError"
+                              style="color: red; font-size: 0.8rem"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex-fill mb-0">
+                      <div class="row">
+                        <p style="color: rgb(15, 137, 15);">Optional</p>
+                        <div class="col-6">
+                             <input type="text" value="<%= locals.refferalcode  %>"  class="form-control" name="referral" id="referral" placeholder="Refferal">
+                        </div>
+                     <div class="col-6">
+<a href="/furnica/forgotPassword">
+                          <p class="text-end">Forgot password</p></a>
+                     </div>
+                        
+                      </div>
+                      
+                      </div>
+
+                      <div
+                        class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
+                      >
+                        <button
+                          class="btn btn-primary btn-lg mt-3 rounded-pill"
+                          id="signup_btn"
+                          onclick="setTime()"
+                          type="submit"
+                        >
+                          Register
+                        </button>
+                      </div>
+                      <p style="color: red; text-align: center">
+                        <%= locals.errorDetail %>
+                      </p>
+
+                      <div class="form-check d-flex justify-content-center">
+                        <label
+                          class="form-check-label ms-auto"
+                          for="form2Example3"
+                        >
+                          <p>
+                            Alredy have an account?
+                            <a class="small" href="/furnica/login">Login</a>
+                          </p>
+                        </label>
+                      </div>
+                    </form>
+
+                    <!--  -->
+                  </div>
+                  <div class="col-7 order-1 col-md-6 col-lg-6 col-xl-4 d-flex m-auto align-items-center"
+                  >
+                    <img
+                      class="login_image"
+                      src="/assests/chair2.png"
+                      class="img-fluid"
+                      alt="Sample image"
+                    />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+  <script>
+    const setTime = () => {
+      localStorage.setItem("startsignupTime", new Date().toString());
+    };
+    const uname = document.getElementById("name");
+    const umobile = document.getElementById("mobile");
+    const uemail = document.getElementById("email");
+    const upass = document.getElementById("password");
+    const uconPass = document.getElementById("confirmPassword");
+    const passwordError = document.getElementById("passwordError");
+
+    const signup_btn = document.getElementById("signup_btn");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const mobileError = document.getElementById("mobileError");
+    const passError = document.getElementById("passError");
+    const conpassError = document.getElementById("conpassError");
+
+    const nameregx = /^[A-Za-z]{3,12}$/;
+    const numregx = /^[6-9]\d{9}$/;
+    const emailregx = /\b^[^ ][a-z.\-_0-9]+@[a-z0-9]+\.[a-z]{2,3}\b/;
+    const passregx = /^(?=.*\d)(?=.*[a-zA-Z]).{4,14}$/;
+
+    var name_correct = false;
+    var email_correct = false;
+    var mobile_correct = false;
+    var pass_correct = false;
+    (
+      (function () {
+        signup_btn.setAttribute("disabled", true);
+      })()
+    );
+
+    function namevalidate() {
+      if (uname.value.match(nameregx)) {
+        nameError.innerHTML = "";
+        name_correct = true;
+      } else {
+        nameError.innerHTML = "Invalid name";
+        name_correct = false;
+      }
+      finalcheck();
+    }
+
+    //email validation
+    function emailvalidate() {
+      if (uemail.value.match(emailregx)) {
+        emailError.innerHTML = "";
+        email_correct = true;
+      } else {
+        emailError.innerHTML = "Invalid email";
+        email_correct = false;
+      }
+      finalcheck();
+    }
+    // }mobile
+    function mobilevalidate() {
+      if (umobile.value.match(numregx)) {
+        mobileError.innerHTML = "";
+        mobile_correct = true;
+      } else {
+        mobileError.innerHTML = "Invalid mobile number";
+        mobile_correct = false;
+      }
+      finalcheck();
+    }
+
+    // password
+    function passvalidate() {
+      if (upass.value.match(passregx)) {
+        passError.innerHTML = "";
+        pass_correct = true;
+      } else {
+        passError.innerHTML =
+          "Must contain lowecase,uppercase,digits,special character ";
+        pass_correct = false;
+      }
+      finalcheck();
+    }
+    // confornpass
+    function conpassvalidate() {
+      if (uconPass.value.match(upass.value)) {
+        conpassError.innerHTML = "";
+        pass_correct = true;
+      } else {
+        conpassError.innerHTML = "Password not matching ";
+        pass_correct = false;
+      }
+      finalcheck();
+    }
+
+    function removedisable() {
+   
+      signup_btn.removeAttribute("disabled");
+    }
+
+    function finalcheck() {
+      if (name_correct && email_correct && mobile_correct && pass_correct) {
+     
+        return removedisable();
+      } else {
+      
+        function adddisbale() {
+       
+          signup_btn.setAttribute("disabled", true);
+        }
+        adddisbale();
+      }
+    }
+
+    // Ma86107!
+  </script>
+</html>

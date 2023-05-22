@@ -1,0 +1,373 @@
+
+<%- include('../htmlbody/Adminheader') -%>
+<style>
+    .scrolling::-webkit-scrollbar{
+        width: 5px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 20px;
+    }
+</style>
+                <main>
+
+
+            <div class="container" >
+                <h3 class="m-auto text-center mt-2 ">Create offer</h3>
+        <div class="col-sm-6   col-12 m-auto ">
+            <div class="row mt-3">
+<div class="col-6 col-sm-6 text-center">
+    <button class="btn btn-success rounded-pill mb-3" onclick="handleproductoffer()">By product</button>
+</div>
+<div class="col-6 col-sm-6 text-center">
+    <button class="btn btn-primary rounded-pill mb-3" onclick="handlecategory()">By category</button>
+</div>
+      </div>
+
+<div class="row mt-3 p-2" id="productdata" style="background-color: rgba(203, 240, 203, 0.351);border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+    <div class="row">
+        <div class="col-12  col-sm-6 scrolling" style="overflow-y: scroll;height: 280px; cursor: pointer;">
+  <% for( let index = 0; index < products.length; index++ ) { %>
+    <div class="row mb-1"onclick="handleProductSelect('<%= locals.products[index].name  %>')" >
+
+        <div class="col-4 col-sm-4" >
+         <img class="img-fluid" src="/uploads/<%= locals.products[index].imageUrl[0]  %>" alt="">
+        </div>
+        <div class="col-4">
+             <p><%= locals.products[index].name  %> </p>
+    
+        </div>
+       
+    </div>
+  
+  <% } %>
+</div>
+
+ <div class="col-12 col-sm-6 mt-2"><form action="">
+    <label for="">product name</label>
+<input type="text" name="" id="productname" class="form-control" required>
+<label for="">percentage</label>
+<input type="number" placeholder="Offer amount" name="offeramount" id="proofferamount" class="form-control" required>
+<label for="">start date</label>
+<input type="date" placeholder="starting date" name="startdate" id="prostartdate" class="form-control" required>
+<label for="">end date</label>
+<input type="date" placeholder="closing date"  name="enddate" id="proenddate" class="form-control" required>
+<div class="col-10 col-sm-8  m-auto">
+    <button onclick="handleProductOffer()" class="btn btn-success rounded-pill mt-3" >add offer</button>
+</form>
+</div>
+
+<p id="offerproduct" style="color: rgb(244, 92, 92);"></p>
+    </div>
+    </div>
+    <!--  -->
+   
+ 
+
+
+</div>
+
+<!-- ?category -->
+<div class="row mt-3 p-1 " id="categorydata" style="background-color: rgba(239, 202, 162, 0.351);border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+<form action="">
+<div class="col-12 col-sm-8 m-auto ">
+    <label for="">Category</label>
+    <select class="form-control" name="categoryId" id="categoryId" required style="height: 42px;">
+    <% for( let index = 0; index <category.length; index++ ) { %>
+     <option value="<%= locals.category[index]._id  %>"><%= locals.category[index].category  %></option>
+    <% } %>
+       
+    </select>
+</div>
+<div class="col-12 col-sm-8 m-auto mb-1">
+    <label for="">Percentage</label>
+        <input type="number" placeholder="Offer amount" name="offeramount" id="offeramount" class="form-control" required>
+</div>
+<div class="col-12 col-sm-8 m-auto mb-1">
+    <label for="">Starting date</label>
+        <input type="date" placeholder="starting date" name="startdate" id="startdate" class="form-control" required>
+
+</div>
+<div class="col-12 col-sm-8 m-auto mb-1">
+    <label for="">Expire date</label>
+<input type="date" placeholder="closing date"  name="enddate" id="enddate" class="form-control" required>
+</div>
+    <div class="col-10 col-sm-3 m-auto mt-3 mb-3 text-center">
+            <button onclick="handleCategoryOffer()" 
+            class="btn btn-primary rounded-pill mt-3">add offer</button>
+    </div>
+</form>
+    <p id="offerError" style="color: rgb(244, 92, 92);"></p>
+
+            </div>
+
+   </div>
+</div>
+       <div class="row mt-3">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Offers list</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+
+                        <th>PERCENTAGE </th>
+                        <th>START DATE</th>
+                        <th>EXPIRE DATE</th>
+                        <th>STATUS</th>
+                  
+                        <th>ACTION</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <% for( let index = 0; index < offer.length; index++ ) { %>
+                        <tr>
+                    
+                     
+                        <td>
+                            <%= locals.offer[index].offerid  %>
+                        </td>
+                    
+                        <td>
+                            <%= locals.offer[index].percent  %>%
+                        </td>
+                        <td>
+                            <%= locals.offer[index].startdate  %>
+                        </td>
+                        <td>
+                            <%= locals.offer[index].enddate  %>
+                        </td>
+                        
+                        <td>
+                            <%= locals.offer[index].status  %>
+                        </td>
+
+
+                        <% if (locals.offer[index].offerfor=="category") { %>
+                            <td>
+                                <button  class="badge badge-danger rounded-pill" style="  border: none;" onclick="handledeleteCatoffer('<%= locals.offer[index]._id %>')">
+                                    <i class="fa-solid fa-trash"></i></button>
+                             </td>
+                          <% } else { %>
+                            <td>
+                                <button  class="badge badge-danger rounded-pill" style="  border: none;" onclick="handledeleteProoffer('<%= locals.offer[index]._id %>')">  <i class="fa-solid fa-trash"></i></button>
+                             </td>
+                          <% } %>
+                    </tr>
+                    <% } %>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+     
+
+      </div>
+  
+  </div>
+
+                </main>
+          
+                <%- include('../htmlbody/AdminFooter') -%>
+
+<script>
+
+// deleete pro
+const handledeleteProoffer=async(id)=>{
+    await fetch("/furnica/admin/deleteProductOffer", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+ offerID:id
+   }),
+ }).then((res)=>res.json())
+ .then((data)=>{
+    if(data=="success"){
+        window.location.reload()
+    }
+ })
+
+}
+
+// add product
+
+const handleProductOffer=async()=>{
+    const productname=document.getElementById("productname").value
+    const offeramount=document.getElementById("proofferamount").value
+    const startdate=document.getElementById("prostartdate").value
+    const enddate=document.getElementById("proenddate").value 
+    await fetch("/furnica/admin/productOffer", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+    productname,
+    offeramount,startdate,enddate
+   }),
+ }).then((res)=>res.json())
+ .then((data)=>{
+    console.log("data",data)
+    if(data=="success"){
+        window.location.reload()
+    }
+    else if (data=="existing"){
+document.getElementById("offerproduct").innerHTML="Offer exisiting in product"
+
+setTimeout(()=>{
+    document.getElementById("offerproduct").innerHTML=""
+},2000)
+    }
+ })
+
+
+
+}
+
+const handleProductSelect=(name)=>{
+    document.getElementById("productname").value=name
+}
+
+
+
+// /=============================
+// delete offer
+const handledeleteCatoffer=async(id)=>{
+
+    await fetch("/furnica/admin/deleteOffer", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+ offerID:id
+   }),
+ }).then((res)=>res.json())
+ .then((data)=>{
+    if(data=="success"){
+        window.location.reload()
+    }
+ })
+
+}
+
+    // show hide category
+    const categorydata=document.getElementById("categorydata")
+    const productdata=document.getElementById("productdata")
+    categorydata.style.display="none"
+    productdata.style.display="none"
+const handlecategory=()=>{
+    productdata.style.display="none"
+    const categorydata=document.getElementById("categorydata")
+    categorydata.style.display="block"
+
+}
+
+const handleproductoffer=()=>{
+    categorydata.style.display="none"
+    const productdata=document.getElementById("productdata")
+    productdata.style.display="block"
+}
+
+
+
+// add category offer
+const handleCategoryOffer=async()=>{
+    const categoryId=document.getElementById("categoryId").value
+    const offeramount=document.getElementById("offeramount").value
+    const startdate=document.getElementById("startdate").value
+    const enddate=document.getElementById("enddate").value
+    await fetch("/furnica/admin/categoryOffer", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+    categoryId,offeramount,startdate,enddate
+   }),
+ }).then((res)=>res.json())
+ .then((data)=>{
+    console.log("data",data)
+    if(data=="success"){
+        window.location.reload()
+    }
+    else if (data=="existing"){
+document.getElementById("offerError").innerHTML="Offer exisiting in category"
+
+setTimeout(()=>{
+    document.getElementById("offerError").innerHTML=""
+},2000)
+    }
+ })
+
+}
+
+
+
+
+
+
+
+
+
+
+
+// ======================================
+// delete coupon
+const handleCoupondelete=async(id)=>{
+  
+    await fetch(`/furnica/admin/couponDelete?code=${id}`, {
+   method: "GET",
+   headers: {
+     "Content-Type": "application/json",
+   },
+
+ }).then((res)=>res.json())
+ .then((data)=>{
+    if(data=="success"){
+        window.location.reload()
+    }
+ })
+}
+
+
+// choose coupon type
+
+const handleaddcoupon=async()=>{
+    const coupontype=document.getElementById("coupontype").value
+    const minimum=document.getElementById("minimum").value
+    const maximum=document.getElementById("maximum").value
+    const code=document.getElementById("code").value
+const date=document.getElementById("date").value
+const percent=document.getElementById("percent").value
+const category=document.getElementById("category").value
+const product=document.getElementById("product").value
+await fetch("/furnica/admin/newcoupon", {
+   method: "POST",
+   headers: {
+     "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+    code,
+    date,minimum,maximum,
+    percent,coupontype,category,product
+   }),
+ }).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+    window.location.reload()
+  }
+  else if(data=="nameError"){
+document.getElementById("nameError").innerHTML="Coupon name already exist"
+setTimeout(()=>{
+    document.getElementById("nameError").innerHTML=""
+},3000)
+  }
+})
+    
+}
+</script>
+
+ 

@@ -1,0 +1,422 @@
+
+<%- include('../htmlbody/header') -%>
+
+<%- include('../htmlbody/navbar') -%>
+<style>
+  
+  #range{
+  height: 10px;
+  background-color: green;
+  border-radius: 20px;
+  }
+  .context_box{padding: 20px;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+.orderspan p{
+color: red;
+}
+
+
+  </style>
+<style>
+  .orderdtailbtn{
+      background-color: rgb(25, 142, 97);
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+    transition: 0.5s ease-in-out;
+  }
+
+  .returnbtn{
+      background-color: rgb(255, 85, 0);
+      color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+  }
+  .cancelledbtn{
+      background-color: rgb(244, 110, 44);
+      color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+  }
+.img_scroll::-webkit-scrollbar{
+display: none;
+}
+.row_box{
+margin-bottom: 1rem;
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+padding: 15px;
+}
+.rturnbars{
+   display: flex;
+  width: 100%;
+  height: 30px;
+
+}
+.bars{
+  display: flex;
+  width: 100%;
+  height: 30px;
+  animation: colrslide 1s linear forwards 1;
+  transform: translate(-10rem);  
+}
+@keyframes colrslide{
+  100%{
+      transform: translate(0rem);
+  }
+}
+
+
+.canelanimationcolr{
+  width: 10px;
+height: 10px;
+border-radius: 50%;
+background-color: rgb(244, 110, 44);
+position: absolute;
+right: 10px;
+align-items: center;
+display: flex;
+justify-content: center;
+}
+
+
+
+
+.progressbar{
+  height:10px;
+  border-radius: 20px;
+background-color: rgb(25, 142, 97);
+box-shadow:inset rgba(249, 249, 249, 0.647) 0px 2px 4px 0px;
+}
+.cancelprogressbar{
+  height:10px;
+  border-radius: 20px;
+  background-color: rgb(244, 110, 44);
+box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;  
+}
+.retunprogressbar{
+  height:10px;
+  border-radius: 20px;
+  background-color: rgb(255, 85, 0);
+box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px; 
+}
+</style>
+
+
+<div class="container">
+
+    <div class="row row_box mt-5">
+       
+    <div class=" col-lg-8 col-md-12 mb-4 mb-lg-0 ">
+
+        <div >
+            <h5 class="mb-2">
+               Order details
+              </h5>
+            </div>
+    <% for( let index = 0; index < orders.product.length; index++) { %>
+        <div class="row context_box mb-2 ">
+
+      <div class="col-6 col-sm-3">
+    <img  class="img-fluid " style="border-radius: 10px;" src="/uploads/<%= orders.product[index].image  %>" alt="">
+          </div>
+
+          <div class="col-lg-6 col-5">
+            <p>Name:
+                <%= orders.product[index].name  %>
+            </p>
+            <p>Price:
+            Rs  <%= orders.product[index].price  %>
+            </p>
+            <p>Quantity:  <%= orders.product[index].quantity  %>
+                </p>
+            </div> 
+            <div class="col-lg-2 col-md-6 mb-4 col-2 me-auto text-center">
+   
+              <% if (orders.status!="Order Arrived" && orders.status!="Returned") { %>
+                  <div class="col-12 m-auto ">
+                 
+                      <% if (orders.status=="Cancelled") { %>
+                  <button type="button" disabled class=" cancelledbtn mb-2">
+                  Cancelled
+                  </button>
+                
+                  <% } else { %>
+                  <button type="button" class="btndanger mb-2 "
+                  onclick="handleCancel('<%= orders._id %>')" >
+                  Cancel
+                  </button>
+               
+                      <% } %>
+                  </div>
+                    
+                  <% } else if (orders.status=="Returned") { %>
+                  
+                       <button type="button" class="returnbtn  mb-2 " disabled>Returned</button>
+                   
+                   
+                  <% }else { %>
+                  
+                      <% if ( locals.orders.returndate >=locals.currentDate && orders.status=="Order Arrived" ) { %>
+                      
+                          <button type="button" onclick="handleReturn('<%= orders._id %>')" class="btndanger  mb-2 ">Return</button>
+                          <% } %>
+     
+                      <% } %>
+          
+          </div>
+  </div>
+
+    <% } %>  
+
+</div>
+
+    <!--  -->
+   
+    <div class="col-md-12 col-sm-12 col-lg-3 mx-auto">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span><i class="fa-solid fa-indian-rupee-sign"></i> <%= orders.total  %></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Free</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                </div>
+                <span><strong><i class="fa-solid fa-indian-rupee-sign"></i> <span> <%= orders.total  %></span></strong></span>
+              </li>
+            </ul>
+      </div>  
+
+    <a href="#!">
+    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+    </a>
+    </div>
+ 
+    </div>
+
+    <div class="col-12 col-lg-8 me-auto">
+      <div class="card mb-2">
+        <div class="card-header py-2 " style="background-color: rgb(255, 255, 255);">
+          <h5 class="mb-0">Address</h5>
+        </div>
+        <div class="card-body ">
+          <ul class="list-group list-group-flush">
+            <li
+              class=" d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+              Name : <%= locals.address.name  %>
+            </li>
+            <li class=" d-flex justify-content-between align-items-center px-0">
+              Address :
+              <%= locals.address.adressLine1  %>
+            </li>
+            <li
+              class=" d-flex justify-content-between align-items-center border-0 px-0 ">
+              <%= locals.address.city  %>
+            </li>
+            <li
+            class=" d-flex justify-content-between align-items-center border-0 px-0 ">
+            <%= locals.address.state  %>
+          </li>
+          <li
+          class=" d-flex justify-content-between align-items-center border-0 px-0 ">
+          Pincode : <%= locals.address.pin  %>
+        </li>
+        <li
+        class=" d-flex justify-content-between align-items-center border-0 px-0 ">
+        Mobile : <%= locals.address.mobile  %>
+      </li>
+          </ul>
+    </div>  
+
+  </div>
+
+
+  </div> 
+
+  <div class="col-10 col-lg-3  text-center  mx-auto">
+      <p>Payment Method:
+    <%= orders.paymentMethod %>
+    </p>
+<% if (orders.status=="Order Arrived") { %>
+     <p>Download Invoice</p> <button class="btn btn-success" onclick="handleinvoice('<%= orders._id %>')">Download</button>
+     <p id="downloaded" style="color: rgb(8, 133, 8);" class="mt-3"></p>
+<% } %>
+  </div>
+
+
+<!-- bottom section -->
+<div class="contailer-fluid" style="overflow: hidden;">
+    <div class="row bg-light mt-4 ">
+        <div class="col-12 d-flex justify-content-between ">
+        <div class="col-3 text-center m-auto ">
+        <p> Order placed</p>
+        <span >
+        <i class="fa-solid fa-file-pen" style="font-size: 1.6rem;"></i>
+        </span>
+        </div>
+        <div class="col-3 text-center m-auto ">
+        <p> Order Shipped</p>
+        <span >
+        <i class="fa-solid fa-box-open" style="font-size: 1.6rem;"></i>
+        </span>
+        </div>
+        <div class="col-3 text-center m-auto ">
+        <p>Out for delivery</p>
+        <span >
+        <i class="fa-solid fa-truck-fast"style="font-size: 1.6rem;"></i>
+        
+        </span>
+        </div>
+        <div class="col-3 text-center m-auto ">
+        <p>Order Arrived</p>
+        <span >
+        <i class="fa-solid fa-house"style="font-size: 1.6rem;"></i>
+        </span>
+        </div>
+        </div>
+
+        <div class="container mb-4">
+    
+          <% if ( orders.status ==="Order placed") { %>
+            <div class="bars" style="width: 13%;">
+        <div  style="width: 100%;" class="progressbar"></div>
+        <div class="animationcolr">
+            <div class="whiteball"></div>
+        </div>
+            </div>
+        
+        <% } %>
+        <% if ( orders.status ==="Order Shipped") { %>
+            <div class="bars" style="width: 39%;">
+                <div  style="width: 100%;" class="progressbar"></div>
+                <div class="animationcolr">
+                    <div class="whiteball"></div>
+                </div>
+                    </div>
+        <% } %>
+        <% if ( orders.status ==="Out for delivery") { %>
+            <div class="bars" style="width: 63%;">
+                <div  style="width: 100%;" class="progressbar"></div>
+                <div class="animationcolr">
+                    <div class="whiteball"></div>
+                </div>
+                    </div>
+        <% } %>
+        <% if ( orders.status ==="Order Arrived") { %>
+            <div class="bars" style="width: 100%;">
+                <div  style="width: 100%;" class="progressbar"></div>
+                <div class="animationcolr">
+                    <div class="whiteball"></div>
+                </div>
+                    </div>
+        <% } %>
+        <% if ( orders.status ==="Returned") { %>
+            <div class="rturnbars" style="width: 100%;">
+                <div  style="width: 100%;" class="retunprogressbar"></div>
+              
+                    </div>
+            <% } %>
+        
+        <% if ( orders.status ==="Cancelled") { %>
+            <div class="rturnbars" style="width: 100%;">
+                <div  style="width: 100%;" class="cancelprogressbar"></div>
+          
+                    </div>
+        <% } %>
+        
+        </div>
+        
+        </div>
+
+    </div></div>
+<%- include('../htmlbody/footer') -%> 
+<script>
+
+  const handleinvoice=async(id)=>{
+ console.log(id)
+        await fetch(`/furnica/DownloadInvoice?orderId=${id}`, {
+ method: 'GET',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+
+}).then((res)=>res.json())
+.then((data)=>{
+
+    if(data=="success"){
+
+      document.getElementById("downloaded").innerHTML="Invoice downloaded"
+
+      setTimeout(()=>{
+        document.getElementById("downloaded").innerHTML=""
+      },2000)
+    }
+})
+    }
+
+
+  const handleReturn=async(id)=>{
+  await fetch('/furnica/orderReturn', {
+  method: 'POST',
+  headers: {
+  'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(
+  {
+  orderid:id
+  }
+  )
+  }).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+  window.location.reload()
+  }
+  })
+  
+  }
+  
+  
+  const handleCancel=async(id)=>{
+      
+  await fetch('/furnica/ordercancel', {
+  method: 'POST',
+  headers: {
+  'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(
+  {
+  orderid:id
+  }
+  )
+  }).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+      console.log("data",data)
+  window.location.reload()
+  }
+  })
+  
+  }
+  
+  
+  
+  </script>

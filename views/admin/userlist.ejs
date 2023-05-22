@@ -1,0 +1,81 @@
+<%- include('../htmlbody/Adminheader') -%>
+                <main>
+                  <div class="row">
+                    <div class="col-12 grid-margin stretch-card">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Users list</h4>
+                      
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>NAME</th>
+                                  <th>USERID</th>
+                                  <th>EMAIL</th>
+                                  <th>Phone</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <%if(users.length>0)  {%>
+                                  <%for(let i=0;i <users.length; i++){%>
+                                      
+                                <tr>
+                                  <td><%= [i+1] %></td>
+                                  <td> <%= users[i].name %></td>
+                                  <td> <%= users[i]._id %></td>
+                                  <td>
+                                        <span><%= users[i].email %></span><br>
+                                        
+                                    </td>
+                                    <td>
+                                        <span ><%= users[i].mobile %></span><br>
+                                        
+                                    </td>
+                                  
+                                   <td>
+                                      <% if (users[i].isBlocked) { %>
+                                          <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" >
+                                              <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-success rounded-pill">Unblock</button></a>
+                                        <% } else { %>
+                                          <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" >
+                                              <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-danger rounded-pill">Block</button></a>
+                                        <% } %>
+                                        
+                                   
+                                      
+                                       
+                                     
+                                     
+                                      <!-- <%if(users[i].isBlocked){ %>
+                                        <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-success">unBlock</a>
+                                       <% }else{%>
+                                        <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" data-bs-toggle="modal" data-bs-target="#blockBut"
+                                          class="btn btn-danger">Block</a>
+                                        <%}%> -->
+                                  </td>
+                                </tr>
+                                <% } %>
+                                  
+                                  <%}else{%>
+                                      <tr>
+                                          <td colspan="5">user note found</td>
+                      
+                                      </tr>
+                                     <% } %>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+
+                  </div>
+
+              </div>
+                </main>
+             
+                <%- include('../htmlbody/AdminFooter') -%>

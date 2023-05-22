@@ -1,0 +1,161 @@
+
+  <style>
+    .Bnav_middle{
+      width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    }
+    .input_search{
+      width: 40%;
+      
+      position: relative;
+display: flex;
+justify-content: center;
+    }
+    .input_search>button{
+position: absolute;
+right: 0;
+
+    }
+ 
+    .nav_right_section>ul{
+ 
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+  
+    }
+   
+    @media only screen and (max-width : 990px) {
+      .Bnav_middle{
+      width: 100%;
+    display: flex;
+    flex-direction: column;
+    }
+    .input_search{
+      width: 60%;
+
+    }
+
+}
+
+
+  </style>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+      <div class="col-6 col-sm-2 px-1">
+        <a class="navbar-brand" href="/furnica/home">
+      
+        <img class="img-fluid " style="width: 70%;" src="/assests/logo11.png" alt="">
+        </a>    
+        </div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarNavDropdown">
+
+        <div class="Bnav_middle">
+          <div class="input_search">
+             <input id="searchinput" type="text" class="form-control" placeholder="search">
+      <button onclick="handlesearch()" class="btn "><i class="fa-solid fa-magnifying-glass"></i></button> 
+    </div>
+      <p class="mx-4 pt-1 pt-sm-1 pt-md-3 " style="cursor: pointer;"  onclick="handleproduct()"> All products </p>
+      <p  class="mx-4 pt-1 pt-sm-1 pt-md-3 " style="cursor: pointer;"onclick="handleproduct()" >Best selling</p>
+
+   </div>
+   <!--   -->
+   <div class="nav_right_section">
+      <ul class="navbar-nav d-flex" >
+   
+        <li  class="nav-item active ">
+          <a class="nav-link" href="/furnica/cart"><i style="font-size: 1.5rem;" class="fa-solid fa-cart-shopping"></i>   <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="/furnica/wishlist">    <i style="font-size: 1.5rem;" class="fa-solid fa-heart"></i></a>
+        </li>
+        
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-user"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+          <!-- <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink"> -->
+          
+    <% if (locals.userdata ) { %>
+      <a href="/furnica/profile" style="text-decoration: none;color: black;">
+   <button class="dropdown-item" type="button">Profile</button> </a>
+    <% } %>
+      
+    <% if (locals.userdata ) { %>
+     <a href="/furnica/orderslist" style="text-decoration: none;color: black;"><button class="dropdown-item" type="button">Orders</button> </a>
+   <% } %>
+   
+   
+     <% if (!locals.userdata ) { %>
+     <a href="/furnica/login" style="text-decoration: none;color: black;">   <button class="dropdown-item" type="button">Login</button>    </a>
+     <% } %>
+    
+     <% if (!locals.userdata ) { %>
+       <a href="/furnica/signup" style="text-decoration: none;color: black;">   <button class="dropdown-item" type="button">Signup</button>    </a>
+    <% } %>
+ 
+ 
+   <% if (locals.userdata ) { %>
+     <a style="text-decoration: none;color: black;" href="/furnica/logout">   
+       <button class="dropdown-item" type="button">Logout</button>    </a>
+  <% } %>
+          </div>
+        </li>
+       
+   </div>
+     
+
+
+      </ul>
+    </div>
+  </nav>
+  
+<script>
+  
+  var sortValue="price"
+var categoryId=''
+var searchValue=''
+var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"";
+var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
+var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
+
+
+const handleproduct=()=>{
+  pagevalue= 1;
+    localStorage.setItem('page', JSON.stringify(pagevalue));
+    localStorage.setItem('categoryId', JSON.stringify(""));
+    localStorage.setItem('sortType', JSON.stringify(""));
+    localStorage.setItem('search', JSON.stringify(""));
+    const url=`/furnica/Allproducts?page=${pagevalue}`
+          window.location.href = url;
+}
+    // 
+
+
+const handlesearch=async()=>{
+
+var searchinput=document.getElementById("searchinput").value;
+localStorage.setItem('search', JSON.stringify(searchinput));
+pagevalue= 1;
+    localStorage.setItem('page', JSON.stringify(pagevalue));
+if(searchinput){
+  const url = `/furnica/sorting?search=${searchinput}&category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&page=${pagevalue}`;
+          window.location.href = url;
+}
+
+
+}
+  </script>

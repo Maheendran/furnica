@@ -1,0 +1,72 @@
+
+      <%- include('../htmlbody/header') -%>
+      <%- include('../htmlbody/navbar') -%>
+
+      <section class="h-100 gradient-custom">
+      <div class="container py-5">
+      <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+      <div class="card mb-4">
+      <div class="card-header py-3">
+      <h5 class="mb-0">   Wishlist - <%= wishlistProducts.length%> items</h5>
+      </div>
+
+      <div class="card-body">
+      <hr class="my-4" />
+      <% for( let index = 0; index < wishlistProducts.length; index++ ) { %>
+      <div class="row">
+      <div class="col-lg-3 col-md-12 col-4 mb-4 mb-lg-0">
+      <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+      <img src="/uploads/<%= locals.wishlistProducts[index].imageUrl[0] %>"
+      class="w-100" />
+      <a href="#!">
+      <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+      </a>
+      </div>
+
+      </div>
+
+      <div class="col-4 col-lg-5 col-md-6 mb-4 mb-lg-0">
+      <!--  -->
+      <p><strong> <%= locals.wishlistProducts[index].name  %></strong></p>
+      <p><%= locals.wishlistProducts[index].price  %></p>
+      <p>Color:<%= locals.wishlistProducts[index].color %></p>
+      <p>Material: <%= locals.wishlistProducts[index].material %></p>
+
+      </div>
+
+      <div class=" col-sm-3 m-auto">
+      <a href="/furnica/removeWishlist/<%= locals.wishlistProducts[index]._id%>/<%= [index]%>">
+      <button type="button" class="btn btn-danger btn-sm me-1 mb-2"><i class="fa-solid fa-trash"></i></button></a>
+     
+     <% if (locals.wishlistProducts[index].outofstock!=true) { %>
+      <a href="/furnica/wishlistToCart/<%= locals.wishlistProducts[index]._id %>/<%= [index]%>">
+      <button type="button" class="btn btn-success btn-sm me-1 mb-2 "><i class="fa-solid fa-cart-plus"></i></button>
+      </a>
+     <% } %>
+      
+
+
+      </div>
+
+      </div>
+      <!--  -->
+
+
+
+
+      <% } %>
+      </div>
+      </div>
+
+
+      </div>
+
+      </div>
+      </div>
+      </section>
+      </body>
+      </html>
+
+
+      <%- include('../htmlbody/footer') -%> 

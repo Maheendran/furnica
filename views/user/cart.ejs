@@ -1,0 +1,376 @@
+
+
+<%- include('../htmlbody/header') -%>
+<%- include('../htmlbody/navbar') -%>
+<style>
+.btndesign{
+background-color: orange;
+color: white;
+border: none;
+padding: 10px;
+border-radius: 10px;
+}
+
+</style>
+
+<section class="h-100 gradient-custom">
+
+<div class="container ">
+<div class="row d-flex justify-content-center my-4">
+<div class="col-md-8">
+<div class="card mb-4">
+<div class="card-header py-3">
+<h5 class="mb-0">Cart - <%= locals.cartitemCount  %> items</h5><div id="outofstock" style="color: red;"></div>
+</div>
+
+<div class="card-body">
+<hr class="my-4" />
+<!-- Single item -->
+<% for( let index = 0; index < cart.length; index++ ) { %>
+
+<div class="row mb-3" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;padding: 10px; border-radius: 10px;">
+<div class="col-5  col-lg-4 col-md-12 ">
+<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+<img src="/uploads/<%= locals.cart[index].product.imageUrl[0] %>"
+class="w-100" />
+<a href="#!">
+<div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+</a>
+</div>
+
+</div>
+
+<div class="col-5  col-lg-5 col-md-6 mb-4 mb-lg-0">
+
+<p><strong>  <%= locals.cart[index].product.name %></strong></p>
+<p>Color:<%= locals.cart[index].product.color %></p>
+<p>Material: <%= locals.cart[index].product.material %></p>
+<p>Price:<i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.cart[index].product.price %></p>
+
+<div class="d-flex mb-4" style="max-width: 300px">
+
+  <button class="btndesign btn-sm me-1 mb-2"
+  
+  onclick="handlequantity('<%= locals.cart[index].product._id %>','decrement')">
+  <i class="fas fa-minus"></i>
+  </button>
+  <p class="m-1 mx-2" id="quantitynumber<%= locals.cart[index].product._id %>">
+  <%= locals.cart[index].quantity %> </p>
+  
+  <button class=" btndesign btn-sm me-1 mb-2"
+  onclick="handlequantity('<%= locals.cart[index].product._id %>','increment')">
+  <i class="fas fa-plus"></i>
+  </button>
+  </div>
+</div>
+
+<div class="col-2 col-lg-2 col-md-6 mb-4 mb-lg-0">
+  <button type="button" class=" btndesign btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+  onclick="removercart('<%= locals.cart[index].product._id %>')"  title="Remove item">
+  <i class="fas fa-trash"></i>
+  </button>
+
+<div >
+
+<span id="stocklimit+<%= locals.cart[index].product._id %>" style="color: rgb(245, 106, 106);"></span>
+</div>
+
+</div>
+</div>
+<% } %>
+
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card mb-4">
+<div class="card-header py-3">
+<h5 class="mb-0">Summary</h5>
+</div>
+<div class="card-body">
+<ul class="list-group list-group-flush">
+<li
+class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+Products 
+<span id="productSubtotal"> <%= locals.subTotal %></span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center px-0">
+Shipping
+<span>Free</span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center px-0">
+    Discount
+    <span id="discount">0</span>
+    </li>
+<li
+class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+<div>
+<strong>Total amount</strong>
+</div>
+<span><strong> <i class="fa-solid fa-indian-rupee-sign"></i><span id="totalamount"> <%= subTotal %></span></strong></span>
+</li>
+</ul>
+
+<!-- Button trigger modal -->
+<% if (avilableCoupon.length>0) { %>
+       
+<div class="col-12 mb-3">
+    
+  <button type="button" class="btndesign mb-3" data-toggle="modal" data-target="#exampleModalCenter">
+    Avilable Coupon <span><i class="fa-solid fa-tags"></i></span>
+  </button>
+  <input type="text" onkeyup="handleinputvalue()" class="form-control" placeholder="Enter coupon" id="inputCouponName">
+  <div class="col-12 d-flex mt-3">
+ <button class="btn btn-success applyhiddingbtn"  onclick="handleApplyCoupon()">Apply Coupon</button>
+  <span>
+     <button  onclick="handleClearCoupon()" class="btn btn-danger clearhiddingbtn mx-2"><i class="fa-solid fa-xmark"></i></button>
+    </span>
+  </div>
+ 
+<p  id="couponerror" style="color: red;"></p>
+</div>
+<% } else { %>
+<input type="text" placeholder="Enter coupon" id="inputCouponName"  onkeyup="handleinputvalue()" class="form-control">
+<div class="col-12 d-flex mt-3">
+  <button class="btn btn-success applyhiddingbtn"  onclick="handleApplyCoupon()">Apply Coupon</button>
+   <span>
+      <button  onclick="handleClearCoupon()" class="btn btn-danger clearhiddingbtn mx-2"><i class="fa-solid fa-xmark"></i></button>
+     </span>
+   </div>
+   <p  id="couponerror" style="color: red;"></p>
+<% } %>
+
+<span id="selectedCoupon"></span>
+  <!-- coupon list modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header m-auto">
+          <h4 class="modal-title" id="exampleModalLongTitle">Avilable coupons</h4>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+
+
+        </div>
+        <div class="modal-body ">
+         
+            <% for( let index = 0; index < avilableCoupon.length; index++ ) { %>
+                <div class="col-5 m-auto text-start">
+                    <input class="mt-4" style="width: 20px;height: 20px;margin-right: 10px;" type="radio" name="coupon"
+                     value="<%= locals.avilableCoupon[index].code%>">
+                    <span id="couponName">
+                        <%= locals.avilableCoupon[index].code  %> <span><i style="color: rgb(70, 236, 70);" class="fa-solid fa-tag"></i></span>
+                    </span>
+                    <input type="text" class="d-none" id value="<%[index] %>">
+                </div>
+                   <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--  -->
+
+<a href="/furnica/checkout" style="text-decoration: none;">
+<button type="button" class="btndesign btn-lg btn-block">
+Go to checkout
+</button>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</body>
+</html>
+
+
+<%- include('../htmlbody/footer') -%> 
+<script>
+ 
+const outofstock=JSON.parse(localStorage.getItem("outofstock"))
+if(outofstock){
+  document.getElementById("outofstock").innerHTML="Product limit exceeded"
+  setTimeout(()=>{
+    document.getElementById("outofstock").innerHTML=""
+  },4000)
+  localStorage.removeItem('outofstock');
+
+}
+// (function(){
+  localStorage.setItem('selectedCoupons',JSON.stringify(""));
+const applycouponBtn=document.getElementById("applycouponBtn")
+let applyhidding=document.querySelector(".applyhiddingbtn")
+let clearhidding=document.querySelector(".clearhiddingbtn")
+let totalamount=document.getElementById("totalamount")
+
+applyhidding.style.display="none"
+clearhidding.style.display="none"
+// }())
+const handleinputvalue=()=>{
+  let couponvalue=document.getElementById("inputCouponName").value
+  console.log(couponvalue)
+  if(couponvalue.length==0){
+    applyhidding.style.display="none"
+clearhidding.style.display="none"
+  }else{
+    applyhidding.style.display="block"
+clearhidding.style.display="block"
+  }
+
+}
+
+const radioButtons = document.querySelectorAll('input[name="coupon"]');
+radioButtons.forEach(radioButton => {
+  radioButton.addEventListener('change', async() => {
+  let  selectedCoupons = document.querySelector('input[name="coupon"]:checked').value; 
+  document.getElementById("inputCouponName").value=selectedCoupons
+  applyhidding.style.display="block"
+clearhidding.style.display="block"
+  });
+});
+// apply coupon
+const handleApplyCoupon=async()=>{
+const couponvalue=document.getElementById("inputCouponName").value
+  await fetch('/furnica/mycoupon', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+coupon:couponvalue
+}
+)
+})
+.then(response => response.json())
+.then((data)=>{
+  if(data=="nocoupon"){
+    document.getElementById("couponerror").innerHTML="Invalid coupon"
+setTimeout(()=>{
+document.getElementById("couponerror").innerHTML=""
+},2000)
+  }
+else if(data=="Useded"){
+document.getElementById("couponerror").innerHTML="Already used"
+setTimeout(()=>{
+document.getElementById("couponerror").innerHTML=""
+},4000)
+}
+else{
+  document.getElementById("productSubtotal").innerHTML=data.subTotal
+document.getElementById("discount").innerHTML=data.discounamount
+totalamount.innerHTML=data.lastprice
+document.getElementById("couponName").value=data.couponname
+localStorage.setItem('selectedCoupons',JSON.stringify(data.couponname));
+}
+
+})
+.catch(error => console.error(error));
+}
+
+// clear coupon
+const handleClearCoupon=async()=>{
+  const couponvalue=document.getElementById("inputCouponName").value
+
+const productSubtotal=document.getElementById("productSubtotal").innerHTML
+  await fetch('/furnica/clearCoupon', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+coupon:couponvalue,
+couponSubTotal:productSubtotal
+}
+)
+})
+.then(response => response.json())
+.then((data)=>{
+if(data=="clear"){
+  document.getElementById("inputCouponName").value=""
+}else{
+  document.getElementById("productSubtotal").innerHTML=data.subTotal
+document.getElementById("discount").innerHTML=0
+document.getElementById("totalamount").innerHTML=data.lastprice
+document.getElementById("couponName").value=data.couponname
+localStorage.setItem('selectedCoupons',JSON.stringify(""));
+document.getElementById("inputCouponName").value=""
+}
+
+
+})
+.catch(error => console.error(error));
+
+}
+
+  // ====================================
+const removercart=async(id)=>{
+await fetch('/furnica/removeCart', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+prodId:id,
+
+}
+)
+}).then(response => response.json())
+.then((data)=>{
+if(data=="success"){
+window.location.reload()
+}
+})
+.catch(error => console.error(error));
+}
+
+async  function handlequantity(id,val){
+let selectedCoupons=JSON.parse(localStorage.getItem("selectedCoupons"))||""
+var qunty=document.getElementById(`quantitynumber${id}`)
+await fetch('/furnica/quantity', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+prodId:id,
+method:val,
+coupon:selectedCoupons
+}
+)
+})
+.then(response => response.json())
+.then((data)=>{
+  console.log("data",data)
+if(data=='success'){
+window.location.reload()
+
+}
+else if(data.stocklimit=="stocklimit"){
+ const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML="stock limit"
+ setTimeout(()=>{
+  const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML=""
+ },3000)
+}
+
+else{
+qunty.innerHTML=data.quantity[0].quantity
+document.getElementById("productSubtotal").innerHTML=data.subTotal
+document.getElementById("discount").innerHTML=data.discounamount
+totalamount.innerHTML=data.lastprice
+
+}
+
+})
+.catch(error => console.error(error));
+}
+</script>
+

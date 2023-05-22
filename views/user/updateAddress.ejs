@@ -1,0 +1,132 @@
+<%- include('../htmlbody/header') -%> <%- include('../htmlbody/navbar') -%>
+
+<div class="container mt-5">
+  <h2 class="text-center">Update address</h2>
+  <div class="row">
+    <div class="modal-body col-7 m-auto">
+      <div class="row">
+        <div class="col-md-6">
+          <label class="labels">Name</label>
+          <input
+            type="text"
+            value="<%= locals.address.name  %>"
+            class="form-control"
+            placeholder="enter name"
+            id="name"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="labels">Mobile</label>
+          <input
+            type="text"
+            value="<%= locals.address.mobile  %>"
+            class="form-control"
+            placeholder="enter mobile number"
+            id="mobile"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-12 mt-3">
+        <label class="labels">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          value="<%= locals.address.adressLine1  %>"
+          placeholder="enter address line 1"
+          id="addressline"
+        />
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label class="labels">Postcode</label>
+          <input
+            type="text"
+            class="form-control"
+            value="<%= locals.address.pin  %>"
+            placeholder="enter postcode"
+            id="postcode"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="labels">State</label>
+          <input
+            type="text"
+            class="form-control"
+            value="<%= locals.address.state  %>"
+            placeholder="enter state"
+            id="state"
+          />
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label class="labels">Area</label>
+          <input
+            type="text"
+            class="form-control"
+            value="<%= locals.address.city  %>"
+            placeholder="enter area"
+            id="area"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="labels">Country</label>
+          <input
+            type="text"
+            class="form-control"
+            value="<%= locals.address.country  %>"
+            placeholder=" enter country"
+            id="country"
+          />
+        </div>
+        <div class="col-2 m-auto text-center">
+          <button
+            class="btn btn-primary text-center mt-4"
+            onclick="handleaddress('<%= locals.address.userId  %>','<%= locals.address._id%>')"
+          >
+            update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../htmlbody/bootsfooter') -%> <%- include('../htmlbody/footer') -%>
+<script>
+  const handleaddress = async (id, addressid) => {
+    const name = document.getElementById("name").value;
+    const mobile = document.getElementById("mobile").value;
+    const adressLine1 = document.getElementById("addressline").value;
+    const pin = document.getElementById("postcode").value;
+    const state = document.getElementById("state").value;
+    const city = document.getElementById("area").value;
+    const country = document.getElementById("country").value;
+
+    await fetch("/furnica/updateAddress", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        address: addressid,
+        userId: id,
+        name,
+        mobile,
+        adressLine1,
+        pin,
+        state,
+        city,
+        country,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data === "success") {
+          window.location.href = "/furnica/checkout";
+        }
+      });
+  };
+</script>

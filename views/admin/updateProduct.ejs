@@ -1,0 +1,200 @@
+<%- include('../htmlbody/Adminheader') -%>
+
+<style>
+.image_delete{
+  position: absolute;
+left: 0;
+top: 0;
+  border: none;
+font-size: 1.5rem;
+  background-color: transparent;
+  color: red;
+  margin: auto;
+}
+.image_delete>i{
+  background-color: rgb(255, 253, 253);
+  border-radius: 50%;
+}
+input{
+  border: 1px solid;
+}
+ 
+</style>
+
+                <main class="col-12 col-md-10 m-auto">
+                    <div class="row">
+
+                 <div class="col-10 col-md-8 m-auto">
+                    <h3 class="mt-4 mb-3 text-center">Update Product</h3>
+
+
+<form action="/furnica/admin/updateproduct/<%= locals.param %>" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                          <div class="form-group col-6">
+                           <label for="productName">Product Name:</label>
+                           <input type="text" class="form-control" id="productName" name="name" required value="<%= locals.product.name %>">
+                         </div>
+                         <div class="form-group col-6">
+                           <label for="productPrice">Product Price:</label>
+                           <input type="number" class="form-control" id="productPrice" name="price" required value="<%= locals.product.price %>">
+
+                         </div>
+                        </div>
+                        
+                        
+                         <div class="form-group">
+                           <label for="productDescription">Product Description:</label>
+
+                           <input class="form-control" id="productDescription" name="description" rows="3"  value="<%= locals.product.description  %>"></input>
+                         </div>
+                         <div class="row ">
+
+                          <% for( let index = 0; index < imageUrl.length; index++ ) { %>
+                         <div class="col-5 col-sm-2 ">
+
+                           <button class="image_delete rounded-circle" type="button" onclick="handleimages('<%= locals.product._id  %>','<%= index  %>')">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                           <!-- <img class="img-fluid"  src="https://www.alfredocreates.com/wp-content/uploads/2020/08/Delete-Icon-PNG-By-Alfredo-Hernandez.png" alt=""> -->
+                           </button>
+                         <!-- </a> -->
+                           <img class="img-fluid" src="/uploads/<%= locals.imageUrl[index]  %>" alt="">
+                         </div>
+                          <% } %>
+                  
+                  </div>
+                     
+                         <div class="form-group">
+                         
+                           <label for="productImage">Product Image:</label>
+                           <input type="file" class="form-control" id="imageInput" multiple name="image" accept="image/*" value=" <%= locals.product.imageUrl %>">
+                         </div>
+                         <span id="errordetail"></span>
+     
+                         <div class="row">
+                              <div class="form-group col-10 col-sm-4">
+                           <label for="productImage">category:</label>
+                           <select class="form-control" id="productCategory" name="category" required value=" <%= locals.product.category %>">
+                         
+                             <% for( let index = 0; index < category.length; index++ ) { %>
+     
+                             <option value="<%= locals.category[index]._id %>"> <%= locals.category[index].category  %> </option>
+                             <% } %>
+                     
+                           </select>
+                        
+                         </div>
+                         <!-- color -->
+                         <div class="form-group col-10 col-sm-4">
+                             <label for="productImage">Product Color:</label>
+                           <select class="form-control" name="color" id="color" value=" <%= locals.product.color %>">
+                             <option value="Orange">Orange</option>
+                             <option value="Red">Red</option>
+                             <option value="Blue">Blue</option>
+                             <option value="Green">Green</option>
+                             <option value="Yellow">Yellow</option>
+                             <option value="White">white</option>
+                             <option value="Black">Black</option>
+                           </select>
+                           </div>
+                           <!-- material -->
+                           <div class="form-group col-10 col-sm-4">
+                             <label for="productImage">Product Material:</label>
+                             <input type="text" class="form-control" id="productMaterial" name="material" required value=" <%= locals.product.material %>">
+                           </div> 
+                         </div>
+                       <div class="row">
+      <!--brand  -->
+                         <div class="form-group col-6">
+                             <label for="productImage">Product Brand:</label>
+                             <input type="text" class="form-control" id="productBrand" name="brand" required value=" <%= locals.product.brand %>">
+                           </div>
+         <!--stock  -->
+         <div class="form-group col-6">
+             <label for="productImage">Product Stock:</label>
+             <input type="number" class="form-control" id="productStock" name="stock" required value="<%= locals.product.stock %>">
+           </div>
+              </div>
+                        
+           <!--overview  -->
+            <div class="form-group">
+             <label for="productImage">Product Overview:</label>
+             <input class="form-control" id="productOverview" name="overview" rows="3" required value=" <%= locals.product.overview %>"></input>
+            </div>
+                      <!--  -->
+                         <div class="mt-3 text-center">
+                           <button type="submit" class="btn btn-primary rounded-pill mb-3">Submit</button>
+     
+                         </div>
+                     
+                       </form>
+
+                    </div>
+                       <!-- <div class="col-2 ">
+        
+                        <% for( let index = 0; index < imageUrl.length; index++ ) { %>
+                       <div class="col-8 image_delete">
+                       <a href="/furnica/admin/deleteImage/<%= locals.product._id  %>/<%= index  %>">
+                         <button >
+                          
+                         <img class="img-fluid"  src="https://www.alfredocreates.com/wp-content/uploads/2020/08/Delete-Icon-PNG-By-Alfredo-Hernandez.png" alt="">
+                         </button>
+                       </a>
+
+                         <img class="img-fluid" src="/uploads/<%= locals.imageUrl[index]  %>" alt="">
+                       </div>
+                        <% } %>
+                   </div> -->
+                    </div>
+                </main>
+                <%- include('../htmlbody/AdminFooter') -%>
+<script>
+
+const handleimages=async(id,index)=>{
+  await fetch("/furnica/admin/deleteImage", {
+ method: 'POST',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+ body: JSON.stringify(
+   {
+  id:id,
+  index:index
+   }
+ )
+}).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+    window.location.reload()
+  }
+})
+}
+
+
+ 
+var imageInput = document.getElementById('imageInput');
+
+
+   imageInput.addEventListener('change', function() {
+  var file = imageInput.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(event) {
+    var image = new Image();
+    image.src = event.target.result;
+    image.onload = function() {
+      if (image.width > 0 && image.height > 0) {
+  
+        document.getElementById("errordetail").innerHTML='Valid image file!'
+        document.getElementById("errordetail").style.color="green"
+
+      } else {
+
+       document.getElementById("errordetail").innerHTML='Invalid image file!'
+       document.getElementById("errordetail").style.color="red"
+      }
+    };
+  };
+
+  reader.readAsDataURL(file);
+});
+
+</script>

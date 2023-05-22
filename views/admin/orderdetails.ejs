@@ -1,0 +1,146 @@
+
+<%- include('../htmlbody/Adminheader') -%>
+<main>
+
+
+<div class="container">
+
+    <div class="row row_box mt-5">
+       
+    <div class=" mx-4 col-lg-8 col-md-12 mb-4 mb-lg-0 ">
+
+        <div class=" py-3 ">
+            <h5 class="mb-0">   Order details</h5>
+            </div>
+    <% for( let index = 0; index < orders.product.length; index++) { %>
+        <div class="row context_box">
+
+      <div class="col-10 col-sm-2">
+    <img  class="img-fluid p-1 " style="border-radius: 10px;" src="/uploads/<%= orders.product[index].image  %>" alt="">
+          </div>
+          <div class="col-lg-6 ">
+            <p>Name:
+                <%= orders.product[index].name  %>
+            </p>
+            <p>Price:
+            Rs  <%= orders.product[index].price  %>
+            </p>
+            <p>Quantity:  <%= orders.product[index].quantity  %>
+                </p>
+            </div> <% } %>   
+
+            <div class="col-3">
+             
+
+              <% if (orders.status=="Cancelled") { %>
+                <button type="button" disabled class="btn btn-danger">
+                cancelled
+                  </button>
+              <% } else { %>
+              
+              <select  class="rounded-pill px-2"  id="statusbar<%= orders._id%>" onchange="handlestatus('<%= orders._id%>')" 
+              style="border: none;outline: none;padding: 1px;height: 45px;" >
+              <option value="<%= orders.status%>" style="background-color: rgb(114, 232, 224);"> <%= orders.status%> (C)</option>
+              <option value="Order placed">Order placed</option>
+              <option value="Order Shipped">Order Shipped</option>
+              <option value="Out for delivery">Out for delivery</option>
+              <option value="Order Arrived">Order Arrived</option>
+              <option value="Cancelled">Cancelled</option>
+              </select>
+              <% } %>
+            </div>
+  </div>
+
+</div>
+
+    <!--  -->
+   
+    <div class="col-md-3 mx-3">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span><i class="fa-solid fa-indian-rupee-sign"></i> <%= orders.total  %></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Free</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                
+                </div>
+                <span><strong><i class="fa-solid fa-indian-rupee-sign"></i> <span> <%= orders.total  %></span></strong></span>
+              </li>
+            </ul>
+
+          
+      
+      </div>   
+   <!--  -->
+    </div>
+ 
+    </div>
+
+    
+<!-- bottom section -->
+
+    </div>
+  <div class="container">
+    <div class="row">
+
+
+    <div class="col-10 col-sm-8 mt-4">
+        <h4>Address</h4>
+        <p> <span>Name: </span><%= locals.address.name  %></p>
+        <p><span>Mobile: </span><%= locals.address.mobile  %></p>
+        <p><span>Address line: </span><%= locals.address.adressLine1  %></p>
+        <p><span>City: </span><%= locals.address.city  %></p>
+        <p><span>State: </span><%= locals.address.state  %></p>
+        <p><span>Country: </span><%= locals.address.country  %></p>
+        <p><span>Pincode: </span><%= locals.address.pin  %></p>
+    </div>
+    <div class="col-10 col-sm-4 mx-auto text-center">
+      <h4>Payment</h4>
+      <p>Payment Method:
+          <%= orders.paymentMethod %>
+          </p>
+  </div>
+</div>
+  </div>
+
+</main>
+
+
+
+<%- include('../htmlbody/AdminFooter') -%>
+<script>
+  const handlestatus=async(id)=>{
+   
+   const statusbar=document.getElementById(`statusbar${id}`).value
+
+   await fetch('/furnica/admin/updatestatus', {
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+  {
+  orderid:id,
+  status:statusbar
+  }
+)
+}).then((res)=>res.json()).then((data)=>{
+ if(data==="success"){
+   window.location.reload()
+ }
+})
+}
+</script>

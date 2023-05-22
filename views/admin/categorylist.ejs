@@ -1,0 +1,82 @@
+
+
+<%- include('../htmlbody/Adminheader') -%>
+
+                <main class="m-4 "> <h2>Category list</h2>
+                  <div class="col-12 col-sm-4 m-auto border-3 border border-light p-2 rounded-4 ">
+               
+                     
+                    <form action="/furnica/admin/addcategory" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                          <label for="productImage">Category Name:</label>
+                      <input type="text" name="category" class="form-control"  id="category" placeholder="category" required>
+                      </div>
+                        <div class="form-group mt-2">
+                      <label for="productImage">Category Image:</label>
+
+                      <input type="file"  class="form-control" id='imageInput' accept="image/*" multiple name="image"  required>
+                      <!-- <input type="file" class="form-control-file"  id="productImage" multiple name="image"  required> -->
+                    </div>
+                    <div class="mt-3">
+                      <button type="submit" id="submit_btn" class="btn btn-primary rounded-pill mb-4">Submit</button>
+                    </div>
+                    <p id="errordetail"></p>
+                  </form>
+                  <span style="color: red;">
+                    <%= locals.errorDetail  %>
+                  </span>
+                  </div>
+    
+               
+<div class="container">
+  <div class="row">
+    <% for( let index = 0; index < locals.category.length; index++ ) { %>
+            <div class="col-sm-2 col-10 mx-auto mb-3 text-center" style="margin-left: 1rem;" >
+                <img class="img-fluid"  style="height: 60%;width: 90%;"src="/uploads/<%= locals.category[index].imageUrl[0] %> " alt="not loaded">
+                <h4> <%= locals.category[index].category %> </h4>
+                <a href="/furnica/admin/updateCategory/<%= locals.category[index]._id %>">
+                <button type="button" class="btn btn-success rounded-pill">
+                  Edit
+                </button></a>
+                  </div>  <% } %>
+                </div> 
+              </div>
+  </div>
+</div>
+                
+            
+               
+
+                </main>
+                <%- include('../htmlbody/AdminFooter') -%>
+<script>
+
+    var imageInput = document.getElementById('imageInput');
+    var submit_btn=document.getElementById('submit_btn');
+    submit_btn.setAttribute("disabled", true);
+
+   imageInput.addEventListener('change', function() {
+  var file = imageInput.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(event) {
+    var image = new Image();
+    image.src = event.target.result;
+    image.onload = function() {
+      if (image.width > 0 && image.height > 0) {
+        console.log('Image is valid!');
+        document.getElementById("errordetail").innerHTML='Valid image file!'
+        document.getElementById("errordetail").style.color="green"
+        submit_btn.removeAttribute("disabled");
+      } else {
+        submit_btn.setAttribute("disabled", true);
+       document.getElementById("errordetail").innerHTML='Invalid image file!'
+       document.getElementById("errordetail").style.color="red"
+      }
+    };
+  };
+
+  reader.readAsDataURL(file);
+});
+
+</script>

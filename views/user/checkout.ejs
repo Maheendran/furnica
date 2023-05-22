@@ -1,0 +1,689 @@
+<%- include('../htmlbody/header') -%>
+
+<%- include('../htmlbody/navbar') -%>
+<style>
+  .btndesign{
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px;
+  }
+  .btndanger{
+    background-color: rgb(217, 84, 7);
+    color: white;
+    border: none;
+    padding: 10px;
+  }
+</style>
+<section class="h-100 gradient-custom">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+                <h6>Address    <span>  
+          <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalCentera">
+            <i class="fa-solid fa-square-plus" style="font-Size:1.5rem;color: rgb(110, 195, 61);"></i>
+          </button></span>
+        </h6> 
+          </div>
+          <div class="card-body"   style="height: 40vh;overflow: scroll;" >
+  
+        <% for( let index = 0; index < address.length; index++ ) { %>
+
+          <div class="col-12 d-flex" style="border-bottom: 1px rgba(128, 128, 128, 0.498) solid;">
+            <input style="width: 20px;height: 30px;margin-right: 10px;" type="radio" name="address" value="<%= address[index]._id%>">
+
+            <p style="margin-top: 10px;" class="text-muted" id="name<%=[index]%>">
+         
+        <%= locals.address[index].name  %>
+        </p> 
+        <div class="col-3 d-flex " style="position: absolute;right: 0;" >
+          <button   type="button" onclick="selectaddres('<%= [index] %>','<%= locals.address[index]._id %>','<%= locals.userdata._id%>')" class="btn" data-toggle="modal" data-target="#exampleaddressupdate">
+            <i style="color: rgb(93, 183, 243);" class="fa-solid fa-user-pen"></i>
+            </button>
+        <button class="btn" onclick="handleRemove('<%= locals.address[index]._id%>')">
+          <i style="color: rgb(241, 102, 32);" class="fa-solid fa-trash"></i>
+        </button>
+        </div>
+        
+        </div>
+
+        <p class="text-muted" id="adressLine1<%=[index]%>">
+          <%= locals.address[index].adressLine1  %>
+          </p>
+          <p class="text-muted" id="city<%=[index]%>">
+          <%= locals.address[index].city  %>
+          </p >
+          <p class="text-muted" id="state<%=[index]%>">
+          <%= locals.address[index].state  %>
+          </p>
+          <p class="text-muted" id="country<%=[index]%>">
+              <%= locals.address[index].country  %>
+              </p>
+              <p class="text-muted" id="pin<%=[index]%>">
+                  <%= locals.address[index].pin  %>
+                  </p>
+              <p class="text-muted" id="mobile<%=[index]%>">
+                  <%= locals.address[index].mobile  %>
+                  </p>
+         
+        <% } %>
+          </div>
+        </div>
+         <!--update address Modal -->
+  <div class="modal fade" id="exampleaddressupdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Update Address</h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body col-12 m-auto">
+            <div class="row">
+              <div class="col-6">
+                <label class="labels">Name</label>
+                <input
+                  type="text"
+                 
+                  class="form-control"
+                  placeholder="enter name"
+                  id="uname"
+                  name=" name"
+                />
+              </div>
+              <div class="col-6">
+                <label class="labels">Mobile</label>
+                <input
+                  type="text"
+               name="mobile"
+               onchange="modelchange()"
+                  class="form-control"
+                  placeholder="enter mobile number"
+                  id="umobile"
+                />
+              </div>
+            </div>
+      
+            <div class="col-md-12 mt-3">
+              <label class="labels">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="
+                adressLine1"
+                placeholder="enter address line 1"
+                id="uadressLine1"
+              />
+            </div>
+            <div class="row mt-3">
+              <div class="col-6">
+                <label class="labels">Postcode</label>
+                <input
+                  type="text"
+                  class="form-control"
+                 name=",
+                 pin"
+                  placeholder="enter postcode"
+                  id="upin"
+                />
+              </div>
+              <div class="col-6">
+                <label class="labels">State</label>
+                <input
+                  type="text"
+                  class="form-control"
+              name=",
+              state"
+                  placeholder="enter state"
+                  id="ustate"
+                />
+              </div>
+            </div>
+      
+            <div class="row mt-3">
+              <div class="col-6">
+                <label class="labels">Area</label>
+                <input
+                  type="text"
+                  class="form-control"
+               name="
+               city"
+                  placeholder="enter area"
+                  id="ucity"
+                />
+              </div>
+              <div class="col-6">
+                <label class="labels">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+           name="country"
+                  placeholder=" enter country"
+                  id="ucountry"
+                />
+              </div>
+              <div class="col-2 m-auto mt-4">
+                <button
+                  class="btn btn-primary text-center  m-auto" id="modalupdatebtn">
+                  update
+                </button>
+              </div>
+            </div>
+          </div>
+     
+      </div>
+    </div>
+  </div>
+
+  
+            <!--create address  -->
+  <div class="modal fade" id="exampleModalCentera" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">New Address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-6"><label class="labels">Name</label>
+              <input type="text" class="form-control" placeholder="enter name" id="name" ></div>
+              <div class="col-6"><label class="labels">Mobile</label>
+                <input type="text" class="form-control" placeholder="enter mobile number" id="mobile" ></div>
+          </div>
+          
+            <div class="col-md-12 mt-3"><label class="labels">Address</label>
+              <input type="text" class="form-control" placeholder="enter address line 1" id="addressline" ></div>
+              <div class="row mt-3">
+                <div class="col-6"><label class="labels">Postcode</label>
+              <input type="text" class="form-control" placeholder="enter postcode" id="postcode"></div>
+            <div class="col-6"><label class="labels">State</label>
+              <input type="text" class="form-control" placeholder="enter state" id="state" ></div>
+              </div>
+            
+              <div class="row mt-3">
+                        <div class="col-6"><label class="labels">Area</label>
+              <input type="text" class="form-control" placeholder="enter area" id="area"></div>
+              <div class="col-6"><label class="labels">Country</label>
+              <input type="text" class="form-control"   placeholder=" enter country" id="country"></div>
+              </div>
+    
+        </div>
+        <div class="row mt-3 ms-auto ">
+   
+
+        </div>
+        <div class="modal-footer">
+      
+          <button type="button"  class="btndesign btn-sm me-1 mb-2" data-dismiss="modal" 
+          onclick="handleaddress('<%= locals.userdata._id%>')">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <div class="row">   
+  <div class="col-12 col-sm-6">
+    <div class="col-12">
+      <p><strong>Pay from wallet</strong></p>
+      <input style="width: 20px;height: 20px;" type="radio" name="payment"  value="Wallet" >
+      <label for="">  Wallet <span><i style="color: rgb(99, 117, 99);" class="fa-solid fa-wallet"></i> :
+      </span></label> <i  class="fa-solid fa-indian-rupee-sign"></i>
+      <span id="walletamount"><%= locals.wallet  %>
+      </span> 
+      <p id="walletBalanceAmount"></p>
+      
+      <div  id="codgpaybox" >
+        <div class="row" >
+<div class="col-5">
+  <p class="showPendingMoney" class="mt-1"></p> 
+</div>
+        <div class="col-7 d-flex  justify-content-between" style="height: 35px;">
+        
+          <button class="btn btn-success" onclick="handlePendingAmount('Cod')">Cod </button>
+          &
+          <button class="btn btn-primary" onclick="handlePendingAmount('Gpay')">Gpay</button>
+       
+        </div>
+  
+    </div>
+      </div>
+  
+    </div>
+    
+    <div class="card-body">
+      <p><strong>We accept</strong></p>
+      <input style="width: 20px;height: 20px;" type="radio" name="payment"  value="Cod" >
+      <label for="">COD <span><i style="color: rgb(250, 218, 89);" style="font-size: 1.4rem;" class="fa-solid fa-money-bill-1"></i></span></label> <br>
+      <input style="width: 20px;height: 20px;" id="gpay" type="radio" name="payment"  value="Gpay" >
+      <label for="">Online payment <span><i style="color: green;" style="font-size: 1.4rem;" class="fa-brands fa-amazon-pay"></i></span> 
+      </label> <span> <p id="paid" style="color: green;"></p></span><br>
+    </div>
+
+  </div>
+   <div class="col-12 col-sm-6">
+          <div class="card-body">
+            <p><strong>Expected shipping delivery <span><i style="color: rgb(95, 133, 240);" class="fa-solid fa-truck"></i></span></strong></p>
+       <%=  locals.formattedDate %>
+          </div>
+        </div>
+       
+ </div>
+      </div>
+
+
+
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span><i class="fa-solid fa-indian-rupee-sign"></i>  <%= subTotal %></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Free</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Discount
+                <span> <%= discounamount  %></span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                
+                </div>
+                <strong><i class="fa-solid fa-indian-rupee-sign"></i> <span id="lastprice"> <%= lastprice %></span></strong>
+              </li>
+            </ul>
+
+          <!-- last section -->
+            <button type="button" onclick="popuptotal()" id="placeorder_btn" class="btndesign btn-sm me-1 mb-2" data-toggle="modal" data-target="#exampleModalCenter">
+              Place order
+</button>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Order details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+<div class="container">
+ 
+    <% for( let index = 0; index < cart.length; index++ ) { %>
+     <div class="row">
+<div class="col-2">
+  <img class="img-fluid" src="/uploads/<%= locals.cart[index].product.imageUrl[0]  %>" alt="">
+</div>
+<div class="col-9">
+  <div class="row">
+    <div class="col-12">
+ <%= locals.cart[index].product.name  %>
+    </div>
+    <div class="col-12">
+      <i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.cart[index].product.price  %>
+         </div>
+  </div>
+</div>
+       </div>
+    <% } %>
+ 
+</div>
+<p class="mt-3" >payment method:  <span id="popup_payment"></span></p>
+<p>Expected shipping delivery:<span>  <%=  locals.formattedDate %></span> </p>
+     
+<p>Total amount: <span style="font-weight: 600;">
+  <i class="fa-solid fa-indian-rupee-sign"></i>
+</span>
+<span id="popuptotoal"></span>
+</p>
+
+
+      </div>
+      <div class="modal-footer">
+      
+        <button type="button" class="btndesign btn-sm me-1 mb-2" 
+         onclick="handleorder()">Confirm Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
+
+
+<%- include('../htmlbody/footer') -%> 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  localStorage.setItem("walletPayed",JSON.stringify(false))
+const popuptotal=()=>{
+  const lastprice=parseInt(document.getElementById("lastprice").innerHTML)
+const popuptotoal=document.getElementById("popuptotoal")
+popuptotoal.innerHTML=lastprice
+}
+  
+const placeorder_btn=document.getElementById("placeorder_btn")
+    placeorder_btn.setAttribute("disabled", true);
+    placeorder_btn.style.backgroundColor="grey"
+  
+const codgpaybox=document.getElementById("codgpaybox")
+codgpaybox.style.display="none"
+const selectaddres=(index,addressdid,userid)=>{
+   
+   var name=document.getElementById(`name${index}`).innerText;
+var addressval=document.getElementById(`adressLine1${index}`).innerHTML;
+var mobile=document.getElementById(`mobile${index}`).innerText;
+var city=document.getElementById(`city${index}`).innerText;
+var state=document.getElementById(`state${index}`).innerText;
+var pin=document.getElementById(`pin${index}`).innerText;
+var country=document.getElementById(`country${index}`).innerText;
+console.log(name)
+// update modal id gettting
+var uname=document.getElementById("uname").value=name;
+var umobile=document.getElementById("umobile").value=mobile;
+var uaddress=document.getElementById("uadressLine1").value=addressval;
+var ucity=document.getElementById("ucity").value=city;
+var ustate=document.getElementById("ustate").value=state;
+var upin=document.getElementById("upin").value=pin;
+var ucountry=document.getElementById("ucountry").value=country;
+var modalupdatebtn=document.getElementById('modalupdatebtn')
+uaddress.trim()
+
+modalupdatebtn.addEventListener('click', async function() {
+
+   await fetch("/furnica/updateAddress", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify({
+       address: addressdid,
+       userId: userid,
+       name:document.getElementById("uname").value,
+       mobile:document.getElementById("umobile").value,
+       adressLine1:document.getElementById("uadressLine1").value,
+       pin:document.getElementById("upin").value,
+       state:document.getElementById("ustate").value,
+       city:document.getElementById("ucity").value,
+       country:document.getElementById("ucountry").value,
+     }),
+   })
+     .then((res) => res.json())
+     .then((data) => {
+       if (data === "success") {
+         window.location.reload()
+       }
+     });
+
+});
+
+}
+
+
+// remove address
+const handleRemove=async(id)=>{
+  await fetch('/furnica/removeAddress', {
+ method: 'POST',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+ body: JSON.stringify(
+   {
+    addressId:id
+   }
+ )
+}).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+    window.location.reload()
+  }
+})
+}
+
+// addres create
+    const handleaddress=async(id)=>{
+        const name=document.getElementById("name").value
+        const mobile=document.getElementById("mobile").value
+const adressLine1=document.getElementById("addressline").value
+const pin=document.getElementById("postcode").value
+const state=document.getElementById("state").value
+const city=document.getElementById("area").value
+const country=document.getElementById("country").value
+await fetch('/furnica/createAddress', {
+ method: 'POST',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+ body: JSON.stringify(
+   {userId:id,
+    name,
+    mobile,
+    adressLine1,
+    pin,
+    state,
+    city,
+    country
+   }
+ )
+}).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+    window.location.reload()
+  }
+})
+    }
+
+// paymnettpe
+const paymentbtn = document.querySelectorAll('input[name="payment"]');
+const popup_payment=document.getElementById("popup_payment")
+const  walletamount=document.getElementById("walletamount")
+let add=false;
+let pay=false;
+let method=""
+var paymentvalue;
+const lastprice=parseInt(document.getElementById("lastprice").innerHTML)
+const walletBalanceAmount=document.getElementById("walletBalanceAmount")
+paymentbtn.forEach(btn => {
+     btn.addEventListener('change', () => {
+     paymentvalue = document.querySelector('input[name="payment"]:checked').value;
+  
+   popup_payment.innerHTML=paymentvalue
+
+pay=true
+   if("Wallet"==paymentvalue){
+    if(walletamount.innerHTML>=lastprice){
+   walletBalanceAmount.innerHTML=`Your avilable balance is <i class="fa-solid fa-indian-rupee-sign"></i> ${( walletamount.innerHTML-(lastprice))}/-`
+   walletBalanceAmount.style.color="green"
+  
+    }
+    else{
+      walletBalanceAmount.innerHTML=`Insufficient balance  <i class="fa-solid fa-indian-rupee-sign"></i> ${ Math.abs( walletamount.innerHTML-(lastprice))}/-`
+      walletBalanceAmount.style.color="red"
+      codgpaybox.style.display="block"
+      const showPendingMoney=document.querySelector(".showPendingMoney")
+      showPendingMoney.innerHTML=`Pay <i class="fa-solid fa-indian-rupee-sign"></i> ${ Math.abs( walletamount.innerHTML-(lastprice))}/-`
+      showPendingMoney.style.color="green"
+      pay=false
+      // const placeorder_btn=document.getElementById("placeorder_btn")
+      placeorder_btn.setAttribute("disabled", true);
+      placeorder_btn.style.backgroundColor="grey"
+    }
+
+     }
+   method=paymentvalue
+   checkbtn()
+  });
+});
+ // handle pending wallte amount to cod or gapy
+const handlePendingAmount=(payment)=>{
+localStorage.setItem("walletPayed",JSON.stringify("true"))
+  pay=true
+const value=Number(Math.abs( walletamount.innerHTML-(lastprice)))
+const totalamount=document.getElementById("lastprice")
+totalamount.innerHTML=value
+let method=document.getElementById("popup_payment")
+method.innerHTML=payment
+checkbtn()
+}
+
+
+// address section
+const radioButtons = document.querySelectorAll('input[name="address"]');
+  var selectedValue;
+radioButtons.forEach(radioButton => {
+  radioButton.addEventListener('change', () => {
+     selectedValue = document.querySelector('input[name="address"]:checked').value;
+     add=true
+     checkbtn()
+  });
+});
+
+const checkbtn=()=>{
+  if(add&&pay ){
+  placeorder_btn.removeAttribute("disabled");
+  placeorder_btn.style.backgroundColor="orange"
+}
+}
+
+const handleorder=async()=>{
+
+await fetch('/furnica/checkStock', {
+ method: 'GET',
+ headers: {
+   'Content-Type': 'application/json'
+ }
+}).then((res)=>res.json())
+.then((data)=>{
+  if(data==="success"){
+  let subtotal=document.getElementById("popuptotoal").innerHTML
+  let method=document.getElementById("popup_payment").innerHTML
+
+     if(method=="Gpay"){ 
+  payments(subtotal)
+    }
+    else if(method==="Wallet"){
+wallet(subtotal)
+    }
+    else{
+      handleOrders(subtotal)
+    }
+}
+else{
+  localStorage.setItem("outofstock",JSON.stringify(true))
+  window.location.href="/furnica/cart"
+}
+
+})
+
+
+
+
+}
+
+
+// wallet amount control
+const wallet=async(subtotal)=>{
+
+  await fetch('/furnica/walletamount', {
+ method: 'POST',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+ body: JSON.stringify(
+   {
+    amount:subtotal
+   }
+ )
+}).then((res)=>res.json())
+.then((data)=>{
+  if(data=="success"){
+    handleOrders(subtotal)
+  }
+})
+}
+
+// payment
+async function payments(subtotal){
+
+let response= await fetch("/furnica/payment", {
+   method: "POST",
+   headers: {
+     "Content-Type":"application/json",
+   },
+   body: JSON.stringify({
+    amount:subtotal
+   }),
+ })
+let orderData=await response.json()
+  var options = {
+  "key": "rzp_test_PDb2mkTumdooCe", 
+  "amount": subtotal*100,
+  "currency": "INR",
+  "order_id": orderData.id,
+};
+if(orderData.success===true){
+  handleOrders(subtotal)
+}
+var rzp1 = new Razorpay(options);
+  rzp1.open();
+ 
+}
+
+
+const handleOrders=async(subtotal)=>{
+ let walletpayed=JSON.parse(localStorage.getItem("walletPayed"))
+  let coupons= JSON.parse(localStorage.getItem("selectedCoupons"))||""
+
+  let addressId = document.querySelector('input[name="address"]:checked').value;
+  let paymentvalue=document.getElementById("popup_payment").innerHTML
+
+
+
+  await fetch('/furnica/checkout', {
+ method: 'POST',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+ body: JSON.stringify(
+   {
+     address:addressId,
+     paymentMethod:paymentvalue,
+     total:subtotal,
+     couponId:coupons,
+     walletpayed:walletpayed
+   }
+ )
+}).then((res)=>res.json()).then((data)=>{
+  if(data==="success"){
+  
+    window.location.href='/furnica/success'
+    localStorage.setItem('subtotal',JSON.stringify(0));
+    localStorage.setItem('selectedCoupons',JSON.stringify(0));
+  }
+})
+
+}
+
+</script>

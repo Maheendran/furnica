@@ -1,0 +1,286 @@
+<%- include('../htmlbody/header') -%> 
+<%- include('../htmlbody/navbar') -%>
+<style>
+  .sortfiltermob{
+    display: none;
+  }
+  @media only screen and (max-width : 895px) {
+    .sortfiltermob{
+    display: block;
+  }
+  .laptopsortfilter{
+    display: none;
+  }
+}
+
+</style>
+
+
+<!-- mobile view -->
+<div class="container-fluid sortfiltermob mt-5 mb-3  "  >
+  <div style="display: flex;justify-content: end;">
+   
+    <div class="mx-2" >
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        sort
+      </button>
+
+      <div class="dropdown-menu px-2" aria-labelledby="dropdownMenuButton">
+        <p>By price</p>
+        <div class="col-12 ">
+          <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="asc" >
+      <label for="">low to high</label>
+      </div>
+      <div class="col-12">
+        <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="desc" >
+       <label for="">high to low</label>
+     </div>
+     <p>By name</p>
+     <div class="col-12">
+      <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="atoz" >
+     <label for="">a to z</label>
+   </div>
+   <div class="col-12">
+    <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="ztoa" >
+   <label for="">z to a</label>
+ </div>
+      </div>
+    </div>
+    </div>
+    
+    <div class="mx-3">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownfiltern" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      filter by category
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownfiltern">
+        <div class="col-12">
+          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fab306ef7984410dff10b" >
+        <label for="">sofa</label>
+        </div>
+        <div class="col-12">
+          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fa9c66ef7984410dff08e" >
+        <label for="">chair</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  
+</div>
+<div class="container-fluid ">
+  <div class="row">
+ 
+    <!-- lap view -->
+ <div class="col-3 laptopsortfilter ">
+      <h5>sorting & filter</h5>
+      <div class="col-12 formbox" style="width: 90%">
+        <p>sort by price</p>
+        <div class="col-12">
+            <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="asc" >
+        <label for="">low to high</label>
+        </div>
+      <div class="col-12">
+         <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="desc" >
+        <label for="">high to low</label>
+      </div>
+      <p>sort by name</p>
+      <div class="col-12">
+        <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="atoz" >
+       <label for="">a to z</label>
+     </div>
+     <div class="col-12">
+      <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="ztoa" >
+     <label for="">z to a</label>
+   </div>
+
+      </div>
+      <div class="col-12 formbox mt-2" style="width: 90%">
+        <p>filter by category</p>
+        <div class="col-12">
+          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fa9c66ef7984410dff08e" >
+        <label for="">chair</label>
+        </div>
+        <div class="col-12">
+          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fab306ef7984410dff10b" >
+        <label for="">sofa</label>
+        </div>
+        
+      </div>
+    </div> 
+    <div class="col-12 col-sm-11 col-md-9  m-auto">
+      <div class="row mt-5" >
+        <% for( let index = 0; index <locals.productList.length; index++ ) { %>
+        <div class="col-9 col-sm-4 col-md-3 mt-3 Main_box " style="margin-top: 1rem;">
+          <a
+            style="color: rgb(106, 102, 102)"
+            href="/furnica/detail/<%= locals.productList[index]._id  %>">
+            <div class="prod_img">
+              <img
+                src="/uploads/<%= locals.productList[index].imageUrl[0]  %>"
+                alt=""/>
+            </div>
+            <div class="product_card">
+              <div class="detail_btm">
+                <p id="name"><%= productList[index].name %></p>
+
+                   <% if ( productList[index].offer.offerpercent !==0) { %>
+                <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+       
+                  Rs <%= productList[index].price %>
+                  <span class="offer_price">
+                    <%= productList[index].offer.realprice%>
+                  </span>
+                </p>
+             <p style="color: rgb(242, 57, 57)">Offer <%= productList[index].offer.offerpercent %>%</p>
+                <% }  { %>
+    
+                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+                  Rs <%= productList[index].price %>
+                </p>
+
+                <% if (productList[index].outofstock==true) { %>
+                 <p style="color: rgb(242, 57, 57)">Out of stock</p>
+                <% } %>
+                <% } %>
+                
+
+
+   
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <% } %>
+
+        <!--  -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row " >
+    <div class="col-2 m-auto text-center">
+     
+ <% if (locals.pageNumber!=1) { %>
+  <button class=" btn" onclick="handlepage(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+<% } else { %>
+  <button class=" btn" disabled  style="border: none;"><i class="fa-solid fa-arrow-left"></i></button>
+<% } %>
+
+  
+
+    <%= locals.pageNumber  %>  
+    
+  
+   <% if (locals.totalPages!=locals.pageNumber) { %>
+    <button class=" btn" onclick="handlepage(1)"><i class="fa-solid fa-arrow-right"></i></button>
+  <% } else { %>
+    <!-- <button class=" btn" disabled  style="border: none;"><i class="fa-solid fa-arrow-left"></i></button> -->
+    <button class="btn"  disabled  style="border: none;"> <i class="fa-solid fa-arrow-right"></i></button>
+  <% } %>
+    </div>
+    
+   
+ 
+
+  
+  </div>
+
+</div>
+<%- include('../htmlbody/footer') -%>
+
+<script>
+
+const radioButtons = document.querySelectorAll('input[name="sort"]');
+const filterButtons = document.querySelectorAll('input[name="filter"]');
+
+
+  var sortValue=JSON.parse(localStorage.getItem('sortValue'))||"";
+var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"";
+var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
+var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
+var searchValue = JSON.parse(localStorage.getItem('search'))||"";
+
+radioButtons.forEach(radioButton => {
+  if (radioButton.value == sortedtype) {
+    radioButton.checked = true;
+  }
+  radioButton.addEventListener('change', () => {
+    sortedtype = document.querySelector('input[name="sort"]:checked').value;
+if(sortedtype=="atoz"||sortedtype=="ztoa"){
+  sortValue="name"
+}else{
+  sortValue="price"
+}
+    localStorage.setItem('sortValue', JSON.stringify(sortValue));
+    localStorage.setItem('sortType', JSON.stringify(sortedtype));
+
+    pagevalue= 1;
+    localStorage.setItem('page', JSON.stringify(pagevalue));
+
+const url = `/furnica/sorting?category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${pagevalue}`;
+          window.location.href = url;
+  });
+});
+
+//filter
+filterButtons.forEach(radioButton => {
+  if (radioButton.value == categoryId) {
+    radioButton.checked = true;
+  }
+  radioButton.addEventListener('change', () => {
+    categoryId = document.querySelector('input[name="filter"]:checked').value;
+    localStorage.setItem('categoryId', JSON.stringify(categoryId));
+    pagevalue=1;
+    localStorage.setItem('page', JSON.stringify(pagevalue));
+     const url = `/furnica/sorting?category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${pagevalue}`;
+          window.location.href = url;
+  });
+});
+
+const handlepage=(pageer)=>{
+let count=Number(pagevalue)+pageer
+  localStorage.setItem('page', JSON.stringify(count));
+console.log("count",count)
+  const url = `/furnica/sorting?category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${count}`;
+          window.location.href = url;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 
+  // const handlesort = async (selectedValue) => {
+
+  //   await fetch(`/furnica/sorting`,{
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       sortBy:"price",
+  //        sortOrder:selectedValue, 
+  //         filters : {
+  //           color: 'Orange'
+  //         },
+  //         pageSize:2,
+  //          pageNumber:2
+  //     }),
+  //   });
+
+  // };
+</script>

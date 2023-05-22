@@ -1,0 +1,120 @@
+<%- include('../htmlbody/Adminheader') -%>
+                <main>
+    
+<div class="container mt-2">
+                   <div class="row">
+                    <div class="col-7  m-auto">
+
+                 <div class="row ">               
+                    <div class="col-6 text-center  m-auto rounded-pill text-light p-1 bg-primary" style="display: flex;  justify-content: center;align-items: center;">
+                       
+                        <!-- <div class="col-12 text-center  m-auto " style="display: flex;justify-content: space-around;" > -->
+                            <h2 id="headname"> <%= locals.durations %> </h2> 
+                           <h2 class="mx-2"> orders</h2>
+                        
+                        <!-- </div>   -->
+                        
+                        <h1><%= locals.orderlength  %></h1> 
+                        <button class="btn" onclick="handlepdf('<%= locals.durations %>')">
+                            <i style="font-size: 1.2rem;color: white;" class="fa-solid fa-download"></i>
+                        </button>
+                        <!-- <button class="btn" onclick="handleReportdetail('<% locals.durations%>')">details</button> -->
+                    </div>       
+</div>
+<p id="pdfpopup" style="color:green"></p>
+
+                    </div>
+
+             </div>      
+            <!-- list or sales report -->
+     <div class="row mt-3">
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Sales list</h4>
+        
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+         
+                      <th>OFFERID</th>
+                    
+                      <th>PRODUCT </th>
+                      <th>PRICE</th>
+                      <th>QUANTITY</th>
+                      <th>USER</th>
+                
+                      <th>PAPYMENT</th>
+                      <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                  <%if(orders.length>0)  {%>
+                    <%for(let i=0;i <orders.length; i++){%>
+                    <tr>
+                      <td><%= orders[i]._id  %></td>
+
+                      <% for( let index = 0; index < orders[i].product.length; index++) { %>
+                      <td><%= orders[i].product[index].name  %></td>
+                      <td><span><i class="fa-solid fa-indian-rupee-sign"></i></span> <%= orders[i].product[index].price  %></td>
+                      <td class="text-center"><%= orders[i].product[index].quantity  %></td>
+                      <% } %>
+                      <td>
+                        <%= orders[i].name %>
+                      </td>
+                      <td>
+                        <%= orders[i].paymentMethod %>
+                      </td>
+                      <td>
+                        <%= orders[i].status %>
+                      </td>
+                      
+                    </tr>
+                    <% } %>
+                    <%}else{%>
+                
+                      <td colspan="5">products note found</td>
+                      
+                      </tr>
+                      <% } %>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+   
+
+    </div>
+
+</div>
+
+                </main>
+               
+                <%- include('../htmlbody/AdminFooter') -%>
+<script>
+
+
+    // pdf
+    const handlepdf=async(duration)=>{   
+        await fetch(`/furnica/admin/pdfconvert?duration=${duration}`, {
+ method: 'GET',
+ headers: {
+   'Content-Type': 'application/json'
+ },
+
+}).then((res)=>res.json())
+.then((data)=>{
+
+    if(data=="success"){
+      document.getElementById("pdfpopup").innerHTML="pdf download"
+
+      setTimeout(()=>{
+        document.getElementById("pdfpopup").innerHTML=""
+      },3000)
+    }
+})
+    }
+</script>
