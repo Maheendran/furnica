@@ -37,6 +37,7 @@ app.use('/furnica/admin', adminRoute);
 app.use('/furnica', userRoute);
 
 app.use((req, res, next) => {
+  
   res.render('user/error', { error: 'Not Found' });
 });
 
