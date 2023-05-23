@@ -14,9 +14,6 @@
 }
 
 </style>
-
-
-<!-- mobile view -->
 <div class="container-fluid sortfiltermob mt-5 mb-3  "  >
   <div style="display: flex;justify-content: end;">
    
@@ -126,7 +123,14 @@
               <div class="detail_btm">
                 <p id="name"><%= productList[index].name %></p>
 
-                   <% if ( productList[index].offer.offerpercent !==0) { %>
+                <% if (productList[index].outofstock==true) { %>
+                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+                  Rs <%= productList[index].price %>
+                </p>
+                  <p style="color: rgb(242, 57, 57)">Out of stock</p>
+                 <% } else { %>
+    
+                  <% if ( productList[index].offer.offerpercent !==0) { %>
                 <p style="color: grey; font-size: 0.7rem">By Furnica</p>
        
                   Rs <%= productList[index].price %>
@@ -135,16 +139,16 @@
                   </span>
                 </p>
              <p style="color: rgb(242, 57, 57)">Offer <%= productList[index].offer.offerpercent %>%</p>
-                <% }  { %>
+                <% } else { %>
     
                   <p style="color: grey; font-size: 0.7rem">By Furnica</p>
                   Rs <%= productList[index].price %>
                 </p>
+                <% } %>
+                <% } %>
 
-                <% if (productList[index].outofstock==true) { %>
-                 <p style="color: rgb(242, 57, 57)">Out of stock</p>
-                <% } %>
-                <% } %>
+
+                  
                 
 
 

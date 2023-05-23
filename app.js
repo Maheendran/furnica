@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable import/extensions */
 /* eslint-disable no-console */
@@ -34,6 +35,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 app.use('/furnica/admin', adminRoute);
 app.use('/furnica', userRoute);
+
+app.use((req, res, next) => {
+  res.render('user/error', { error: 'Not Found' });
+});
 
 connectDB();
 app.listen(5000, () => {
