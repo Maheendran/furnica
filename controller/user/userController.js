@@ -220,7 +220,7 @@ const resendOtop = async (req, res) => {
 
 const getOtp = async (req, res) => {
   try {
-    res.render('user/otpSubmit');
+    res.render('user/otpsubmit');
   } catch (error) {
     errorHandler(error, req, res);
   }

@@ -22,7 +22,7 @@ const {
 
 dotenv.config();
 const userRoute = express.Router();
-userRoute.get('/', userController.homePage);
+userRoute.get('/',userController.homePage);
 // =====================signup section=================//
 userRoute.get('/signup', isLogin, userController.usersignup);
 userRoute.post('/signup', userController.doSignup);

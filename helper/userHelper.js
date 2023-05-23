@@ -21,7 +21,7 @@ const verifyEmail = async (email, otp) => {
       service: 'gmail',
       auth: {
         user: 'maheendrankp100@gmail.com',
-        pass: 'oqqmaiffrvyoiqwp',
+        pass: 'nqsvtigtlxalucfh',
       },
     });
     const mailOptions = {
