@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable linebreak-style */
 /* eslint-disable import/extensions */
 
@@ -49,10 +50,10 @@ const postMailSubmit = async (req, res) => {
 
       const DBopt = await usermodel.findOne({ email: req.session.otpEmail });
       await userHelper.verifyEmail(req.session.otpEmail, DBopt.otp);
-      res.redirect('/furnica/otp');
+      res.redirect('/otp');
     } else {
       req.session.forgotmail = true;
-      res.redirect('/furnica/forgotPassword');
+      res.redirect('/forgotPassword');
     }
   } catch (error) {
     errorHandler(error, req, res);
@@ -77,12 +78,12 @@ const postOtppage = async (req, res) => {
   const enterOtp = req.body.otp;
   try {
     const DBopt = await usermodel.findOne({ email: req.session.otpEmail });
-    if (enterOtp === DBopt.otp) {
+    if (enterOtp == DBopt.otp) {
       await usermodel.updateOne(
         { email: req.session.otpEmail },
         { $set: { otp: '' } },
       );
-      res.redirect('/furnica/resetPassword');
+      res.redirect('/resetPassword');
     } else {
       res.render('user/forgotpassword/otpPage', { errorotps: 'Invalid OTP' });
     }
@@ -101,7 +102,7 @@ const resendOtp = async (req, res) => {
     );
     const dbotp = await usermodel.findOne({ email: req.session.otpEmail });
     await userHelper.verifyEmail(req.session.otpEmail, dbotp.otp);
-    res.redirect('/furnica/otp');
+    res.redirect('/otp');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -129,7 +130,7 @@ const postResetpass = async (req, res) => {
     req.session.user = userData;
     req.session.otpEmail = null;
     req.session.otpsession = null;
-    res.redirect('/furnica/login');
+    res.redirect('/login');
   } catch (error) {
     errorHandler(error, req, res);
   }

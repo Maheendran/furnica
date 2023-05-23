@@ -14,7 +14,8 @@
 }
 
 </style>
-<div class="container-fluid sortfiltermob mt-5 mb-3  "  >
+<% if (productList.length>0) { %>
+ <div class="container-fluid sortfiltermob mt-5 mb-3  "  >
   <div style="display: flex;justify-content: end;">
    
     <div class="mx-2" >
@@ -67,11 +68,15 @@
   </div>
   
 </div>
+<% } %>
+
+
 <div class="container-fluid ">
   <div class="row">
  
     <!-- lap view -->
- <div class="col-3 laptopsortfilter ">
+    <% if (productList.length>0) { %>
+     <div class="col-3 laptopsortfilter ">
       <h5>sorting & filter</h5>
       <div class="col-12 formbox" style="width: 90%">
         <p>sort by price</p>
@@ -107,66 +112,19 @@
         
       </div>
     </div> 
-    <div class="col-12 col-sm-11 col-md-9  m-auto">
-      <div class="row mt-5" >
-        <% for( let index = 0; index <locals.productList.length; index++ ) { %>
-        <div class="col-9 col-sm-4 col-md-3 mt-3 Main_box " style="margin-top: 1rem;">
-          <a
-            style="color: rgb(106, 102, 102)"
-            href="/detail/<%= locals.productList[index]._id  %>">
-            <div class="prod_img">
-              <img
-                src="/uploads/<%= locals.productList[index].imageUrl[0]  %>"
-                alt=""/>
-            </div>
-            <div class="product_card">
-              <div class="detail_btm">
-                <p id="name"><%= productList[index].name %></p>
+    <% } %>
+ 
 
-                <% if (productList[index].outofstock==true) { %>
-                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
-                  Rs <%= productList[index].price %>
-                </p>
-                  <p style="color: rgb(242, 57, 57)">Out of stock</p>
-                 <% } else { %>
+
+    <div class="col-12 col-sm-11 col-md-5  m-auto">
     
-                  <% if ( productList[index].offer.offerpercent !==0) { %>
-                <p style="color: grey; font-size: 0.7rem">By Furnica</p>
-       
-                  Rs <%= productList[index].price %>
-                  <span class="offer_price">
-                    <%= productList[index].offer.realprice%>
-                  </span>
-                </p>
-             <p style="color: rgb(242, 57, 57)">Offer <%= productList[index].offer.offerpercent %>%</p>
-                <% } else { %>
-    
-                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
-                  Rs <%= productList[index].price %>
-                </p>
-                <% } %>
-                <% } %>
-
-
-                  
-                
-
-
+<img class="img-fluid" src="/assests/no_result.gif" alt="">
    
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <% } %>
-
-        <!--  -->
-      </div>
     </div>
   </div>
 </div>
-
-<div class="container">
+<% if (productList.length>0) { %>
+ <div class="container">
   <div class="row " >
     <div class="col-2 m-auto text-center">
      
@@ -196,6 +154,8 @@
   </div>
 
 </div>
+<% } %>
+
 <%- include('../htmlbody/footer') -%>
 
 <script>

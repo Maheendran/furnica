@@ -36,11 +36,11 @@
       </div>
 
       <div class=" col-sm-3 m-auto">
-      <a href="/furnica/removeWishlist/<%= locals.wishlistProducts[index]._id%>/<%= [index]%>">
+      <a href="/removeWishlist/<%= locals.wishlistProducts[index]._id%>/<%= [index]%>">
       <button type="button" class="btn btn-danger btn-sm me-1 mb-2"><i class="fa-solid fa-trash"></i></button></a>
      
      <% if (locals.wishlistProducts[index].outofstock!=true) { %>
-      <a href="/furnica/wishlistToCart/<%= locals.wishlistProducts[index]._id %>/<%= [index]%>">
+      <a href="/wishlistToCart/<%= locals.wishlistProducts[index]._id %>/<%= [index]%>">
       <button type="button" class="btn btn-success btn-sm me-1 mb-2 "><i class="fa-solid fa-cart-plus"></i></button>
       </a>
      <% } %>

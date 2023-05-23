@@ -28,14 +28,15 @@ style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
 alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
 <h5><%= locals.userdata.name %></h5>
-<button type="button" onclick="handleUpdateProfile('<%= locals.userdata._id%>')" class="btn" data-toggle="modal" data-target="#exampleModalCenter">
+<!-- onclick="handleUpdateProfile('<%= locals.userdata._id%>')"  -->
+<button type="button" class="btn" data-toggle="modal" data-target="#exampleModalCenter">
     <i class="fa-regular fa-pen-to-square"></i>
   </button> <br>
 
-  <a style="text-decoration: none;" href="/furnica/orderslist">
+  <a style="text-decoration: none;" href="/orderslist">
   <button class="btn">Order Details <span><i class="fa-solid fa-truck"></i></span></button></a> <br>
 
-  <a style="text-decoration: none;" href="/furnica/cart">
+  <a style="text-decoration: none;" href="/cart">
   <button class="btn">Cart Details <span><i class="fa-solid fa-cart-shopping"></i></span></button></a>
 
 <br>
@@ -65,9 +66,9 @@ alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
       </div>
       <div class="modal-body text-light ">
 
-        <% for( let index = 0; index < wallethistory.length; index++ ) { %>
+        <% for( let index = 0; index < locals.wallethistory.length; index++ ) { %>
 
-          <% if (wallethistory[index].method=="Debited") { %>
+          <% if (locals.wallethistory[index].method=="Debited") { %>
             <div class="row  mb-2 p-2" style="background-color: rgb(242, 112, 134);">
               <div class="col-6">
                   <h4><%= locals.wallethistory[index].method  %> <span><i class="fa-solid fa-arrow-turn-up"></i></span> </h4> 
@@ -126,9 +127,7 @@ alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
         </div>
         <div class="modal-body text-start">
       
-            <form action="/furnica/updatedprofile/<%= locals.userdata._id%>" method="post">
-
-
+            <form action="/updatedprofile/<%= locals.userdata._id%>" method="post">
          <label class="text-dark" for="">Name</label>
                 <input name="name" value="<%= locals.userdata.name%>"  type="text"
                 id="form3Examplea2" class="form-control form-control-lg mt-0" required />
@@ -395,8 +394,6 @@ alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
       </div>
     </div>
   </div>
-<!--  -->
-
 </div>
 </div>
 </div>
@@ -421,7 +418,7 @@ function handlewallet(){
 
 // reffferal
 const referralCode = document.getElementById("refferalCode").innerHTML; // Replace with your actual referral code
-const baseUrl = "http://localhost:5000/furnica/referral"; // Replace with your base referral URL
+const baseUrl = "http://localhost:3000/referral"; // Replace with your base referral URL
 
 const referralLink = `${baseUrl}?code=${referralCode}`;
 document.getElementById("showCode").style.display="none"
@@ -454,7 +451,7 @@ setTimeout(()=>{
 
 
 const handleRemove=async(id)=>{
-  await fetch('/furnica/removeAddress', {
+  await fetch('/removeAddress', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -501,8 +498,7 @@ var modalupdatebtn=document.getElementById('modalupdatebtn')
 uaddress.trim()
 
 modalupdatebtn.addEventListener('click', async function() {
-
-    await fetch("/furnica/updateAddress", {
+    await fetch("/updateAddress", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -531,17 +527,15 @@ modalupdatebtn.addEventListener('click', async function() {
 }
 
 // update profile
-
-const handleUpdateProfile=async(id)=>{
-console.log(id)
-//     await fetch(`/furnica/updateprofile/${id}`, {
+// const handleUpdateProfile=async(id)=>{
+//     await fetch(`/updateprofile/${id}`, {
 //  method: 'POST',
 //  headers: {
 //    'Content-Type': 'application/json'
 //  },
-
 // })
-}
+// }
+
 // create new address
 const handleaddress=async(id)=>{
         const name=document.getElementById("name").value
@@ -551,7 +545,7 @@ const pin=document.getElementById("postcode").value
 const state=document.getElementById("state").value
 const city=document.getElementById("area").value
 const country=document.getElementById("country").value
-await fetch('/furnica/createAddress', {
+await fetch('/createAddress', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'

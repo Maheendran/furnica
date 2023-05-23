@@ -9,9 +9,8 @@
 <h4 class="text-right">Profile Settings</h4>
 </div>
 
-<form action="/furnica/updatedprofile/<%= locals.userdata._id%>" method="post">
-
-
+<form action="/updatedprofile/<%= locals.userdata._id%>" method="post">
+    
 <label class="form-label mt-0 mb-0" for="form3Examplea2">Enter Your Name</label>
 <input name="name" value="<%= locals.userdata.name%>" style="border: 1px solid black" type="text"
 id="form3Examplea2" class="form-control form-control-lg mt-0" required />

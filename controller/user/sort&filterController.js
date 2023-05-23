@@ -69,14 +69,25 @@ const sortby = async (req, res) => {
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
     const pageData = results.slice(startIndex, endIndex + 1);
-
-    res.render('user/productlist', {
+if(pageData.length===0){
+  res.render('user/Nomatches', {
+    productList: pageData,
+    userdata,
+    totalPages,
+    pageNumber,
+    title: 'Products',
+  });
+}else{
+   res.render('user/productlist', {
       productList: pageData,
       userdata,
       totalPages,
       pageNumber,
       title: 'Products',
     });
+}
+   
+
   } catch (error) {
     errorHandler(error, req, res);
   }

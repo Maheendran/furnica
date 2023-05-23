@@ -6,7 +6,7 @@ const errorHandler = require('./errorHandler.js');
 const isLogin = async (req, res, next) => {
   try {
     if (req.session.user) {
-      res.redirect('/furnica/home');
+      res.redirect('/');
     } else {
       next();
     }
@@ -18,7 +18,7 @@ const isLogin = async (req, res, next) => {
 const loggedin = async (req, res, next) => {
   try {
     if (!req.session.user) {
-      res.redirect('/furnica/login');
+      res.redirect('/login');
     } else {
       next();
     }

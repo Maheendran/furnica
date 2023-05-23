@@ -194,14 +194,14 @@ Rs <%= orders[i].total %>
         <button type="button" disabled class=" cancelledbtn mb-2">
         Cancelled
         </button>
-        <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+        <a href="/orderdetail/<%= orders[i]._id %>">
         <button type="button" class="cancelledbtn mb-2 ">Orderdetail</button></a>
         <% } else { %>
         <button type="button" class="btndanger mb-2 "
         onclick="handleCancel('<%= orders[i]._id %>')" >
         Cancel
         </button>
-        <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+        <a href="/orderdetail/<%= orders[i]._id %>">
             <button type="button" class="orderdtailbtn  ">Orderdetail</button></a>
         
             <% } %>
@@ -211,13 +211,13 @@ Rs <%= orders[i].total %>
         
              <button type="button" class="returnbtn  mb-2 " disabled>Returned</button>
 
-                <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+                <a href="/orderdetail/<%= orders[i]._id %>">
                     <button type="button" class="returnbtn mb-2 ">Orderdetail</button></a>
         <% }else { %>
             <% if ( orders[i].returndate > locals.currentDate) { %>
                 <button type="button" onclick="handleReturn('<%= orders[i]._id %>')" class="btndanger  mb-2 ">Return</button>
                 <% } %>
-                <a href="/furnica/orderdetail/<%= orders[i]._id %>">
+                <a href="/orderdetail/<%= orders[i]._id %>">
                     <button type="button" class="orderdtailbtn mb-2 ">Orderdetail</button></a>
             <% } %>
 
@@ -310,7 +310,7 @@ Rs <%= orders[i].total %>
 <%- include('../htmlbody/footer') -%> 
 <script>
 const handleReturn=async(id)=>{
-await fetch('/furnica/orderReturn', {
+await fetch('/orderReturn', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'
@@ -331,7 +331,7 @@ window.location.reload()
 
 const handleCancel=async(id)=>{
     
-await fetch('/furnica/ordercancel', {
+await fetch('/ordercancel', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'

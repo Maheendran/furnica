@@ -3,8 +3,7 @@
 
 <%- include('../htmlbody/navbar') -%>
 <style>
-  
-  #range{
+   #range{
   height: 10px;
   background-color: green;
   border-radius: 20px;
@@ -16,9 +15,6 @@
 color: red;
 }
 
-
-  </style>
-<style>
   .orderdtailbtn{
       background-color: rgb(25, 142, 97);
     color: white;
@@ -355,7 +351,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 
   const handleinvoice=async(id)=>{
  console.log(id)
-        await fetch(`/furnica/DownloadInvoice?orderId=${id}`, {
+        await fetch(`/DownloadInvoice?orderId=${id}`, {
  method: 'GET',
  headers: {
    'Content-Type': 'application/json'
@@ -377,7 +373,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 
 
   const handleReturn=async(id)=>{
-  await fetch('/furnica/orderReturn', {
+  await fetch('/orderReturn', {
   method: 'POST',
   headers: {
   'Content-Type': 'application/json'
@@ -398,7 +394,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
   
   const handleCancel=async(id)=>{
       
-  await fetch('/furnica/ordercancel', {
+  await fetch('/ordercancel', {
   method: 'POST',
   headers: {
   'Content-Type': 'application/json'

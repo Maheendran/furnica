@@ -34,10 +34,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 app.use('/furnica/admin', adminRoute);
-app.use('/furnica', userRoute);
-app.get('/', (req, res) => {
-  res.redirect('/furnica');
-});
+app.use('/', userRoute);
+// app.get('/', (req, res) => {
+//   res.redirect('/furnica');
+// });
 app.use((req, res, next) => {
   res.render('user/error', { error: 'Not Found' });
 });

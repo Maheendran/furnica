@@ -20,15 +20,16 @@ const profile = async (req, res) => {
   }
 };
 // ************************update profile section*************************//
-const updateprofile = async (req, res) => {
-  try {
-    const userdata = req.session.user;
-    const address = await Address.find({ userId: userdata._id });
-    res.render('user/editprofile', { userdata, address, title: 'Update profile' });
-  } catch (error) {
-    errorHandler(error, req, res);
-  }
-};
+// const updateprofile = async (req, res) => {
+//   console.log("haiiiii")
+//   try {
+//     const userdata = req.session.user;
+//     const address = await Address.find({ userId: userdata._id });
+//     res.render('user/editprofile', { userdata, address, title: 'Update profile' });
+//   } catch (error) {
+//     errorHandler(error, req, res);
+//   }
+// };
 
 // ************************post updateprofile section*************************//
 const updatedprofile = async (req, res) => {
@@ -47,8 +48,15 @@ const updatedprofile = async (req, res) => {
     const user = await User.findById(id);
     req.session.user = user;
     const userdata = req.session.user;
+    // const address = await Address.find({ userId: userdata._id });
+    const userdetail = await User.findById(userdata._id);
+    const historysort = userdetail.walletHistory.sort((a, b) => new Date(b.time) - new Date(a.time));
     const address = await Address.find({ userId: userdata._id });
-    res.render('user/profile', { userdata, address });
+    res.render('user/profile', {
+      userdata: userdetail, address, walletamount: userdetail.wallet, wallethistory: historysort, title: 'Profile',
+    });
+
+    // res.render('user/profile', { userdata, address });
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -119,7 +127,7 @@ const updatedAddress = async (req, res) => {
 module.exports = {
   updatedprofile,
   profile,
-  updateprofile,
+  // updateprofile,
   createAddress,
   removeAddress,
   updateAddress,

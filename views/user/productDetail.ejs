@@ -11,13 +11,13 @@
     cursor: crosshair;
   }
   .popup {
-    width: 40%;
+    width: 100%;
     padding: 5px 15px;
     color: green;
     font-weight: 500;
   }
   .removepopup {
-    width: 40%;
+    width: 100%;
     padding: 5px 15px;
     color: rgb(229, 94, 49);
     font-weight: 500;
@@ -121,16 +121,6 @@
   <i class="me-1 fa fa-shopping-basket"></i>
 </button>
  <% } %>
-<!--  -->
-          <!-- <button
-            class="btn btn-primary shadow-0"
-            onclick="handleclcik('<%= locals.details._id %>')" >
-            add to cart
-            <i class="me-1 fa fa-shopping-basket"></i>
-          </button>
- -->
-
-
 
           <button
             class="btn btn-success shadow-0"
@@ -140,9 +130,10 @@
             wishlist
           </button>
         </div>
-          <div><p class="popup" id="popup"></p></div>
+          <div class="col-12"><p class="popup" id="popup"></p></div>
+         
       </main>
- 
+
     </div>  
   </div>
  
@@ -190,8 +181,7 @@
     <h3>Reviews </h3>
       <div class="row mb-4 " >  
         <div class="col-5 m-auto text-center">
-
-          
+        
            <input type="text" placeholder="add review" class="form-control" id="reviewInput">
 
             <button id="showaddbtn" class="btn btn-success mt-2" 
@@ -273,7 +263,7 @@ const handleEditvalue =(reviewIndex,prodId,message) => {
 const handleEditreview=async()=>{
   const review=JSON.parse(localStorage.getItem("review"))
   const reviewInput=document.getElementById("reviewInput").value
-await fetch('/furnica/editReview', {
+await fetch('/editReview', {
 method: 'POST',
 headers: {
  'Content-Type': 'application/json'
@@ -296,8 +286,7 @@ if(data==="success"){
 
 // delete review
 const handleDeletereview=async(reviewId,prodId)=>{
-
-  await fetch('/furnica/deleteReview', {
+  await fetch('/deleteReview', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -321,7 +310,7 @@ const handlereview=async(id,prodId,name)=>{
 
 const reviewInput=document.getElementById("reviewInput").value
 
-await fetch('/furnica/Addreview', {
+await fetch('/Addreview', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -348,7 +337,7 @@ name:name
 
   async function handlewish(id){
 
-    await fetch("/furnica/addwishlist", {
+    await fetch("/addwishlist", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -376,7 +365,7 @@ name:name
 
   async function handleclcik(id) {
   
-    await fetch("/furnica/addtoCart", {
+    await fetch("/addtoCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -389,7 +378,6 @@ name:name
       .then((data) => {
         const popups = document.getElementById("popup");
         if (data == "alreadyAdded") {
-
           popups.innerHTML = "item already added";
         } else {
           popups.innerHTML = "item added to cart";

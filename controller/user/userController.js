@@ -61,7 +61,7 @@ const doSignup = async (req, res) => {
       const dbotp = await usermodel.findOne({ email: req.session.signupOtp });
       await userHelper.verifyEmail(req.session.signupOtp, dbotp.otp);
 
-      res.redirect('/furnica/getOtp');
+      res.redirect('/getOtp');
     } else {
       res.render('user/signup', { errorDetail: 'email already exist' });
     }
@@ -87,7 +87,7 @@ const submitOtp = async (req, res) => {
   try {
     const enterOtp = req.body.otp;
     const DBopt = await User.findOne({ email: req.session.signupOtp });
-    if (enterOtp === DBopt.otp) {
+    if (enterOtp == DBopt.otp) {
       req.session.sigupUser.isVerified = true;
       const alldata = req.session.sigupUser;
 
@@ -139,9 +139,9 @@ const submitOtp = async (req, res) => {
       req.session.sigupUser = null;
       req.session.signupOtp = null;
       req.session.refferal = null;
-      res.redirect('/furnica/login');
+      res.redirect('/login');
     } else {
-      res.render('user/Otpsubmit', { errorotps: 'Invalid OTP' });
+      res.render('user/otpsubmit', { errorotps: 'Invalid OTP' });
     }
   } catch (error) {
     errorHandler(error, req, res);
@@ -181,19 +181,19 @@ const doLogin = async (req, res) => {
           if (!isBlocked) {
             req.session.LoggedIn = true;
             req.session.user = userData;
-            res.redirect('/furnica/home');
+            res.redirect('/');
           } else {
             userData = null;
             req.session.userBlocked = true;
-            res.redirect('/furnica/login');
+            res.redirect('/login');
           }
         } else {
           req.session.mailErr = true;
-          res.redirect('/furnica/login');
+          res.redirect('/login');
         }
       } else {
         req.session.mailErr = true;
-        res.redirect('/furnica/login');
+        res.redirect('/login');
       }
     } else {
       res.render('user/login');
@@ -212,7 +212,7 @@ const resendOtop = async (req, res) => {
     );
     const DBopt = await usermodel.findOne({ email: req.session.signupOtp });
     await userHelper.verifyEmail(req.session.signupOtp, DBopt.otp);
-    res.redirect('/furnica/getOtp');
+    res.redirect('/getOtp');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -229,7 +229,7 @@ const getOtp = async (req, res) => {
 const userlogout = async (req, res) => {
   try {
     req.session.user = null;
-    res.redirect('/furnica/login');
+    res.redirect('/login');
   } catch (error) {
     errorHandler(error, req, res);
   }

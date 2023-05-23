@@ -263,7 +263,7 @@ const wishlistToCart = async (req, res) => {
       );
     }
     await userDatas.save();
-    res.redirect('/furnica/wishlist');
+    res.redirect('/wishlist');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -302,7 +302,7 @@ const removeWishlist = async (req, res) => {
     const userData = await User.findById(userId);
     userData.wishlist.splice(index, 1);
     await userData.save();
-    res.redirect('/furnica/wishlist');
+    res.redirect('/wishlist');
   } catch (error) {
     errorHandler(error, req, res);
   }

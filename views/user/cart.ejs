@@ -10,7 +10,9 @@ border: none;
 padding: 10px;
 border-radius: 10px;
 }
-
+.cartimg{
+  max-width: 500px;
+}
 </style>
 
 <section class="h-100 gradient-custom">
@@ -29,25 +31,42 @@ border-radius: 10px;
 <% for( let index = 0; index < cart.length; index++ ) { %>
 
 <div class="row mb-3" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;padding: 10px; border-radius: 10px;">
-<div class="col-5  col-lg-4 col-md-12 ">
-<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-<img src="/uploads/<%= locals.cart[index].product.imageUrl[0] %>"
-class="w-100" />
-<a href="#!">
-<div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-</a>
+<div class="col-10 m-auto  col-lg-4 col-md-12 ">
+<img  src="/uploads/<%= locals.cart[index].product.imageUrl[0] %>" class="img-fluid" />
 </div>
 
+<div class="col-12  col-lg-5 col-md-10 mb-4 mb-lg-0 mt-lg-0 mt-3 ">
+<div class="row ">
+  <div class="col-9">
+    <h5><strong>  <%= locals.cart[index].product.name %></strong></h5>
+  </div>
+  <div class="col-3">
+    <div class="col-12 col-lg-2 col-md-2 mt-lg-0 text-end ">
+      <button type="button" class=" btndesign btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+      onclick="removercart('<%= locals.cart[index].product._id %>')"  title="Remove item">
+      <i class="fas fa-trash"></i>
+      </button>
+    
+    <div >
+    
+    <span id="stocklimit+<%= locals.cart[index].product._id %>" style="color: rgb(245, 106, 106);"></span>
+    </div>
+    
+    </div>
+  </div>
 </div>
 
-<div class="col-5  col-lg-5 col-md-6 mb-4 mb-lg-0">
+  <p class="text-muted"><span class="text-dark ">Color: </span><%= locals.cart[index].product.color %></p>
 
-<p><strong>  <%= locals.cart[index].product.name %></strong></p>
-<p>Color:<%= locals.cart[index].product.color %></p>
-<p>Material: <%= locals.cart[index].product.material %></p>
-<p>Price:<i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.cart[index].product.price %></p>
 
-<div class="d-flex mb-4" style="max-width: 300px">
+  <p class="text-muted"> <span class="text-dark">Material:</span>  <%= locals.cart[index].product.material %></p>
+
+
+<p>Price:  <span style="font-weight: 600;" class="text-muted"><i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.cart[index].product.price %></span> </p>
+
+
+
+<div class="d-flex " style="max-width: 300px">
 
   <button class="btndesign btn-sm me-1 mb-2"
   
@@ -61,21 +80,15 @@ class="w-100" />
   onclick="handlequantity('<%= locals.cart[index].product._id %>','increment')">
   <i class="fas fa-plus"></i>
   </button>
+
   </div>
 </div>
 
-<div class="col-2 col-lg-2 col-md-6 mb-4 mb-lg-0">
-  <button type="button" class=" btndesign btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-  onclick="removercart('<%= locals.cart[index].product._id %>')"  title="Remove item">
-  <i class="fas fa-trash"></i>
-  </button>
 
-<div >
 
-<span id="stocklimit+<%= locals.cart[index].product._id %>" style="color: rgb(245, 106, 106);"></span>
-</div>
 
-</div>
+
+
 </div>
 <% } %>
 
@@ -174,7 +187,7 @@ class="list-group-item d-flex justify-content-between align-items-center border-
 
 <!--  -->
 
-<a href="/furnica/checkout" style="text-decoration: none;">
+<a href="/checkout" style="text-decoration: none;">
 <button type="button" class="btndesign btn-lg btn-block">
 Go to checkout
 </button>
@@ -236,7 +249,7 @@ clearhidding.style.display="block"
 // apply coupon
 const handleApplyCoupon=async()=>{
 const couponvalue=document.getElementById("inputCouponName").value
-  await fetch('/furnica/mycoupon', {
+  await fetch('/mycoupon', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'
@@ -278,7 +291,7 @@ const handleClearCoupon=async()=>{
   const couponvalue=document.getElementById("inputCouponName").value
 
 const productSubtotal=document.getElementById("productSubtotal").innerHTML
-  await fetch('/furnica/clearCoupon', {
+  await fetch('/clearCoupon', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'
@@ -311,7 +324,7 @@ document.getElementById("inputCouponName").value=""
 
   // ====================================
 const removercart=async(id)=>{
-await fetch('/furnica/removeCart', {
+await fetch('/removeCart', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'
@@ -334,7 +347,7 @@ window.location.reload()
 async  function handlequantity(id,val){
 let selectedCoupons=JSON.parse(localStorage.getItem("selectedCoupons"))||""
 var qunty=document.getElementById(`quantitynumber${id}`)
-await fetch('/furnica/quantity', {
+await fetch('/quantity', {
 method: 'POST',
 headers: {
 'Content-Type': 'application/json'

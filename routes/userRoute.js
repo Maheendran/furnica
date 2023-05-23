@@ -22,7 +22,7 @@ const {
 
 dotenv.config();
 const userRoute = express.Router();
-userRoute.get('/',userController.homePage);
+// userRoute.get('/',userController.homePage);
 // =====================signup section=================//
 userRoute.get('/signup', isLogin, userController.usersignup);
 userRoute.post('/signup', userController.doSignup);
@@ -37,16 +37,6 @@ userRoute.get('/login', isLogin, userController.userLogin);
 userRoute.post('/login', userController.doLogin);
 userRoute.get('/logout', userController.userlogout);
 
-// =====================home section=================//
-
-userRoute.get('/home', userController.homePage);
-userRoute.get('/Allproducts', userController.Allproducts);
-userRoute.get('/products/:category', userController.quaryProducts);
-userRoute.get('/detail/:id', userController.productDetail);
-// ===============review===============//
-userRoute.post('/Addreview', userController.Addreview);
-userRoute.post('/deleteReview', userController.deletereview);
-userRoute.post('/editReview', userController.editreview);
 // =====================forgotpassword section=================//
 userRoute.get('/forgotPassword', isLogin, forgotpassController.mailSubmit);
 userRoute.post('/forgotPassword', forgotpassController.postMailSubmit);
@@ -55,6 +45,18 @@ userRoute.post('/otp', isOtp, forgotpassController.postOtppage);
 userRoute.get('/resetPassword', isOtp, forgotpassController.resetPasswordpage);
 userRoute.post('/resetPassword', forgotpassController.postResetpass);
 userRoute.get('/otpResend', isOtp, forgotpassController.resendOtp);
+
+// =====================home section=================//
+
+userRoute.get('/', userController.homePage);
+userRoute.get('/Allproducts', userController.Allproducts);
+userRoute.get('/products/:category', userController.quaryProducts);
+userRoute.get('/detail/:id', userController.productDetail);
+// ===============review===============//
+userRoute.post('/Addreview', userController.Addreview);
+userRoute.post('/deleteReview', userController.deletereview);
+userRoute.post('/editReview', userController.editreview);
+
 
 // ===============cart section===============/
 userRoute.get('/cart', loggedin, cartController.cartLoading);
@@ -69,7 +71,7 @@ userRoute.get('/removeWishlist/:id/:index', loggedin, cartController.removeWishl
 userRoute.get('/wishlistToCart/:id/:index', loggedin, cartController.wishlistToCart);
 // ===============user profile===============//
 userRoute.get('/profile', loggedin, profileController.profile);
-userRoute.get('/updateprofile/:id', loggedin, profileController.updateprofile);
+// userRoute.get('/updateprofile/:id', loggedin, profileController.updateprofile);
 userRoute.post('/updatedprofile/:id', loggedin, profileController.updatedprofile);
 //= ============== address===============//
 userRoute.post('/createAddress', loggedin, profileController.createAddress);

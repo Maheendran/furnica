@@ -324,14 +324,12 @@
         </button>
       </div>
       <div class="modal-body">
-
-
 <div class="container">
  
     <% for( let index = 0; index < cart.length; index++ ) { %>
      <div class="row">
-<div class="col-2">
-  <img class="img-fluid" src="/uploads/<%= locals.cart[index].product.imageUrl[0]  %>" alt="">
+<div class="col-5">
+  <img class="img-fluid" style="width: 60%; height: 75px;" src="/uploads/<%= locals.cart[index].product.imageUrl[0]  %>" alt="">
 </div>
 <div class="col-9">
   <div class="row">
@@ -353,7 +351,7 @@
 <p>Total amount: <span style="font-weight: 600;">
   <i class="fa-solid fa-indian-rupee-sign"></i>
 </span>
-<span id="popuptotoal"></span>
+<span style="font-weight: 600;" id="popuptotoal"></span>
 </p>
 
 
@@ -415,7 +413,7 @@ uaddress.trim()
 
 modalupdatebtn.addEventListener('click', async function() {
 
-   await fetch("/furnica/updateAddress", {
+   await fetch("/updateAddress", {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
@@ -446,7 +444,7 @@ modalupdatebtn.addEventListener('click', async function() {
 
 // remove address
 const handleRemove=async(id)=>{
-  await fetch('/furnica/removeAddress', {
+  await fetch('/removeAddress', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -472,7 +470,7 @@ const pin=document.getElementById("postcode").value
 const state=document.getElementById("state").value
 const city=document.getElementById("area").value
 const country=document.getElementById("country").value
-await fetch('/furnica/createAddress', {
+await fetch('/createAddress', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -526,7 +524,7 @@ pay=true
       showPendingMoney.innerHTML=`Pay <i class="fa-solid fa-indian-rupee-sign"></i> ${ Math.abs( walletamount.innerHTML-(lastprice))}/-`
       showPendingMoney.style.color="green"
       pay=false
-      // const placeorder_btn=document.getElementById("placeorder_btn")
+     
       placeorder_btn.setAttribute("disabled", true);
       placeorder_btn.style.backgroundColor="grey"
     }
@@ -536,7 +534,7 @@ pay=true
    checkbtn()
   });
 });
- // handle pending wallte amount to cod or gapy
+
 const handlePendingAmount=(payment)=>{
 localStorage.setItem("walletPayed",JSON.stringify("true"))
   pay=true
@@ -547,8 +545,6 @@ let method=document.getElementById("popup_payment")
 method.innerHTML=payment
 checkbtn()
 }
-
-
 // address section
 const radioButtons = document.querySelectorAll('input[name="address"]');
   var selectedValue;
@@ -569,7 +565,7 @@ const checkbtn=()=>{
 
 const handleorder=async()=>{
 
-await fetch('/furnica/checkStock', {
+await fetch('/checkStock', {
  method: 'GET',
  headers: {
    'Content-Type': 'application/json'
@@ -592,21 +588,15 @@ wallet(subtotal)
 }
 else{
   localStorage.setItem("outofstock",JSON.stringify(true))
-  window.location.href="/furnica/cart"
+  window.location.href="/cart"
 }
 
 })
-
-
-
-
 }
 
-
-// wallet amount control
 const wallet=async(subtotal)=>{
 
-  await fetch('/furnica/walletamount', {
+  await fetch('/walletamount', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -627,7 +617,7 @@ const wallet=async(subtotal)=>{
 // payment
 async function payments(subtotal){
 
-let response= await fetch("/furnica/payment", {
+let response= await fetch("/payment", {
    method: "POST",
    headers: {
      "Content-Type":"application/json",
@@ -659,9 +649,7 @@ const handleOrders=async(subtotal)=>{
   let addressId = document.querySelector('input[name="address"]:checked').value;
   let paymentvalue=document.getElementById("popup_payment").innerHTML
 
-
-
-  await fetch('/furnica/checkout', {
+  await fetch('/checkout', {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -677,8 +665,8 @@ const handleOrders=async(subtotal)=>{
  )
 }).then((res)=>res.json()).then((data)=>{
   if(data==="success"){
-  
-    window.location.href='/furnica/success'
+
+    window.location.href='/success'
     localStorage.setItem('subtotal',JSON.stringify(0));
     localStorage.setItem('selectedCoupons',JSON.stringify(0));
   }
