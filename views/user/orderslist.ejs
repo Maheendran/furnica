@@ -151,10 +151,10 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
 <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
 <div class="col-12 img_scroll" 
-style="display: flex;overflow: scroll; ">
+style="display: flex;overflow: scroll;height: 100px;gap: 3px; ">
 <% for( let index = 0; index < orders[i].product.length; index++) { %>
 
-<img  class="img-fluid  " style="width: 100%;height: 100%;border-radius: 10px;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
+<img  class="img-fluid  " style="width: 100px;height: 100%;border-radius: 10px;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
 
 <% } %>     
 </div>

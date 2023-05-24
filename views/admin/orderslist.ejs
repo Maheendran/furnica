@@ -1,100 +1,111 @@
 <%- include('../htmlbody/Adminheader') -%>
-    <main>
-    <table class="table" id="myTable">
-    <thead>
-    <tr>
-    <th>#</th>
-    <th>IMAGE</th>
-    <th>NAME</th>
-    <th>USERID</th>
-    <th>PRICE </th>
-    <th>ACTION</th>
-    <th>MORE</th>
-    </tr>
-    </thead>
-    <tbody class="table-border-bottom-0">
 
-    <%if(orders.length>0)  {%>
-    <%for(let i=0;i <orders.length; i++){%>
-
-    <tr>
-    <td><%= [i+1] %></td>
-
-    <td>
-    <div class="col-sm-10 col-12 " style="display: flex;">
-    <% for( let index = 0; index < orders[i].product.length; index++) { %>
-
-    <img class="img-fluid" style="height: 40px;width: 70%;border-radius: 10px;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
-
-    <% } %>     
- </div>
-
-    </td>
-
-    <td>
-    <p>
-    <%= orders[i].name %>
-    </p>
-    </td>
-
-    <td>
-    <p>
-    <%= orders[i]._id %>
-    </p>
-    </td>
-    <td>
-    <p>Rs 
-    <%= orders[i].total %>
-    </p>
-    </td>
-    <td>
-    <p>
-
- <% if (orders[i].status=="Cancelled") { %>
-                <button type="button" disabled class="btn btn-danger rounded-pill">
-                cancelled
-                  </button>
-              <% } else { %>
-
-   <select class="rounded-pill px-2" id="statusbar<%= orders[i]._id%>" onchange="handlestatus('<%= orders[i]._id%>')" 
-style="border: none;outline: none; height: 40px;" >
-<option value="<%= orders[i].status%>"  style="background-color: rgb(114, 232, 224);"> <%= orders[i].status%> (C)</option>
-<option value="Order placed">Order placed</option>
-  <option value="Order Shipped">Order Shipped</option>
- <option value="Out for delivery">Out for delivery</option>
- <option value="Order Arrived">Order Arrived</option>
- <option value="Cancelled">Cancelled</option>
-     </select>
-              <% } %>
-    </td>       
-    <td>
-        <% if (orders[i].status=="Cancelled") { %>
-          <a href="/admin/orderdetail/<%= orders[i]._id%>">
-            <button class="btn btn-light rounded-pill">details</button></a>
-            <i style="cursor: pointer;font-size: 1.5rem;" class="fa-regular fa-circle-xmark m-auto"  onclick="handleOrderRemove('<%= orders[i]._id %>')"></i>
+    <!--  -->
+    <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Orders list</h4>
         
-          <% } else { %>
-            <a href="/admin/orderdetail/<%= orders[i]._id%>">
-              <button class="btn btn-light rounded-pill">details</button></a>
-          <% } %>
-    </td>  
-    </tr>
-    <% } %>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>IMAGE</th>
+                    <th>NAME</th>
+                    <th>USERID</th>
+                    <th>PRICE </th>
+                    <th>ACTION</th>
+                    <th>MORE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if(orders.length>0)  {%>
+                    <%for(let i=0;i <orders.length; i++){%>
+                
+                    <tr>
+                    <td><%= [i+1] %></td>
+                
+                    <td  >
+                    <div class="col-sm-4 col-12 " style="display: flex;gap: 3px;">
+                    <% for( let index = 0; index < orders[i].product.length; index++) { %>
+                    <img  style="height: 70px;max-width: 70px;min-width: 70px ;border-radius: 50%;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
+                
+                    <% } %>     
+                 </div>
+                
+                    </td>
+                
+                    <td>
+                    <p>
+                    <%= orders[i].name %>
+                    </p>
+                    </td>
+                
+                    <td>
+                    <p>
+                    <%= orders[i]._id %>
+                    </p>
+                    </td>
+                    <td>
+                    <p>Rs 
+                    <%= orders[i].total %>
+                    </p>
+                    </td>
+                    <td>
+                    <p>
+                
+                 <% if (orders[i].status=="Cancelled") { %>
+                                <button type="button" disabled class="btn btn-danger rounded-pill">
+                                cancelled
+                                  </button>
+                              <% } else { %>
+                
+                   <select class="rounded-pill px-2" id="statusbar<%= orders[i]._id%>" onchange="handlestatus('<%= orders[i]._id%>')" 
+                style="border: none;outline: none; height: 40px;" >
+                <option value="<%= orders[i].status%>"  style="background-color: rgb(114, 232, 224);"> <%= orders[i].status%> (C)</option>
+                <option value="Order placed">Order placed</option>
+                  <option value="Order Shipped">Order Shipped</option>
+                 <option value="Out for delivery">Out for delivery</option>
+                 <option value="Order Arrived">Order Arrived</option>
+                 <option value="Cancelled">Cancelled</option>
+                     </select>
+                              <% } %>
+                    </td>       
+                    <td style="position:relative">
+                        <% if (orders[i].status=="Cancelled") { %>
+                          <a href="/admin/orderdetail/<%= orders[i]._id%>">
+                            <button class="btn btn-light rounded-pill">details</button></a>
+                            <i style="cursor: pointer;font-size: 1.5rem; position: absolute;right: -20px;" class="fa-regular fa-circle-xmark m-auto"  onclick="handleOrderRemove('<%= orders[i]._id %>')"></i>
+                        
+                          <% } else { %>
+                            <a href="/admin/orderdetail/<%= orders[i]._id%>">
+                              <button class="btn btn-light rounded-pill">details</button></a>
+                          <% } %>
+                    </td>  
+                    </tr>
+                    <% } %>
+                
+                    <%}else{%>
+                    <tr>
+                    <td colspan="5">products note found</td>
+                
+                    </tr>
+                    <% } %>
+                
+                
 
-    <%}else{%>
-    <tr>
-    <td colspan="5">products note found</td>
-
-    </tr>
-    <% } %>
-
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
 
-    </tbody>
-    </table>
- 
-    </main>
-    
+    </div>
+
+</div>
 
     <%- include('../htmlbody/AdminFooter') -%>
     <script>

@@ -122,8 +122,9 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
     <% for( let index = 0; index < orders.product.length; index++) { %>
         <div class="row context_box mb-2 ">
 
-      <div class="col-6 col-sm-3">
-    <img  class="img-fluid " style="border-radius: 10px;" src="/uploads/<%= orders.product[index].image  %>" alt="">
+  
+        <div class="col-6 col-sm-3" style="border-radius: 10px; height: 100px;min-height: 130px;max-width: 130px;">
+          <img  class="img-fluid " style="height: 100%;width: 100%;"  src="/uploads/<%= orders.product[index].image  %>" alt="">
           </div>
 
           <div class="col-lg-6 col-5">
@@ -346,6 +347,9 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
         </div>
 
     </div></div>
+
+
+    
 <%- include('../htmlbody/footer') -%> 
 <script>
 

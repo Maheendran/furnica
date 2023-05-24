@@ -18,7 +18,7 @@ const adminlogedin = async (req, res) => {
     if (username === process.env.adminUsername) {
       if (password === process.env.adminPassword) {
         req.session.admin = process.env.adminUsername;
-        res.redirect('/admin/dashboard');
+        res.redirect('/admin');
       } else {
         res.render('admin/login', { errorDetail: 'password not match' });
       }

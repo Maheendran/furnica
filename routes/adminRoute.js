@@ -24,7 +24,7 @@ adminRoute.get('/logout', userController.adminlogout);
 
 // ************************dashboard section*************************//
 
-adminRoute.get('/dashboard', adminAuth.isLogin, dashboardController.dashboard);
+adminRoute.get('/', adminAuth.isLogin, dashboardController.dashboard);
 adminRoute.get('/pdfconvert', adminAuth.isLogin, dashboardController.pdfconvert);
 adminRoute.post('/chart', adminAuth.isLogin, dashboardController.chartdata);
 adminRoute.get('/salesreport/:duration', adminAuth.isLogin, dashboardController.salesreport);
