@@ -3,6 +3,9 @@
 const Product = require('../../models/productModel.js');
 const Category = require('../../models/categoryModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
+
+const cloudinary = require('cloudinary').v2;
+
 // ************************Products page section*************************//
 const getProducts = async (req, res) => {
   try {
@@ -16,10 +19,25 @@ const getProducts = async (req, res) => {
 // ************************create Products section*************************//
 const createProduct = async (req, res) => {
   try {
-    const images = req.files.map((file) => file.filename);
+  
     const existName = await Product.find({
       name: { $regex: new RegExp(req.body.name, 'i') },
     });
+
+    //
+
+    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(file.path, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      });
+    }));
+
+    const images = await Promise.all(uploadPromises);
+    //
     const products = await Product.find();
     const category = await Category.find();
     if (existName.length === 0) {
@@ -48,8 +66,7 @@ const createProduct = async (req, res) => {
           'offer.offerpercent': 0,
           'offer.realprice': req.body.price,
         });
-        productData
-          .save()
+        productData.save()
           .then(() => {
             res.redirect('/admin/productlist');
           })
@@ -117,7 +134,20 @@ const productUpdated = async (req, res) => {
     const { files } = req;
     let updImages = [];
     if (files && files.length > 0) {
-      const newImages = req.files.map((file) => file.filename);
+      // const newImages = req.files.map((file) => file.filename);
+      // 
+      const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      }));
+  
+      const newImages = await Promise.all(uploadPromises);
+      // 
       updImages = [...exImage, ...newImages];
       product.imageUrl = updImages;
     } else {

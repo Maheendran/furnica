@@ -10,6 +10,8 @@ const cors = require('cors');
 const { connectDB } = require('./mongodb/mongoconnect.js');
 const userRoute = require('./routes/userRoute');
 const adminRoute = require('./routes/adminRoute.js');
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -43,4 +45,9 @@ app.use((req, res, next) => {
 connectDB();
 app.listen(3000, () => {
   console.log('port is connected');
+});
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
