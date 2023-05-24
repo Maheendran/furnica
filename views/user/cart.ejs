@@ -13,6 +13,16 @@ border-radius: 10px;
 .cartimg{
   max-width: 500px;
 }
+.cartimage{
+  height: 25vh;
+}
+@media only screen and (max-width : 480px) {
+
+  .cartimage{
+  height: 30vh;
+
+}
+}
 </style>
 
 <section class="h-100 gradient-custom">
@@ -20,19 +30,18 @@ border-radius: 10px;
 <div class="container ">
 <div class="row d-flex justify-content-center my-4">
 <div class="col-md-8">
-<div class="card mb-4">
-<div class="card-header py-3">
+<div class="card">
+<div class="card-header ">
 <h5 class="mb-0">Cart - <%= locals.cartitemCount  %> items</h5><div id="outofstock" style="color: red;"></div>
 </div>
 
 <div class="card-body">
-<hr class="my-4" />
-<!-- Single item -->
+
 <% for( let index = 0; index < cart.length; index++ ) { %>
 
 <div class="row mb-3" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;padding: 10px; border-radius: 10px;">
-<div class="col-10 m-auto  col-lg-4 col-md-12 ">
-<img  src="/uploads/<%= locals.cart[index].product.imageUrl[0] %>" class="img-fluid" />
+<div class="col-10 m-auto  col-lg-4 col-md-12 cartimage ">
+<img class="img-fluid" style="width: 100%;height: 100%;"  src="/uploads/<%= locals.cart[index].product.imageUrl[0] %>"  />
 </div>
 
 <div class="col-12  col-lg-5 col-md-10 mb-4 mb-lg-0 mt-lg-0 mt-3 ">
@@ -159,7 +168,7 @@ class="list-group-item d-flex justify-content-between align-items-center border-
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header m-auto">
-          <h4 class="modal-title" id="exampleModalLongTitle">Avilable coupons</h4>
+          <h4 class="modal-title" id="exampleModalLongTitle">Coupons</h4>
 
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -171,11 +180,11 @@ class="list-group-item d-flex justify-content-between align-items-center border-
         <div class="modal-body ">
          
             <% for( let index = 0; index < avilableCoupon.length; index++ ) { %>
-                <div class="col-5 m-auto text-start">
-                    <input class="mt-4" style="width: 20px;height: 20px;margin-right: 10px;" type="radio" name="coupon"
+                <div class="col-12 m-auto text-center">
+                    <input class="mt-2" style="width: 20px;height: 20px;margin-right: 10px;" type="radio" name="coupon"
                      value="<%= locals.avilableCoupon[index].code%>">
                     <span id="couponName">
-                        <%= locals.avilableCoupon[index].code  %> <span><i style="color: rgb(70, 236, 70);" class="fa-solid fa-tag"></i></span>
+                        <%= locals.avilableCoupon[index].code  %> <span> <i style="color: rgb(243, 134, 134);" class="fa-solid fa-tag"></i></span>
                     </span>
                     <input type="text" class="d-none" id value="<%[index] %>">
                 </div>

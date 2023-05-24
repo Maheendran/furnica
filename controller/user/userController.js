@@ -262,12 +262,14 @@ const Allproducts = async (req, res) => {
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
     const pageData = productList.slice(startIndex, endIndex + 1);
+    const category = await Category.find();
     res.render('user/productlist', {
       productList: pageData,
       userdata,
       totalPages,
       pageNumber,
       title: 'Products',
+      category,
     });
   } catch (error) {
     errorHandler(error, req, res);
@@ -317,7 +319,10 @@ const productDetail = async (req, res) => {
     }
     const data = await Product.find({ _id: param });
     const Listreview = data[0].review;
-    res.render('user/productDetail', {
+    // res.render('user/productDetail', {
+    //   details, categoryData, reviewlist, userdata, Listreview, title: 'Product detail',
+    // });
+    res.render('user/productsdetails', {
       details, categoryData, reviewlist, userdata, Listreview, title: 'Product detail',
     });
   } catch (error) {

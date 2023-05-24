@@ -21,12 +21,14 @@ adminRoute.get('/image', (req, res) => {
 adminRoute.get('/login', adminAuth.isLogout, userController.adminlogin);
 adminRoute.post('/login', userController.adminlogedin);
 adminRoute.get('/logout', userController.adminlogout);
+
 // ************************dashboard section*************************//
 
 adminRoute.get('/dashboard', adminAuth.isLogin, dashboardController.dashboard);
 adminRoute.get('/pdfconvert', adminAuth.isLogin, dashboardController.pdfconvert);
 adminRoute.post('/chart', adminAuth.isLogin, dashboardController.chartdata);
 adminRoute.get('/salesreport/:duration', adminAuth.isLogin, dashboardController.salesreport);
+
 // ************************product section*************************//
 
 adminRoute.get('/addproduct', adminAuth.isLogin, productController.getProducts);
@@ -44,14 +46,15 @@ adminRoute.get('/updateCategory/:id', adminAuth.isLogin, categoryController.upda
 adminRoute.post('/updateCategory/:id', Upload.array('image', 1), categoryController.updatecategory);
 
 // ************************user section*************************//
-
 adminRoute.get('/users', adminAuth.isLogin, userController.usersList);
 adminRoute.get('/blockUser/:id', adminAuth.isLogin, userController.blockUser);
+
 // ************************orders section*************************//
 adminRoute.get('/orders', adminAuth.isLogin, OrderController.orderslist);
 adminRoute.get('/orderdetail/:id', adminAuth.isLogin, OrderController.orderdetail);
 adminRoute.post('/removerOrder', adminAuth.isLogin, OrderController.removerOrder);
 adminRoute.post('/updatestatus', adminAuth.isLogin, OrderController.updatestatus);
+
 // ************************coupon section*************************//
 adminRoute.get('/coupons', adminAuth.isLogin, couponController.coupons);
 adminRoute.post('/newcoupon', adminAuth.isLogin, couponController.newcoupon);

@@ -51,13 +51,13 @@ const createProduct = async (req, res) => {
         productData
           .save()
           .then(() => {
-            res.redirect('/furnica/admin/productlist');
+            res.redirect('/admin/productlist');
           })
           .catch(() => {
             res.render('user/error');
           });
       } else {
-        res.redirect('/furnica/admin/productlist');
+        res.redirect('/admin/productlist');
       }
     } else {
       res.render('admin/newProduct', {
@@ -158,7 +158,7 @@ const productUpdated = async (req, res) => {
       },
       { new: true },
     );
-    res.redirect('/furnica/admin/productlist');
+    res.redirect('/admin/productlist');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -169,7 +169,7 @@ const productdelete = async (req, res) => {
   try {
     const param = req.params.id;
     await Product.findByIdAndDelete(param);
-    res.redirect('/furnica/admin/productlist');
+    res.redirect('/admin/productlist');
   } catch (error) {
     errorHandler(error, req, res);
   }

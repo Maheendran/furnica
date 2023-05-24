@@ -38,6 +38,7 @@ userRoute.post('/login', userController.doLogin);
 userRoute.get('/logout', userController.userlogout);
 
 // =====================forgotpassword section=================//
+
 userRoute.get('/forgotPassword', isLogin, forgotpassController.mailSubmit);
 userRoute.post('/forgotPassword', forgotpassController.postMailSubmit);
 userRoute.get('/otp', isOtp, forgotpassController.otpPage);
@@ -56,7 +57,6 @@ userRoute.get('/detail/:id', userController.productDetail);
 userRoute.post('/Addreview', userController.Addreview);
 userRoute.post('/deleteReview', userController.deletereview);
 userRoute.post('/editReview', userController.editreview);
-
 
 // ===============cart section===============/
 userRoute.get('/cart', loggedin, cartController.cartLoading);

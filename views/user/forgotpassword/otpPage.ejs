@@ -40,10 +40,13 @@
               <div class="card-body p-md-5  overflow-hidden">
               
                 <div class="row justify-content-center">
-                  <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1">
-                    <p class="h2 mb-5 me-auto mx-1 mx-md-4 mt-4">OTP</p>
-
-                    <form method="post" action="/otp">
+                  <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1 text-center">
+    <div class="row">
+                <p>Please enter the one time password <br> to verify your account</p> 
+              
+    </div>
+                      
+                   <form method="post" action="/otp">
                       <div class="form-outline mb-4">
                         <input
                           type="text"
@@ -64,29 +67,30 @@
                       submit
                       </button>
                     </form>
-
-                    <div class="row m-auto" style="width: 90%;">
-                     
-
-                      <div class="col-4 text-center m-auto ">
+                  
+                       
+                    <div class="row m-auto" >
+                      <div class="col-8 text-center m-auto ">
                         <p>
                           Didn't get otp?
-
-                          <button
-                            id="resend_btn"
-                            class="btn rounded-pill"
-                            style="background-color: grey"
-                            onclick="setTime()"
-                          >
-                          
-                            <a class="mt-3" href="/otpResend">
-                              resend
-                            </a>
-                          </button>
-                        </p>
+                        </p> 
                       </div>
+                    <div class="row text-center">
+                      <div class="col-5   d-flex text-center m-auto ">
+                      <button
+                        id="resend_btn"
+                        class="btn rounded-pill m-auto"
+                        style="background-color: grey;"
+                        onclick="setTime()">
+                      
+                        <a class="mt-3" href="/otpResend">
+                          resend
+                        </a>
+                      </button>
+  </div>
 
-                      <div class="col-3 d-flex text-center " >
+</div>
+                      <div class="col-6 col-sm-3 d-flex text-center " >
                         <span>
                           <img id="timmer_img"
                             class="img-fluid timepiece"
@@ -100,6 +104,7 @@
 
                     </div>
                   </div>
+                  
                   <div
                     class="col-7 col-md-6 col-lg-6 col-xl-5 d-flex align-items-center position-relative overflow-hidden"
                   >
@@ -132,6 +137,8 @@
 
 <script>
 
+// 
+
 const setTime = () => {
     localStorage.setItem("startTime", new Date().toString());
   };
@@ -144,6 +151,7 @@ const setTime = () => {
     const otp_btn = document.getElementById("otp_btn");
 const timmer_img = document.getElementById("timmer_img")
     otp_btn.setAttribute("disabled", true);
+
     resend.setAttribute("disabled", true);
     resend.style.display="none";
 
@@ -174,8 +182,10 @@ console.log("diff",differenceInSeconds)
     }, 1000);
   })();
 
-  const handleinput = () => {
-    var otp_input = document.getElementById("otp_input").value;
+  function handleinput(){
+const otp_input=document.getElementById("otp_input").value;
+
+
 
     if (otp_input.length === 4) {
       otp_btn.removeAttribute("disabled");

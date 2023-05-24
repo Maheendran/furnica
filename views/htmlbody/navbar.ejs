@@ -9,17 +9,10 @@
     text-align: center;
     }
     .input_search{
-      width: 40%;
-      
-      position: relative;
 display: flex;
 justify-content: center;
     }
-    .input_search>button{
-position: absolute;
-right: 0;
 
-    }
  
     .nav_right_section>ul{
  
@@ -46,7 +39,7 @@ right: 0;
 
 
   </style>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
 
       <div class="col-6 col-sm-2 px-1">
@@ -70,7 +63,7 @@ right: 0;
       <p  class="mx-4 pt-1 pt-sm-1 pt-md-3 " style="cursor: pointer;"onclick="handleproduct()" >Best selling</p>
 
    </div>
-   <!--   -->
+ 
    <div class="nav_right_section">
       <ul class="navbar-nav d-flex" >
    
@@ -87,8 +80,7 @@ right: 0;
             <i class="fa-solid fa-user"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
-          <!-- <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink"> -->
-          
+         
     <% if (locals.userdata ) { %>
       <a href="/profile" style="text-decoration: none;color: black;">
    <button class="dropdown-item" type="button">Profile</button> </a>
@@ -121,7 +113,111 @@ right: 0;
 
       </ul>
     </div>
-  </nav>
+  </nav> -->
+  <!-- ============================== -->
+ <nav class="navbar navbar-expand-lg navbar-light bg-light text-center">
+
+
+      <div class="col-6 col-sm-2 px-1">
+        <a class="navbar-brand" href="/">
+      
+        <img class="img-fluid " style="width: 70%;" src="/assests/logo11.png" alt="">
+        </a>    
+        </div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mt-3 mt-sm-0" id="navbarNavDropdown">
+    
+        <div class="input_search col-12 col-sm-7  col-md-4 mx-auto">
+
+    
+        <input id="searchinput" type="text" class="form-control" placeholder="search">
+        <button onclick="handlesearch()" class="btn "><i class="fa-solid fa-magnifying-glass"></i></button> 
+      
+          </div>
+      
+      <ul class="navbar-nav mx-lg-auto mb-2 mb-lg-0 ">
+        <li class="nav-item mx-lg-4">
+          <a class="nav-link" href="#"  onclick="handleproduct()">Products</a>
+        </li>
+        <li class="nav-item mx-lg-4">
+          <a class="nav-link" href="#" onclick="handleproduct()">Best selling</a>
+                  </li>
+    </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-none d-lg-block" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user" style="font-size: 1.5rem;"></i>
+          </a>
+            <a class="nav-link dropdown-toggle d-lg-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Account
+          </a>
+   
+          <div class="dropdown-menu dropdown-menu-right">
+          
+            <% if (locals.userdata ) { %>
+                <button class="dropdown-item" type="button">
+  <a href="/profile" class="nav-link" >
+           Profile </a>
+
+                </button>
+            
+            <% } %>
+              
+            <% if (locals.userdata ) { %>
+              <button class="dropdown-item" type="button">
+             <a href="/orderslist" class="nav-link">Orders </a>
+          </button>
+             <% } %>
+           
+           
+             <% if (!locals.userdata ) { %>
+              <button class="dropdown-item" type="button">
+             <a href="/login"  class="nav-link"> Login  </a>
+             </button>
+             <% } %>
+            
+             <% if (!locals.userdata ) { %>
+              <button class="dropdown-item" type="button">
+               <a href="/signup"  class="nav-link">  Signup   </a>
+              </button>
+               <% } %>
+         
+         
+           <% if (locals.userdata ) { %>
+            <button class="dropdown-item" type="button">
+             <a class="nav-link" href="/logout">   
+              Logout
+                </a>
+              </button>
+               <% } %>
+                  </div>
+             
+     
+        </li>
+        <li class="nav-item">
+     
+
+          <a class="nav-link  d-lg-none" href="/cart">Cart</a>
+
+          <a class="nav-link d-none d-lg-block" href="/cart"><i style="font-size: 1.5rem;" class="fa-solid fa-cart-shopping"></i> </a>
+         
+        </li>
+        <li class="nav-item mx-4">
+          <a class="nav-link d-lg-none" href="/wishlist"> Wishlist</a>
+          <a class="nav-link d-none d-lg-block" href="/wishlist">    <i style="font-size: 1.5rem;" class="fa-solid fa-heart"></i></a>
+        </li>
+       
+      </ul>
+          
+          </div>
+   
+ 
+            </div>
+          </nav> 
   
 <script>
   
@@ -131,8 +227,6 @@ var searchValue=''
 var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"";
 var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
 var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
-
-
 const handleproduct=()=>{
   pagevalue= 1;
     localStorage.setItem('page', JSON.stringify(pagevalue));
@@ -146,7 +240,6 @@ const handleproduct=()=>{
 
 
 const handlesearch=async()=>{
-
 var searchinput=document.getElementById("searchinput").value;
 localStorage.setItem('search', JSON.stringify(searchinput));
 pagevalue= 1;
@@ -155,7 +248,5 @@ if(searchinput){
   const url = `/sorting?search=${searchinput}&category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&page=${pagevalue}`;
           window.location.href = url;
 }
-
-
 }
   </script>

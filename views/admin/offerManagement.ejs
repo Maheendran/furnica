@@ -8,8 +8,6 @@
     }
 </style>
                 <main>
-
-
             <div class="container" >
                 <h3 class="m-auto text-center mt-2 ">Create offer</h3>
         <div class="col-sm-6   col-12 m-auto ">
@@ -33,7 +31,6 @@
         </div>
         <div class="col-4">
              <p><%= locals.products[index].name  %> </p>
-    
         </div>
        
     </div>
@@ -58,11 +55,6 @@
 <p id="offerproduct" style="color: rgb(244, 92, 92);"></p>
     </div>
     </div>
-    <!--  -->
-   
- 
-
-
 </div>
 
 <!-- ?category -->
@@ -175,7 +167,7 @@
 
 // deleete pro
 const handledeleteProoffer=async(id)=>{
-    await fetch("/furnica/admin/deleteProductOffer", {
+    await fetch("/admin/deleteProductOffer", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",
@@ -199,7 +191,7 @@ const handleProductOffer=async()=>{
     const offeramount=document.getElementById("proofferamount").value
     const startdate=document.getElementById("prostartdate").value
     const enddate=document.getElementById("proenddate").value 
-    await fetch("/furnica/admin/productOffer", {
+    await fetch("/admin/productOffer", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",
@@ -222,9 +214,6 @@ setTimeout(()=>{
 },2000)
     }
  })
-
-
-
 }
 
 const handleProductSelect=(name)=>{
@@ -237,7 +226,7 @@ const handleProductSelect=(name)=>{
 // delete offer
 const handledeleteCatoffer=async(id)=>{
 
-    await fetch("/furnica/admin/deleteOffer", {
+    await fetch("/admin/deleteOffer", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",
@@ -280,7 +269,7 @@ const handleCategoryOffer=async()=>{
     const offeramount=document.getElementById("offeramount").value
     const startdate=document.getElementById("startdate").value
     const enddate=document.getElementById("enddate").value
-    await fetch("/furnica/admin/categoryOffer", {
+    await fetch("/admin/categoryOffer", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",
@@ -305,21 +294,10 @@ setTimeout(()=>{
 
 }
 
-
-
-
-
-
-
-
-
-
-
-// ======================================
 // delete coupon
 const handleCoupondelete=async(id)=>{
   
-    await fetch(`/furnica/admin/couponDelete?code=${id}`, {
+    await fetch(`/admin/couponDelete?code=${id}`, {
    method: "GET",
    headers: {
      "Content-Type": "application/json",
@@ -345,7 +323,7 @@ const date=document.getElementById("date").value
 const percent=document.getElementById("percent").value
 const category=document.getElementById("category").value
 const product=document.getElementById("product").value
-await fetch("/furnica/admin/newcoupon", {
+await fetch("/admin/newcoupon", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",

@@ -17,7 +17,7 @@ const newbanner = async (req, res) => {
       link: req.body.link,
     });
     BannerData.save();
-    res.redirect('/furnica/admin/banner');
+    res.redirect('/admin/banner');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -56,7 +56,7 @@ const postupdatebanner = async (req, res) => {
       },
       { new: true },
     );
-    res.redirect('/furnica/admin/banner');
+    res.redirect('/admin/banner');
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -65,7 +65,7 @@ const deletebanner = async (req, res) => {
   try {
     const { bannerId } = req.query;
     await Banner.findByIdAndDelete(bannerId);
-    res.redirect('/furnica/admin/banner');
+    res.redirect('/admin/banner');
   } catch (error) {
     errorHandler(error, req, res);
   }

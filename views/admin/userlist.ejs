@@ -37,24 +37,15 @@
                                   
                                    <td>
                                       <% if (users[i].isBlocked) { %>
-                                          <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" >
+                                          <a href="/admin/blockUser/<%= locals.users[i]._id  %>" >
                                               <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-success rounded-pill">Unblock</button></a>
                                         <% } else { %>
-                                          <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" >
+                                          <a href="/admin/blockUser/<%= locals.users[i]._id  %>" >
                                               <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-danger rounded-pill">Block</button></a>
                                         <% } %>
                                         
                                    
-                                      
-                                       
-                                     
-                                     
-                                      <!-- <%if(users[i].isBlocked){ %>
-                                        <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-success">unBlock</a>
-                                       <% }else{%>
-                                        <a href="/furnica/admin/blockUser/<%= locals.users[i]._id  %>" data-bs-toggle="modal" data-bs-target="#blockBut"
-                                          class="btn btn-danger">Block</a>
-                                        <%}%> -->
+                              
                                   </td>
                                 </tr>
                                 <% } %>

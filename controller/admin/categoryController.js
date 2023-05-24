@@ -34,7 +34,7 @@ const addcategory = async (req, res) => {
       categorydata
         .save()
         .then(() => {
-          res.redirect('/furnica/admin/addcategory');
+          res.redirect('/admin/addcategory');
         })
         .catch(() => {
           res.render('user/error');
@@ -87,9 +87,9 @@ const updatecategory = async (req, res) => {
         },
         { new: true },
       );
-      res.redirect('/furnica/admin/addcategory');
+      res.redirect('/admin/addcategory');
     } else {
-      res.redirect('/furnica/admin/addcategory');
+      res.redirect('/admin/addcategory');
     }
   } catch (error) {
     errorHandler(error, req, res);

@@ -5,7 +5,7 @@
 
                    <div class="container ">
 <div class="col-sm-6 col-10 m-auto">
-    <form action="/furnica/admin/updatebanner?bannerId=<%= locals.bannerdata._id %>" method="POST" enctype="multipart/form-data">
+    <form action="/admin/updatebanner?bannerId=<%= locals.bannerdata._id %>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <label for="productImage">Banner Heading:</label>
       <input type="text" value="<%= locals.bannerdata.heading %>" name="heading" class="form-control"  id="category" placeholder="Enter heading" required>

@@ -3,7 +3,7 @@
                 <main>
             <div class="container"> 
               <h3 class="text-center m-3">New Coupon</h3>
-<div class="col-12 col-sm-6 m-auto">
+            <div class="col-12 col-sm-6 m-auto">
 
            <div class="row m-auto">
                
@@ -141,7 +141,7 @@
 // delete coupon
 const handleCoupondelete=async(id)=>{
   
-    await fetch(`/furnica/admin/couponDelete?code=${id}`, {
+    await fetch(`/admin/couponDelete?code=${id}`, {
    method: "GET",
    headers: {
      "Content-Type": "application/json",
@@ -167,7 +167,7 @@ const date=document.getElementById("date").value
 const percent=document.getElementById("percent").value
 const category=document.getElementById("category").value
 const product=document.getElementById("product").value
-await fetch("/furnica/admin/newcoupon", {
+await fetch("/admin/newcoupon", {
    method: "POST",
    headers: {
      "Content-Type": "application/json",

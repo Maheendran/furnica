@@ -1,5 +1,5 @@
-/* eslint-disable eqeqeq */
 /* eslint-disable linebreak-style */
+/* eslint-disable eqeqeq */
 /* eslint-disable import/extensions */
 
 const userHelper = require('../../helper/userHelper');
@@ -39,7 +39,6 @@ const postMailSubmit = async (req, res) => {
         { email: req.session.otpEmail },
         { $set: { otp } },
       );
-
       setTimeout(async () => {
         req.session.otpsession = null;
         await usermodel.updateOne(
@@ -59,7 +58,6 @@ const postMailSubmit = async (req, res) => {
     errorHandler(error, req, res);
   }
 };
-
 // ************************otp section*************************//
 const otpPage = async (req, res) => {
   try {
@@ -78,6 +76,7 @@ const postOtppage = async (req, res) => {
   const enterOtp = req.body.otp;
   try {
     const DBopt = await usermodel.findOne({ email: req.session.otpEmail });
+
     if (enterOtp == DBopt.otp) {
       await usermodel.updateOne(
         { email: req.session.otpEmail },

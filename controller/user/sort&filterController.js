@@ -4,6 +4,7 @@
 const { ObjectId } = require('mongodb');
 const Product = require('../../models/productModel');
 const errorHandler = require('../../middleware/errorHandler.js');
+const Category =require('../../models/categoryModel')
 // ************************sortby section*************************//
 const sortby = async (req, res) => {
   try {
@@ -69,25 +70,19 @@ const sortby = async (req, res) => {
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
     const pageData = results.slice(startIndex, endIndex + 1);
-if(pageData.length===0){
-  res.render('user/Nomatches', {
-    productList: pageData,
-    userdata,
-    totalPages,
-    pageNumber,
-    title: 'Products',
-  });
-}else{
-   res.render('user/productlist', {
-      productList: pageData,
-      userdata,
-      totalPages,
-      pageNumber,
-      title: 'Products',
-    });
-}
-   
-
+    const category = await Category.find();
+    if (pageData.length === 0) {
+      res.render('user/Nomatches');
+    } else {
+      res.render('user/productlist', {
+        productList: pageData,
+        userdata,
+        totalPages,
+        pageNumber,
+        title: 'Products',
+        category,
+      });
+    }
   } catch (error) {
     errorHandler(error, req, res);
   }

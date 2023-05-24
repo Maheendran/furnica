@@ -1,71 +1,5 @@
 <%- include('../htmlbody/Adminheader') -%>
-                <main>
-                  <!-- <table class="table" id="myTable">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>IMAGE</th>
-                        <th>NAME</th>
-                        <th>PRICE</th>
-                        <th>DESCRIPTION </th>
-                        <th>STOCK</th>
-                        <th>CATEGORY</th>
-                        <th>ACTION</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                      
-                       <%if(products.length>0)  {%>
-                        <%for(let i=0;i <products.length; i++){%>
-                            
-                      <tr>
-                        <td><%= [i+1] %></td>
-                        <td>
-                        <img class="img-fluid p-1 " style="height: 50px;width: 50px ;border-radius: 10px;" src="/uploads/<%= products[i].imageUrl[0] %>" alt="">
-                        </td>
-                        <td><span class="text-muted"><%= products[i].name %></span></td>
-
-                            <td>
-                                <span class="text-muted"><%= products[i].price %></span><br>
-                               
-                            </td>
-                         
-                       
-                          <td >
-                              <span class="text-muted"><%= products[i].description %></span><br>
-                              
-                          </td>
-                          <td>
-                            <span class="text-muted"><%= products[i].stock %></span><br>
-                            
-                        </td>
-                          <td>
-                            <span class="text-muted"><%= products[i].category.category %></span><br>
-                            
-                        </td>
-                         <td> <a href="/furnica/admin/updateproduct/<%= locals.products[i]._id  %>" >
-                                    <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-success">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button></a>
-
-                                    <a href="/furnica/admin/deleteProduct/<%= locals.products[i]._id  %>" >
-                                    <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
-                        </td>
-                      </tr>
-                      <% } %>
-                        
-                        <%}else{%>
-                            <tr>
-                                <td colspan="5">products note found</td>
-            
-                            </tr>
-                           <% } %>
-    
-                    </tbody>
-                  </table> -->
-                </main>
-                <!--  -->
-
+           
 
 
                
@@ -119,13 +53,13 @@
                                         <span ><%= products[i].category.category %></span><br>
                                         
                                     </td>
-                                     <td> <a href="/furnica/admin/updateproduct/<%= locals.products[i]._id  %>" >
+                                     <td> <a href="/admin/updateproduct/<%= locals.products[i]._id  %>" >
                                                 <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn badge badge-success rounded-pill">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button></a>
                                         
             
-                                                <a href="/furnica/admin/deleteProduct/<%= locals.products[i]._id  %>" >
+                                                <a href="/admin/deleteProduct/<%= locals.products[i]._id  %>" >
                                                 <button data-bs-toggle="modal" data-bs-target="#unblockBut" class="btn badge badge-danger  rounded-pill ">
                                                   <i class="fa-solid fa-trash"></i>
                                                 </button></a>

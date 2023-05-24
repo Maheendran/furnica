@@ -107,7 +107,7 @@
       
 chartting()
 async function chartting(){
-    await fetch("/furnica/admin/chart" ,{
+    await fetch("/admin/chart" ,{
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'
@@ -306,25 +306,25 @@ function leaststock(stockname,stockcount){
 
 // 
 // pdf
-    const handlepdf=async(duration)=>{
-        await fetch(`/furnica/admin/pdfconvert?durations=${duration}`, {
- method: 'GET',
- headers: {
-   'Content-Type': 'application/json'
- },
+//     const handlepdf=async(duration)=>{
+//         await fetch(`/admin/pdfconvert?durations=${duration}`, {
+//  method: 'GET',
+//  headers: {
+//    'Content-Type': 'application/json'
+//  },
 
-}).then((res)=>res.json())
-.then((data)=>{
+// }).then((res)=>res.json())
+// .then((data)=>{
 
-    if(data=="success"){
-      document.getElementById("pdfpopup").innerHTML="pdf download"
+//     if(data=="success"){
+//       document.getElementById("pdfpopup").innerHTML="pdf download"
 
-      setTimeout(()=>{
-        document.getElementById("pdfpopup").innerHTML=""
-      },3000)
-    }
-})
-    }
+//       setTimeout(()=>{
+//         document.getElementById("pdfpopup").innerHTML=""
+//       },3000)
+//     }
+// })
+//     }
 </script>
 
 

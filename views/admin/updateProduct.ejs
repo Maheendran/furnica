@@ -28,7 +28,7 @@ input{
                     <h3 class="mt-4 mb-3 text-center">Update Product</h3>
 
 
-<form action="/furnica/admin/updateproduct/<%= locals.param %>" method="post" enctype="multipart/form-data">
+<form action="/admin/updateproduct/<%= locals.param %>" method="post" enctype="multipart/form-data">
                         <div class="row">
                           <div class="form-group col-6">
                            <label for="productName">Product Name:</label>
@@ -54,9 +54,9 @@ input{
 
                            <button class="image_delete rounded-circle" type="button" onclick="handleimages('<%= locals.product._id  %>','<%= index  %>')">
                             <i class="fa-regular fa-circle-xmark"></i>
-                           <!-- <img class="img-fluid"  src="https://www.alfredocreates.com/wp-content/uploads/2020/08/Delete-Icon-PNG-By-Alfredo-Hernandez.png" alt=""> -->
+                
                            </button>
-                         <!-- </a> -->
+                       
                            <img class="img-fluid" src="/uploads/<%= locals.imageUrl[index]  %>" alt="">
                          </div>
                           <% } %>
@@ -69,7 +69,6 @@ input{
                            <input type="file" class="form-control" id="imageInput" multiple name="image" accept="image/*" value=" <%= locals.product.imageUrl %>">
                          </div>
                          <span id="errordetail"></span>
-     
                          <div class="row">
                               <div class="form-group col-10 col-sm-4">
                            <label for="productImage">category:</label>
@@ -103,12 +102,12 @@ input{
                            </div> 
                          </div>
                        <div class="row">
-      <!--brand  -->
+                        <!--brand  -->
                          <div class="form-group col-6">
                              <label for="productImage">Product Brand:</label>
                              <input type="text" class="form-control" id="productBrand" name="brand" required value=" <%= locals.product.brand %>">
                            </div>
-         <!--stock  -->
+                       <!--stock  -->
          <div class="form-group col-6">
              <label for="productImage">Product Stock:</label>
              <input type="number" class="form-control" id="productStock" name="stock" required value="<%= locals.product.stock %>">
@@ -129,28 +128,14 @@ input{
                        </form>
 
                     </div>
-                       <!-- <div class="col-2 ">
-        
-                        <% for( let index = 0; index < imageUrl.length; index++ ) { %>
-                       <div class="col-8 image_delete">
-                       <a href="/furnica/admin/deleteImage/<%= locals.product._id  %>/<%= index  %>">
-                         <button >
-                          
-                         <img class="img-fluid"  src="https://www.alfredocreates.com/wp-content/uploads/2020/08/Delete-Icon-PNG-By-Alfredo-Hernandez.png" alt="">
-                         </button>
-                       </a>
-
-                         <img class="img-fluid" src="/uploads/<%= locals.imageUrl[index]  %>" alt="">
-                       </div>
-                        <% } %>
-                   </div> -->
+                    
                     </div>
                 </main>
                 <%- include('../htmlbody/AdminFooter') -%>
 <script>
 
 const handleimages=async(id,index)=>{
-  await fetch("/furnica/admin/deleteImage", {
+  await fetch("/admin/deleteImage", {
  method: 'POST',
  headers: {
    'Content-Type': 'application/json'

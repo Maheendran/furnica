@@ -52,14 +52,17 @@
       filter by category
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownfiltern">
-        <div class="col-12">
-          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fab306ef7984410dff10b" >
-        <label for="">sofa</label>
-        </div>
-        <div class="col-12">
-          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fa9c66ef7984410dff08e" >
-        <label for="">chair</label>
-        </div>
+
+
+        <% for( let index = 0; index < category.length; index++ ) { %>
+         
+          <div class="col-12">
+            <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="<%= locals.category[index]._id %>" >
+          <label for="">
+            <%= locals.category[index].category %>
+          </label>
+          </div>
+        <% } %>
       </div>
     </div>
   </div>
@@ -96,21 +99,22 @@
       </div>
       <div class="col-12 formbox mt-2" style="width: 90%">
         <p>filter by category</p>
-        <div class="col-12">
-          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fa9c66ef7984410dff08e" >
-        <label for="">chair</label>
-        </div>
-        <div class="col-12">
-          <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="645fab306ef7984410dff10b" >
-        <label for="">sofa</label>
-        </div>
-        
+        <% for( let index = 0; index < category.length; index++ ) { %>
+         
+          <div class="col-12">
+            <input style="width: 20px;height: 20px;" type="radio" name="filter"  value="<%= locals.category[index]._id %>" >
+          <label for="">
+            <%= locals.category[index].category %>
+          </label>
+          </div>
+        <% } %>
+
       </div>
     </div> 
     <div class="col-12 col-sm-11 col-md-9  m-auto">
       <div class="row mt-5" >
         <% for( let index = 0; index <locals.productList.length; index++ ) { %>
-        <div class="col-9 col-sm-4 col-md-3 mt-3 Main_box " style="margin-top: 1rem;">
+        <div class="col-9 col-sm-4 col-md-4 col-lg-3 mt-3 Main_box " style="margin-top: 1rem;">
           <a
             style="color: rgb(106, 102, 102)"
             href="/detail/<%= locals.productList[index]._id  %>">
@@ -124,14 +128,14 @@
                 <p id="name"><%= productList[index].name %></p>
 
                 <% if (productList[index].outofstock==true) { %>
-                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+                  <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
                   Rs <%= productList[index].price %>
                 </p>
                   <p style="color: rgb(242, 57, 57)">Out of stock</p>
                  <% } else { %>
     
                   <% if ( productList[index].offer.offerpercent !==0) { %>
-                <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+                    <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
        
                   Rs <%= productList[index].price %>
                   <span class="offer_price">
@@ -141,7 +145,7 @@
              <p style="color: rgb(242, 57, 57)">Offer <%= productList[index].offer.offerpercent %>%</p>
                 <% } else { %>
     
-                  <p style="color: grey; font-size: 0.7rem">By Furnica</p>
+                  <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
                   Rs <%= productList[index].price %>
                 </p>
                 <% } %>
@@ -168,7 +172,7 @@
 
 <div class="container">
   <div class="row " >
-    <div class="col-2 m-auto text-center">
+    <div class="col-12 m-auto text-center">
      
  <% if (locals.pageNumber!=1) { %>
   <button class=" btn" onclick="handlepage(-1)"><i class="fa-solid fa-arrow-left"></i></button>
@@ -176,15 +180,12 @@
   <button class=" btn" disabled  style="border: none;"><i class="fa-solid fa-arrow-left"></i></button>
 <% } %>
 
-  
-
     <%= locals.pageNumber  %>  
     
   
    <% if (locals.totalPages!=locals.pageNumber) { %>
     <button class=" btn" onclick="handlepage(1)"><i class="fa-solid fa-arrow-right"></i></button>
   <% } else { %>
-    <!-- <button class=" btn" disabled  style="border: none;"><i class="fa-solid fa-arrow-left"></i></button> -->
     <button class="btn"  disabled  style="border: none;"> <i class="fa-solid fa-arrow-right"></i></button>
   <% } %>
     </div>
@@ -231,6 +232,7 @@ const url = `/sorting?category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=
 
 //filter
 filterButtons.forEach(radioButton => {
+  console.log("radioButton.value",radioButton.value)
   if (radioButton.value == categoryId) {
     radioButton.checked = true;
   }

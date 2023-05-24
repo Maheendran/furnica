@@ -18,7 +18,7 @@ const adminlogedin = async (req, res) => {
     if (username === process.env.adminUsername) {
       if (password === process.env.adminPassword) {
         req.session.admin = process.env.adminUsername;
-        res.redirect('/furnica/admin/dashboard');
+        res.redirect('/admin/dashboard');
       } else {
         res.render('admin/login', { errorDetail: 'password not match' });
       }
@@ -63,7 +63,7 @@ const blockUser = async (req, res) => {
       { new: true },
     );
     req.session.user = null;
-    res.redirect('/furnica/admin/users');
+    res.redirect('/admin/users');
   } catch (error) {
     errorHandler(error, req, res);
   }
