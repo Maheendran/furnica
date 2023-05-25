@@ -12,6 +12,7 @@ const sortby = async (req, res) => {
     const sortValue = req.query.sortBy;
     const searchValue = req.query.search;
     const pageNumber = parseInt(req.query.page || 1);
+   
     const pageSize = 4;
     let sortType = 1;
     const pipeline = [];

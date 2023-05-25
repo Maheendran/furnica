@@ -303,6 +303,7 @@ const quaryProducts = async (req, res) => {
     }
   } catch (error) {
     errorHandler(error, req, res);
+  
   }
 };
 

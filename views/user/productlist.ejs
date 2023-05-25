@@ -180,7 +180,6 @@
 <% } %>
 
     <%= locals.pageNumber  %>  
-    
   
    <% if (locals.totalPages!=locals.pageNumber) { %>
     <button class=" btn" onclick="handlepage(1)"><i class="fa-solid fa-arrow-right"></i></button>
@@ -188,11 +187,6 @@
     <button class="btn"  disabled  style="border: none;"> <i class="fa-solid fa-arrow-right"></i></button>
   <% } %>
     </div>
-    
-   
- 
-
-  
   </div>
 
 </div>
@@ -201,8 +195,9 @@
 <script>
 const radioButtons = document.querySelectorAll('input[name="sort"]');
 const filterButtons = document.querySelectorAll('input[name="filter"]');
+
   var sortValue=JSON.parse(localStorage.getItem('sortValue'))||"";
-var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"";
+var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"asc";
 var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
 var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
 var searchValue = JSON.parse(localStorage.getItem('search'))||"";

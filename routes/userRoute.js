@@ -53,6 +53,7 @@ userRoute.get('/', userController.homePage);
 userRoute.get('/Allproducts', userController.Allproducts);
 userRoute.get('/products/:category', userController.quaryProducts);
 userRoute.get('/detail/:id', userController.productDetail);
+
 // ===============review===============//
 userRoute.post('/Addreview', userController.Addreview);
 userRoute.post('/deleteReview', userController.deletereview);
