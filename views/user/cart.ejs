@@ -55,10 +55,10 @@ border-radius: 10px;
       onclick="removercart('<%= locals.cart[index].product._id %>')"  title="Remove item">
       <i class="fas fa-trash"></i>
       </button>
-    
+        
+
     <div >
-    
-    <span id="stocklimit+<%= locals.cart[index].product._id %>" style="color: rgb(245, 106, 106);"></span>
+
     </div>
     
     </div>
@@ -89,15 +89,10 @@ border-radius: 10px;
   onclick="handlequantity('<%= locals.cart[index].product._id %>','increment')">
   <i class="fas fa-plus"></i>
   </button>
-
+<span id="stocklimit+<%= locals.cart[index].product._id %>" style="color: rgb(245, 106, 106);margin-top: 0.5rem;"></span>
   </div>
+
 </div>
-
-
-
-
-
-
 </div>
 <% } %>
 
