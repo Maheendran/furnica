@@ -11,6 +11,22 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
     bottom: 0;
     left: 0;
   }
+  @media only screen and (max-width : 480px) {
+.carouseltext>h1{
+  font-size: 0.9rem;
+}
+.carouseltext>p{
+  font-size: 0.8rem;
+}
+.carouseltext button{
+  font-size: 0.6rem;
+}
+
+  }
+
+
+
+
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -25,7 +41,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
     <div class="carousel-item active carouselheight" style="position: relative;" >
     
       <img style="width: 100%;height: 100%;" src="<%= locals.bannerdata[0].imageUrl  %>"  class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block ">
+      <div class="carousel-caption carouseltext">
         <h1><%= locals.bannerdata[0].heading  %></h1>
         <p><%= locals.bannerdata[0].subheading  %></p>
         <a href="<%= locals.bannerdata[0].link  %>">
@@ -37,7 +53,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
     <% for( let index = 1; index < bannerdata.length; index++ ) { %>
     <div class="carousel-item carouselheight" >
       <img style="width: 100%;height: 100%;" src="<%= locals.bannerdata[index].imageUrl  %>"  class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
+      <div class="carousel-caption carouseltext">
         <h1><%= locals.bannerdata[index].heading  %></h1>
         <p><%= locals.bannerdata[index].subheading  %></p>
         <a href="<%= locals.bannerdata[index].link  %>">
