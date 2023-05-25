@@ -1,6 +1,11 @@
 
 <%- include('../htmlbody/Adminheader') -%>
-
+<style>
+  .canvasbody{
+    height: 500px;
+    border: 3px solid;
+  }
+</style>
 <div class="container-fluid px-4 mt-3">
   <div class="col-12 col-sm-6">
   
@@ -41,7 +46,7 @@
                                           <i class="fas fa-chart-area me-1"></i>
                                           Per Day Earnings 
                                       </div>
-                                      <div  class="card-body"><canvas id="myChart" width="100%" height="40px"></canvas></div>
+                                      <div  class="card-body"><canvas id="myChart" width="100%" height="50px"></canvas></div>
                                   </div>
                               </div>
   
@@ -52,7 +57,7 @@
                                         <i class="fas fa-chart-area me-1"></i>
                                         payment mode monthly
                                     </div>
-                                    <div  class="card-body"><canvas id="monthlypayment" width="100%" height="40px"></canvas></div>
+                                    <div  class="card-body"><canvas id="monthlypayment" width="100%" height="50px"></canvas></div>
                                 </div>
                             </div>
                             <!-- per day orders -->
@@ -62,7 +67,7 @@
                                           <i class="fas fa-chart-bar me-1"></i>
                                         Per Day Orders 
                                       </div>
-                                      <div class="card-body"><canvas id="myordercart" width="100%" height="40"></canvas></div>
+                                      <div class="card-body"><canvas id="myordercart" width="100%" height="50"></canvas></div>
                                   </div>
                               </div>
                              
@@ -74,7 +79,7 @@
                                           <i class="fas fa-chart-area me-1"></i>
                                           Per Day User growth 
                                       </div>
-                                      <div   class="card-body"><canvas id="grpahPerdayUser" width="100%" height="40px"></canvas></div>
+                                      <div   class="card-body"><canvas id="grpahPerdayUser" width="100%" height="50px"></canvas></div>
                                   </div>
                               </div>
                               <!-- most selling category -->
@@ -84,7 +89,7 @@
                                           <i class="fas fa-chart-area me-1"></i>
                                           most selling category
                                       </div>
-                                      <div   class="card-body"><canvas id="sellingcategory" width="100%" height="40px"></canvas></div>
+                                      <div   class="card-body"><canvas id="sellingcategory" width="100%" height="50px"></canvas></div>
                                   </div>
                               </div>
                               <!-- stovk list -->
@@ -94,13 +99,14 @@
                                         <i class="fas fa-chart-area me-1"></i>
                                        least stock
                                     </div>
-                                    <div class="card-body"><canvas id="leaststock" width="100%" height="40px"></canvas></div>
+                                    <div class="card-body"><canvas id="leaststock" width="100%" height="50px"></canvas></div>
                                 </div>
                             </div>
   
                           </div>
+                          
                       </div>
-
+                   
 <%- include('../htmlbody/AdminFooter') -%>
 
 <script>

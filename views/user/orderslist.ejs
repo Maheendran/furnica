@@ -33,6 +33,17 @@
 .img_scroll::-webkit-scrollbar{
 display: none;
 }
+.img_scroll{
+    width: 250px;
+    height: 150px;
+
+}
+@media only screen and (max-width : 480px) {
+    .img_scroll{
+    height: 150px;
+    width: 200px;
+}  
+}
 .row_box{
 margin-bottom: 1rem;
 box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -148,26 +159,23 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 <!-- Single item -->
 <%for(let i=0; i<orders.length; i++){%> 
 <div class="row row_box">
-<div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-<div class="col-12 img_scroll" 
-style="display: flex;overflow: scroll;height: 100px;gap: 3px; ">
+<div class="col-lg-3 col-md-12 mb-2 mb-lg-0">
+<!-- <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+</div> -->
+
+    <div class="col-12 img_scroll" 
+style="display: flex;overflow: scroll;gap: 3px; ">
 <% for( let index = 0; index < orders[i].product.length; index++) { %>
 
-<img  class="img-fluid  " style="width: 100px;height: 100%;border-radius: 10px;" src="<%= orders[i].product[index].image %>" alt="">
+<img  class="img-fluid" style="width: 100%px;border-radius: 10px;" src="<%= orders[i].product[index].image %>" alt="">
 
 <% } %>     
-</div>
-<a href="#!">
-<div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-</a>
+
 </div>
 
 </div>
 
-<div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-<!--  -->
-
+<div class="col-lg-5 col-md-6 mb-sm-3 mb-lg-0 ">
 <p>Name:
 <%= locals.orders[i].product[0].name %>
 </p>
@@ -175,9 +183,8 @@ style="display: flex;overflow: scroll;height: 100px;gap: 3px; ">
 <p>Total:
 Rs <%= orders[i].total %>
 </p>
-<p >Status: <span id="status">
+<p >Status: 
 <%= orders[i].status %>
-</span>
 
 </p>
 <p>Payment Method:
@@ -185,7 +192,7 @@ Rs <%= orders[i].total %>
 </p>
 </div>
 
-<div class="col-lg-2 col-md-6 mb-4 mb-lg-0 m-auto text-center">
+<div class="col-lg-3 col-md-6 mb-1 mb-lg-0 ms-auto text-end ">
    
     <% if (orders[i].status!="Order Arrived" && orders[i].status!="Returned") { %>
         <div class="col-12 m-auto ">
@@ -222,7 +229,9 @@ Rs <%= orders[i].total %>
             <% } %>
 
 </div>
-<div class="row bg-light" style="position: relative;overflow: hidden;">
+
+
+<div class="row  mt-lg-5" style="position: relative;overflow: hidden;">
 <div class="col-12 d-flex justify-content-between ordercurrent" >
     <p class="ordercurrent"> Order placed</p>
     <p class="ordercurrent"> Order Shipped</p>

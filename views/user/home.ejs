@@ -49,7 +49,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
       </div>
       <div class="shadow"></div>
     </div>
-    <!--  -->
     <% for( let index = 1; index < bannerdata.length; index++ ) { %>
     <div class="carousel-item carouselheight" >
       <img style="width: 100%;height: 100%;" src="<%= locals.bannerdata[index].imageUrl  %>"  class="d-block w-100" alt="...">
@@ -62,7 +61,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
       <div class="shadow"></div>
     </div>
     <% } %>
-
   </div>
   <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -78,7 +76,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 <div class="container text-center mt-5">
 
 <h4>Top Selling Category</h4>
-
 </div>
 <div class="container  mt-5 mb-5" style="width: 70%;" >
 <div class="row ">
@@ -106,30 +103,16 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 <div class=" slider_sec mt-2">
 <div class="ellipse"></div>
 <div class="sliding_base">
-<div class="img_card">
-<img src="https://th.bing.com/th/id/OIP.60HusY_Im0Q82qcQrabIiQHaKD?pid=ImgDet&rs=1" alt="">
-</div>
-<div class="img_card">
-<img src="https://i.pinimg.com/originals/53/08/97/53089728ba070b0c9ba485f5341ee70b.jpg" alt="">
-</div>
-<div class="img_card">
-<img src="https://i.pinimg.com/originals/5d/57/78/5d57786224468ed1c44bb8b666087ad2.jpg" alt="">
-</div>
-<div class="img_card">
-<img src="https://th.bing.com/th/id/OIP.cKwAekoM0q9yvWGR9Yup5AHaKM?pid=ImgDet&w=710&h=977&rs=1" alt="">
-</div>
-<div class="img_card">
-<img src="https://th.bing.com/th/id/OIP.60HusY_Im0Q82qcQrabIiQHaKD?pid=ImgDet&rs=1" alt="">
-</div>
-<div class="img_card">
-<img src="https://i.pinimg.com/originals/53/08/97/53089728ba070b0c9ba485f5341ee70b.jpg" alt="">
-</div>
-<div class="img_card">
-<img src="https://i.pinimg.com/originals/5d/57/78/5d57786224468ed1c44bb8b666087ad2.jpg" alt="">
-</div>
-<div class="img_card">
-<img src="https://th.bing.com/th/id/OIP.cKwAekoM0q9yvWGR9Yup5AHaKM?pid=ImgDet&w=710&h=977&rs=1" alt="">
-</div>
+
+<% for( let index = 0; index < slider.length; index++ ) { %>
+ <a href="/products/<%= locals.slider[index].category %>">
+<div class="img_card" >
+ 
+<img src="<%= slider[index].imageUrl[0]  %>" alt="">
+</div></a>
+<% } %>
+
+
 </div>
 <div class="ellipse_btm"></div>
 </div>
@@ -162,14 +145,18 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 <div class="container-fluid mt-4 ">
 <div class="selling_main_box  " style="width: 100%;display: flex;gap: 10px;overflow-x:scroll">
 <% for( let index = 0; index < product.length; index++ ) { %>
-<div class="col-12 col-md-2 best_selling_box">
-<div class="blur_selling_box">
-<h4><%= locals.product[index].name  %></h4>
-<h5>Rs:<%= locals.product[index].price %>/- <span style="text-decoration: line-through;color: rgb(238, 79, 79);font-size: 0.8rem;"> 199998/-</span> </h5>
-<p style="color: rgb(238, 56, 56); font-weight: 600;">Offer 70%</p>
+
+<div class="col-12 col-md-2 best_selling_box"> 
+   <a  href="/detail/<%= locals.product[index]._id  %>">
+<div class="blur_selling_box ">
+<h3 ><%= locals.product[index].name  %></h3>
+
 </div>
 <img class="img-fluid" src="<%= locals.product[index].imageUrl[0]  %>" alt="">
+</a>
 </div>
+
+
 <% } %>
 </div>
 </div>

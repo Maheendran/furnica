@@ -70,10 +70,13 @@
                           id="email"
                           placeholder="email"
                           name="username"
-                          value="admin"
+                        
+                          onchange="emailvalidate()"
                         />
-
-                        <span id="nameError"></span>
+                        <span
+                        id="emailError"
+                        style="color: red; font-size: 0.8rem"
+                      ></span>
                       </div>
 
                       <div class="form-outline mb-4">
@@ -86,18 +89,22 @@
                           id="password"
                           placeholder="password"
                           name="password"
-                          value="admin"
+                         
+                          onkeyup="passvalidate()"
                         />
-
-                        <span id="nameError"></span>
+                        <span
+                        id="passError"
+                        style="color: red; font-size: 0.8rem"
+                      ></span>
                       </div>
 
                       <div class="col-6 m-auto text-center">
-                        <button type="submit" class="btn logintbn btn-block">
+                        <button type="submit" class="btn logintbn btn-block"    id="signup_btn">
                           Sign in
                         </button>
                       </div>
                     </form>
+                    <p  style="color: red; font-size: 0.8rem" class="text-center"><%= locals.errorDetail  %></p>
                     <!--  -->
                   </div>
                   <div
@@ -126,3 +133,62 @@
   integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
   crossorigin="anonymous"
 ></script>
+<script>
+  
+  const uemail = document.getElementById("email");
+  const upass = document.getElementById("password");
+
+  const emailError = document.getElementById("emailError");
+  const passError = document.getElementById("passError");
+  const signup_btn = document.getElementById("signup_btn");
+
+  const emailregx = /\b^[^ ][a-z.\-_0-9]+@[a-z0-9]+\.[a-z]{2,3}\b/;
+  const passregx = /^(?=.*\d)(?=.*[a-zA-Z]).{4,14}$/;
+
+  var email_correct = false;
+  var pass_correct = false(
+    (function () {
+      signup_btn.setAttribute("disabled", true);
+    })()
+  );
+
+  //email validation
+  function emailvalidate() {
+    if (uemail.value.match(emailregx)) {
+      emailError.innerHTML = "";
+      email_correct = true;
+    } else {
+      emailError.innerHTML = "Invalid email";
+      email_correct = false;
+    }
+    finalcheck();
+  }
+  // }mobile
+  // password
+  function passvalidate() {
+    if (upass.value.match(passregx)) {
+      passError.innerHTML = "";
+      pass_correct = true;
+    } else {
+      passError.innerHTML = "Minimum 3 characters";
+      pass_correct = false;
+    }
+    finalcheck();
+  }
+  // confornpass
+  function removedisable() {
+    console.log("call for remove diasl");
+    signup_btn.removeAttribute("disabled");
+  }
+
+  function finalcheck() {
+    if (email_correct && pass_correct) {
+      return removedisable();
+    } else {
+      function adddisbale() {
+        signup_btn.setAttribute("disabled", true);
+      }
+      adddisbale();
+    }
+  }
+</script>

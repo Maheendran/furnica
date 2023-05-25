@@ -55,7 +55,7 @@
                         <div class="flex-fill mb-0">
                           <label for="name">Email</label>
                           <input
-                            type="text"
+                            type="email"
                             class="form-control"
                             id="email"
                             placeholder="email"
@@ -74,7 +74,7 @@
                         <div class="flex-fill mb-0">
                           <label for="name">Password</label>
                           <input
-                            type="text"
+                            type="password"
                             class="form-control"
                             id="password"
                             placeholder="password"
@@ -133,7 +133,7 @@
                     class="col-7 col-md-6 col-lg-6 col-xl-4 m-auto d-flex align-items-center"
              >
                     <img
-                      class="login_image" 
+                      class="login_image mt-4 mt-sm-0" 
                       src="/assests/chair1.png"
                       class="img-fluid"
                       alt="Sample image"
@@ -159,10 +159,6 @@
 
 <script>
 
-
-
-
-  // 
   const uemail = document.getElementById("email");
   const upass = document.getElementById("password");
 
@@ -205,7 +201,7 @@
   }
   // confornpass
   function removedisable() {
-    console.log("call for remove diasl");
+ 
     signup_btn.removeAttribute("disabled");
   }
 
@@ -219,6 +215,4 @@
       adddisbale();
     }
   }
-
-  // Ma86107!
 </script>

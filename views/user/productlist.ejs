@@ -114,10 +114,10 @@
 
       </div>
     </div> 
-    <div class="col-12 col-sm-10 col-md-8  m-auto">
+    <div class="col-12 col-sm-10 col-md-8  mx-auto">
       <div class="row mt-5" >
         <% for( let index = 0; index <locals.productList.length; index++ ) { %>
-        <div class="col-9 col-sm-5 col-md-5 col-lg-3 mt-3 Main_box mx-auto" style="margin-top: 1rem;">
+        <div class="col-9 col-sm-5 col-md-5 col-lg-3 mt-3 Main_box m-auto m-md-0" style="margin-top: 1rem;">
           <a
             style="color: rgb(63, 60, 60)"
             href="/detail/<%= locals.productList[index]._id  %>">
@@ -139,7 +139,7 @@
                   <% if ( productList[index].offer.offerpercent !==0) { %>
                     <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
        
-                  Rs <%= productList[index].price %>
+                    <i class="fa-solid fa-indian-rupee-sign"></i> <%= productList[index].price %>
                   <span class="offer_price">
                     <%= productList[index].offer.realprice%>
                   </span>
@@ -148,7 +148,7 @@
                 <% } else { %>
     
                   <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
-                  Rs <%= productList[index].price %>
+                  <i class="fa-solid fa-indian-rupee-sign"></i> <%= productList[index].price %>
                 </p>
                 <% } %>
                 <% } %>

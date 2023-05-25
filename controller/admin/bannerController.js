@@ -1,6 +1,8 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable import/extensions */
 const Banner = require('../../models/bannerModel.js');
+const Category = require('../../models/categoryModel.js');
+const Slider = require('../../models/sliderModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
 const cloudinary = require('cloudinary').v2;
 
@@ -59,7 +61,7 @@ const postupdatebanner = async (req, res) => {
           }
         });
       }));
-    
+
       const newImages = await Promise.all(uploadPromises);
       updImages = [...newImages];
       bannerimage.imageUrl = updImages;
@@ -90,10 +92,61 @@ const deletebanner = async (req, res) => {
     errorHandler(error, req, res);
   }
 };
+
+// sliders=========================
+
+const slider = async (req, res) => {
+  try {
+    const category = await Category.find();
+    const slider = await Slider.find();
+    res.render('admin/slider', { category, slider });
+  } catch (error) {
+    errorHandler(error, req, res);
+  }
+};
+
+const addslider = async (req, res) => {
+  try {
+    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(file.path, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      });
+    }));
+
+    const images = await Promise.all(uploadPromises);
+    const sliderdata = new Slider({
+      imageUrl: images,
+      category: req.body.category,
+    });
+    sliderdata.save();
+    const category = await Category.find();
+    const slider = await Slider.find();
+    res.render('admin/slider', { category, slider });
+  } catch (error) {
+    errorHandler(error, req, res);
+  }
+};
+
+const deleteslider = async (req, res) => {
+  try {
+    const param = req.params.id;
+    await Slider.findByIdAndDelete(param);
+    res.redirect('/admin/sliders');
+  } catch (error) {
+    errorHandler(error, req, res);
+  }
+};
 module.exports = {
   banner,
   newbanner,
   postupdatebanner,
   updatebannerload,
   deletebanner,
+  slider,
+  addslider,
+  deleteslider,
 };

@@ -16,6 +16,7 @@ const Banner = require('../../models/bannerModel.js');
 const User = require('../../models/userModel.js');
 const Order = require('../../models/orderModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
+const Slider=require("../../models/sliderModel.js")
 // ************************signup section*************************//
 const usersignup = (req, res) => {
   try {
@@ -242,8 +243,9 @@ const homePage = async (req, res) => {
     const category = await Category.find().limit(3);
     const userdata = req.session.user;
     const bannerdata = await Banner.find();
+const slider=await Slider.find()
     res.render('user/home', {
-      category, product, userdata, bannerdata, title: 'Home',
+      category, product, userdata, bannerdata, title: 'Home',slider
     });
   } catch (error) {
     errorHandler(error, req, res);

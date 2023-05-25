@@ -92,6 +92,9 @@ const chartdata = async (req, res) => {
           date: 1,
         },
       },
+      {
+        $limit: 5,
+      },
     ];
     const result = await Orders.aggregate(pipeline);
     const perdayuser = await User.aggregate([
@@ -105,6 +108,9 @@ const chartdata = async (req, res) => {
         $sort: {
           _id: 1,
         },
+      },
+      {
+        $limit: 5,
       },
     ]);
     const paymentmethod = await Orders.aggregate([
@@ -129,6 +135,9 @@ const chartdata = async (req, res) => {
           name: 1,
           stock: 1,
         },
+      },
+      {
+        $limit: 5,
       },
     ]);
     res.json({

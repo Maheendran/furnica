@@ -74,5 +74,8 @@ adminRoute.post('/newbanner', adminAuth.isLogin, Upload.array('image', 1), banne
 adminRoute.get('/updatebanner', adminAuth.isLogin, bannerController.updatebannerload);
 adminRoute.post('/updatebanner', adminAuth.isLogin, Upload.array('image', 1), bannerController.postupdatebanner);
 adminRoute.get('/deletebanner', adminAuth.isLogin, bannerController.deletebanner);
-
+// sliders
+adminRoute.get('/sliders', adminAuth.isLogin, bannerController.slider);
+adminRoute.post('/addsliders', adminAuth.isLogin, Upload.array('image', 1), bannerController.addslider);
+adminRoute.get('/deleteslider/:id', adminAuth.isLogin, bannerController.deleteslider);
 module.exports = adminRoute;
