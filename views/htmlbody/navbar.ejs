@@ -158,9 +158,9 @@ const handleproduct=()=>{
   pagevalue= 1;
     localStorage.setItem('page', JSON.stringify(pagevalue));
     localStorage.setItem('categoryId', JSON.stringify(""));
-    localStorage.setItem('sortType', JSON.stringify("asc"));
+    localStorage.setItem('sortType', JSON.stringify(""));
     localStorage.setItem('search', JSON.stringify(""));
-    localStorage.setItem('sortValue', JSON.stringify("price"));
+    localStorage.setItem('sortValue', JSON.stringify(""));
   
     const url=`/Allproducts?page=${pagevalue}`;
     window.location.href = url;

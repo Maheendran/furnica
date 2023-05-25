@@ -29,10 +29,12 @@
           <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="asc" >
       <label for="">low to high</label>
       </div>
+    
       <div class="col-12">
         <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="desc" >
        <label for="">high to low</label>
      </div>
+     <hr style="border: 1px solid;">
      <p>By name</p>
      <div class="col-12">
       <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="atoz" >
@@ -74,7 +76,7 @@
   <div class="row">
  
     <!-- lap view -->
- <div class="col-3 laptopsortfilter ">
+ <div class="col-3 col-xl-2 laptopsortfilter ">
       <h5>sorting & filter</h5>
       <div class="col-12 formbox" style="width: 90%">
         <p>sort by price</p>
@@ -86,6 +88,7 @@
          <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="desc" >
         <label for="">high to low</label>
       </div>
+      <hr style="border: 1px solid;">
       <p>sort by name</p>
       <div class="col-12">
         <input style="width: 20px;height: 20px;" type="radio" name="sort"  value="atoz" >
@@ -114,7 +117,7 @@
     <div class="col-12 col-sm-11 col-md-9  m-auto">
       <div class="row mt-5" >
         <% for( let index = 0; index <locals.productList.length; index++ ) { %>
-        <div class="col-9 col-sm-4 col-md-4 col-lg-3 mt-3 Main_box " style="margin-top: 1rem;">
+        <div class="col-9 col-sm-5 col-md-5 col-lg-3 mt-3 Main_box mx-auto" style="margin-top: 1rem;">
           <a
             style="color: rgb(63, 60, 60)"
             href="/detail/<%= locals.productList[index]._id  %>">
@@ -191,7 +194,7 @@ const radioButtons = document.querySelectorAll('input[name="sort"]');
 const filterButtons = document.querySelectorAll('input[name="filter"]');
 
   var sortValue=JSON.parse(localStorage.getItem('sortValue'))||"name";
-var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"asc";
+var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"atoz";
 var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
 var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
 var searchValue = JSON.parse(localStorage.getItem('search'))||"";
@@ -235,6 +238,7 @@ filterButtons.forEach(radioButton => {
 });
 // ====================
 const handlepage=(pageer)=>{
+   sortedtype = JSON.parse(localStorage.getItem('sortType'))||"asc";
 let count=Number(pagevalue)+pageer
   localStorage.setItem('page', JSON.stringify(count));
   const url = `/sorting?category=${categoryId}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${count}`;
