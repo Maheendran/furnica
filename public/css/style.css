@@ -150,7 +150,7 @@ display: none;
 }
 
 .product_card {
-  height: 280px;
+  height: 260px;
 }
 .Main_box a {
   color: black;
@@ -198,7 +198,7 @@ overflow: hidden;
   width: 100%;
   height: 50%;
   cursor: pointer;
-  bottom: -22%;
+  bottom: -20%;
   padding: 10px 10px 10px 20px;
   transition: 0.5s ease-in-out;
   line-height: 10px;
@@ -206,7 +206,7 @@ overflow: hidden;
   background-color: rgba(240, 248, 255, 0.324);
 }
 .detail_btm:hover {
-  bottom: -13%;
+  bottom: -10%;
 }
 #name {
   font-size: 1.2rem;
