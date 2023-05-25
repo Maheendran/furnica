@@ -149,13 +149,6 @@
                 </p>
                 <% } %>
                 <% } %>
-
-
-                  
-                
-
-
-   
               </div>
             </div>
           </a>
@@ -193,10 +186,11 @@
 <%- include('../htmlbody/footer') -%>
 
 <script>
+  // localStorage.setItem("sortType",JSON.stringify("asc"))
 const radioButtons = document.querySelectorAll('input[name="sort"]');
 const filterButtons = document.querySelectorAll('input[name="filter"]');
 
-  var sortValue=JSON.parse(localStorage.getItem('sortValue'))||"";
+  var sortValue=JSON.parse(localStorage.getItem('sortValue'))||"name";
 var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"asc";
 var categoryId = JSON.parse(localStorage.getItem('categoryId'))||"";
 var pagevalue = JSON.parse(localStorage.getItem('page'))||1;
@@ -239,11 +233,11 @@ filterButtons.forEach(radioButton => {
           window.location.href = url;
   });
 });
-
+// ====================
 const handlepage=(pageer)=>{
 let count=Number(pagevalue)+pageer
   localStorage.setItem('page', JSON.stringify(count));
-  const url = `/sorting?category=${categoryId ||''}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${count}`;
+  const url = `/sorting?category=${categoryId}&sortBy=${sortValue}&sortOrder=${sortedtype}&search=${searchValue}&page=${count}`;
           window.location.href = url;
 }
 
