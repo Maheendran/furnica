@@ -4,9 +4,6 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
-    imageUrl: {
-      type: [String],
-    },
     name: {
       type: String,
       required: true,

@@ -1,3 +1,5 @@
+
+<%- include('../htmlbody/header') -%> 
 <style>
   #img_container {
     border: 1px solid;
@@ -29,7 +31,7 @@
     font-weight: 500;
   }
 </style>
-<%- include('../htmlbody/header') -%> <%- include('../htmlbody/navbar') -%>
+<%- include('../htmlbody/navbar') -%>
 <!-- content -->
 <section class="py-5">
   <div class="container">
@@ -40,22 +42,21 @@
           id="img_container">
 
           <img
-            style="max-width: 90%; max-height: 60vh; margin: auto"
+            style="max-width: 50%; max-height: 60vh; margin: auto"
             id="img_zoom"
-            class="rounded-4 fit"
-            src="/uploads/<%= details.imageUrl[0] %>"
+            class="rounded-4 fit" src="<%= details.imageUrl[0] %>"
           />
         </div>
         <div class="d-flex justify-content-center mb-3" style="cursor: pointer">
           <% for( let index = 0; index < details.imageUrl.length; index++ ) { %>
           <div
             class="mx-2"
-            onclick="handleChangeImage('/uploads/<%= details.imageUrl[index] %>')">
+            onclick="handleChangeImage('<%= details.imageUrl[index] %>')">
             <img
               width="60"
               height="60"
               class="rounded-2"
-              src="/uploads/<%= details.imageUrl[index] %>"
+              src="<%= details.imageUrl[index] %>"
             />
           </div>
           <% } %>
@@ -147,18 +148,14 @@
           <ul class="nav nav-pills nav-justified mb-3"  >
             <li class="nav-item d-flex" >
               <a
-                class="nav-link active"
-
-                >Specification</a
+                class="nav-link active">Specification</a
               >
             </li>
           </ul>
 
           <div class="tab-content" >
             <div
-              class="tab-pane fade show active"
-             
-            >
+              class="tab-pane fade show active">
               <p><%= details.overview %></p>
             </div>
           </div>
@@ -168,28 +165,23 @@
     </div>
   </div>
   <!--  -->
-
 <% if (locals.reviewlist.length>0) { %>
-  <div class="container m-auto ">
+  <div class="container m-auto">
     <h3>Reviews </h3>
-      <div class="row mb-4 " >  
-        <div class="col-5 m-auto text-center">
-        
+      <div class="row mb-4" >  
+        <div class="col-12 col-sm-5 m-auto text-center">
            <input type="text" placeholder="add review" class="form-control" id="reviewInput">
-
             <button id="showaddbtn" class="btn btn-success mt-2" 
             onclick="handlereview('<%= locals.userdata._id %>','<%= locals.details._id %>','<%= locals.userdata.name %>')">Write Review</button>
             <button class="btn btn-success mt-2 text-center"  id="showupdatebtn"
             onclick="handleEditreview()">update</button>
           </div>  
-
-       
      
   </div>
 <% } %>
 
 <div class="container">
-
+  <h3>Reviews </h3>
   <% for( let index = 0; index < Listreview.length; index++ ) { %>
     <div class="container">
       <div class="col-12 col-sm-8">
@@ -197,7 +189,7 @@
       <div class="card mb-3">
         <div class="card-body">
           <div class="d-flex flex-start">
-            <img class="rounded-circle shadow-1-strong me-3"
+            <img class="rounded-circle shadow-1-strong "
               src="https://th.bing.com/th/id/OIP.audMX4ZGbvT2_GJTx2c4GgHaHw?pid=ImgDet&rs=1" alt="avatar" width="40"
               height="40" />
             <div class="w-100 ">

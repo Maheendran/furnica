@@ -154,7 +154,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 style="display: flex;overflow: scroll;height: 100px;gap: 3px; ">
 <% for( let index = 0; index < orders[i].product.length; index++) { %>
 
-<img  class="img-fluid  " style="width: 100px;height: 100%;border-radius: 10px;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
+<img  class="img-fluid  " style="width: 100px;height: 100%;border-radius: 10px;" src="<%= orders[i].product[index].image %>" alt="">
 
 <% } %>     
 </div>

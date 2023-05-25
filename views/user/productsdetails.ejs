@@ -52,7 +52,7 @@ height: 35vh;
               style=" height: 100%; width: 100%;"
               id="img_zoom"
               class="rounded-4 fit"
-              src="/uploads/<%= details.imageUrl[0] %>"/>
+              src="<%= details.imageUrl[0] %>"/>
         
           </div>
 
@@ -61,12 +61,12 @@ height: 35vh;
                 <% for( let index = 0; index < details.imageUrl.length; index++ ) { %>
                 <div
                   class="mx-2"
-                  onclick="handleChangeImage('/uploads/<%= details.imageUrl[index] %>')">
+                  onclick="handleChangeImage('<%= details.imageUrl[index] %>')">
                   <img
                     width="60"
                     height="60"
                     class="rounded-2"
-                    src="/uploads/<%= details.imageUrl[index] %>"
+                    src="<%= details.imageUrl[index] %>"
                   />
                 </div>
                 <% } %>

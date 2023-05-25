@@ -19,15 +19,15 @@ const getProducts = async (req, res) => {
 // ************************create Products section*************************//
 const createProduct = async (req, res) => {
   try {
-  
     const existName = await Product.find({
       name: { $regex: new RegExp(req.body.name, 'i') },
     });
-
-    //
-
     const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-      cloudinary.uploader.upload(file.path, (error, result) => {
+      cloudinary.uploader.upload(file.path, {
+        transformation: [
+          { width: 500, height: 600, crop: 'crop' },
+        ],
+      }, (error, result) => {
         if (error) {
           reject(error);
         } else {
@@ -134,8 +134,6 @@ const productUpdated = async (req, res) => {
     const { files } = req;
     let updImages = [];
     if (files && files.length > 0) {
-      // const newImages = req.files.map((file) => file.filename);
-      // 
       const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
         cloudinary.uploader.upload(file.path, (error, result) => {
           if (error) {
@@ -145,9 +143,7 @@ const productUpdated = async (req, res) => {
           }
         });
       }));
-  
       const newImages = await Promise.all(uploadPromises);
-      // 
       updImages = [...exImage, ...newImages];
       product.imageUrl = updImages;
     } else {

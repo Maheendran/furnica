@@ -50,7 +50,7 @@ const cartLoading = async (req, res) => {
     req.session.mycoupon = null;
     const cart = updatedCart;
     if (cart.length === 0) {
-      res.render('user/emptycart');
+      res.render('user/emptycart', { userdata });
     } else {
       const cartitemCount = cart.length;
       let subTotal = 0;

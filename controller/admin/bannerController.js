@@ -2,6 +2,7 @@
 /* eslint-disable import/extensions */
 const Banner = require('../../models/bannerModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
+const cloudinary = require('cloudinary').v2;
 
 const banner = async (req, res) => {
   const bannerdata = await Banner.find();
@@ -9,7 +10,16 @@ const banner = async (req, res) => {
 };
 const newbanner = async (req, res) => {
   try {
-    const images = req.files.map((file) => file.filename);
+    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(file.path, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      });
+    }));
+    const images = await Promise.all(uploadPromises);
     const BannerData = new Banner({
       imageUrl: images,
       heading: req.body.heading,
@@ -40,7 +50,17 @@ const postupdatebanner = async (req, res) => {
     const { files } = req;
     let updImages = [];
     if (files && files.length > 0) {
-      const newImages = req.files.map((file) => file.filename);
+      const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      }));
+    
+      const newImages = await Promise.all(uploadPromises);
       updImages = [...newImages];
       bannerimage.imageUrl = updImages;
     } else {

@@ -1,6 +1,4 @@
 <%- include('../htmlbody/Adminheader') -%>
-
-    <!--  -->
     <div class="row">
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
@@ -30,7 +28,8 @@
                     <td  >
                     <div class="col-sm-4 col-12 " style="display: flex;gap: 3px;">
                     <% for( let index = 0; index < orders[i].product.length; index++) { %>
-                    <img  style="height: 70px;max-width: 70px;min-width: 70px ;border-radius: 50%;" src="/uploads/<%= orders[i].product[index].image  %>" alt="">
+
+                    <img  style="height: 70px;max-width: 70px;min-width: 70px;border-radius: 50%;" src="<%= orders[i].product[index].image  %>" alt="">
                 
                     <% } %>     
                  </div>
@@ -89,7 +88,7 @@
                 
                     <%}else{%>
                     <tr>
-                    <td colspan="5">products note found</td>
+                    <td colspan="5">Orders note found</td>
                 
                     </tr>
                     <% } %>

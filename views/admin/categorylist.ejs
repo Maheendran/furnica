@@ -31,7 +31,7 @@
   <div class="row">
     <% for( let index = 0; index < locals.category.length; index++ ) { %>
             <div class="col-sm-2 col-10 mx-auto mb-3 text-center" style="margin-left: 1rem;" >
-                <img class="img-fluid"  style="height: 60%;width: 90%;"src="/uploads/<%= locals.category[index].imageUrl[0] %> " alt="not loaded">
+                <img class="img-fluid"  style="height: 60%;width: 90%;"src="<%= locals.category[index].imageUrl[0] %> " alt="not loaded">
                 <h4> <%= locals.category[index].category %> </h4>
                 <a href="/admin/updateCategory/<%= locals.category[index]._id %>">
                 <button type="button" class="btn btn-success rounded-pill">

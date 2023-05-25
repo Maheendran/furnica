@@ -24,7 +24,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
   <div class="carousel-inner ">
     <div class="carousel-item active carouselheight" style="position: relative;" >
     
-      <img style="width: 100%;height: 100%;" src="/uploads/<%= locals.bannerdata[0].imageUrl  %>"  class="d-block w-100" alt="...">
+      <img style="width: 100%;height: 100%;" src="<%= locals.bannerdata[0].imageUrl  %>"  class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block ">
         <h1><%= locals.bannerdata[0].heading  %></h1>
         <p><%= locals.bannerdata[0].subheading  %></p>
@@ -36,7 +36,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
     <!--  -->
     <% for( let index = 1; index < bannerdata.length; index++ ) { %>
     <div class="carousel-item carouselheight" >
-      <img style="width: 100%;height: 100%;" src="/uploads/<%= locals.bannerdata[index].imageUrl  %>"  class="d-block w-100" alt="...">
+      <img style="width: 100%;height: 100%;" src="<%= locals.bannerdata[index].imageUrl  %>"  class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h1><%= locals.bannerdata[index].heading  %></h1>
         <p><%= locals.bannerdata[index].subheading  %></p>
@@ -46,8 +46,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
       <div class="shadow"></div>
     </div>
     <% } %>
-  
-
 
   </div>
   <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
@@ -59,17 +57,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
     <span class="sr-only">Next</span>
   </a>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- category section --> 
 <div class="container text-center mt-5">
@@ -85,7 +72,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 <a style="text-decoration: none;"  href="/products/<%= locals.category[i]._id %>">
 <div class="catg_card">
 <div class="card_imag">
-<img src="/uploads/<%= locals.category[i].imageUrl[0] %> " alt="">
+<img src="<%= locals.category[i].imageUrl[0] %> " alt="">
 </div>
 <h4><%= locals.category[i].category %> </h4>
 </div>
@@ -132,7 +119,6 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 </div>
 
 <!-- advertising -->
-
 <div class="container mt-5  mb-5" style="width: 80%;">
 <div class="row">
 
@@ -166,7 +152,7 @@ background: linear-gradient(0deg, rgba(24,24,22,0.9016398795846463) 10%, rgba(25
 <h5>Rs:<%= locals.product[index].price %>/- <span style="text-decoration: line-through;color: rgb(238, 79, 79);font-size: 0.8rem;"> 199998/-</span> </h5>
 <p style="color: rgb(238, 56, 56); font-weight: 600;">Offer 70%</p>
 </div>
-<img class="img-fluid" src="/uploads/<%= locals.product[index].imageUrl[0]  %>" alt="">
+<img class="img-fluid" src="<%= locals.product[index].imageUrl[0]  %>" alt="">
 </div>
 <% } %>
 </div>

@@ -21,68 +21,80 @@
     }
   </style>
   <body>
+ 
+
+    <!--  -->
     <section class="vh-100 login_main">
       <div class="container h-100">
+        <a href="/furnica/home">
+          <img class="mt-2" src="/assests/logo.png" alt=""></a>
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-lg-12 col-xl-11 m-auto">
-            <div class="card text-black border-0 login_submain overflow-hidden">
-              <div class="col-12 wave_login">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                  <path
-                    fill="#b6b6b6"
-                    fill-opacity="1"
-                    d="M0,128L26.7,160C53.3,192,107,256,160,240C213.3,224,267,128,320,106.7C373.3,85,427,139,480,149.3C533.3,160,587,128,640,138.7C693.3,149,747,203,800,192C853.3,181,907,107,960,90.7C1013.3,75,1067,117,1120,149.3C1173.3,181,1227,203,1280,202.7C1333.3,203,1387,181,1413,170.7L1440,160L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
-                  ></path>
-                </svg>
-              </div>
-              <div class="card-body p-md-5 login_submain overflow-hidden">
-                <div class="row justify-content-center">
-                  <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1">
-                    <p class="h2 mb-5 m-auto text-center">OTP</p>
 
-                    <!--  -->
-                    <form method="post" action="/getOtp">
-                      <div class="form-outline mb-4">
-                        <input
-                          type="text"
-                          placeholder="OTP"
-                          name="otp"
-                          class="form-control form-control-lg text-center"
-                          id="otp_input"
-                          maxlength="4"
-                          oninput="handleinput()"
-                        />
-                      </div>
-                      <p><%= locals.errorotps %></p>
-                      <button
-                        class="d-flex m-auto text-center mb-4 rounded-pill"
-                        id="otp_btn"
-                        type="submit"
-                      >
-                        submit
-                      </button>
-                    </form>
-                    <div class="row m-auto" style="width: 90%">
-                      <div class="col-6 col-sm-4 text-center m-auto">
+            <div class="card text-black border-0 login_submain overflow-hidden">
+               <div class="col-12 wave_login">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path
+                      fill="#8de499"
+                      fill-opacity="1"
+                      d="M0,128L26.7,160C53.3,192,107,256,160,240C213.3,224,267,128,320,106.7C373.3,85,427,139,480,149.3C533.3,160,587,128,640,138.7C693.3,149,747,203,800,192C853.3,181,907,107,960,90.7C1013.3,75,1067,117,1120,149.3C1173.3,181,1227,203,1280,202.7C1333.3,203,1387,181,1413,170.7L1440,160L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
+                    ></path>
+                  </svg>
+                </div>
+              <div class="card-body p-md-5  overflow-hidden">
+              
+                <div class="row justify-content-center">
+                  <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1 text-center">
+    <div class="row">
+                <p>Please enter the one time password <br> to verify your account</p> 
+              
+    </div>
+                      
+    <form method="post" action="/getOtp">
+      <div class="form-outline mb-4">
+        <input
+          type="text"
+          placeholder="OTP"
+          name="otp"
+          class="form-control form-control-lg text-center"
+          id="otp_input"
+          maxlength="4"
+          oninput="handleinput()"
+        />
+      </div>
+      <p><%= locals.errorotps %></p>
+      <button
+        class="d-flex m-auto text-center mb-4 rounded-pill"
+        id="otp_btn"
+        type="submit"
+      >
+        submit
+      </button>
+    </form>
+                       
+                    <div class="row m-auto" >
+                      <div class="col-8 text-center m-auto ">
                         <p>
                           Didn't get otp?
-
-                          <button
-                            id="resend_btn"
-                            class="btn rounded-pill"
-                            style="background-color: grey"
-                            onclick="setTime()">
-                            <a class="mt-3" href="/resendOtp">
-                              resend
-                            </a>
-                          </button>
-                        </p>
+                        </p> 
                       </div>
+                    <div class="row text-center">
+                      <div class="col-5   d-flex text-center m-auto ">
+                      <button
+                        id="resend_btn"
+                        class="btn rounded-pill m-auto"
+                        style="background-color: grey;"
+                        onclick="setTime()">
+                        <a class="mt-3" href="/resendOtp">
+                          resend
+                        </a>
+                      </button>
+  </div>
 
-                      <div class="col-5 col-sm-3 d-flex text-center">
+</div>
+                      <div class="col-6 col-sm-3 d-flex text-center " >
                         <span>
-                          <img
-                            id="timmer_img"
+                          <img id="timmer_img"
                             class="img-fluid timepiece"
                             src="https://webstockreview.net/images/clipart-clock-animated-gif-10.gif"
                             alt=""
@@ -90,10 +102,13 @@
                           <h6 id="timer"></h6>
                         </span>
                       </div>
+
+
                     </div>
                   </div>
+                  
                   <div
-                    class="col-11 col-md-6 col-lg-6 col-xl-5 d-flex align-items-center position-relative overflow-hidden"
+                    class="col-7 col-md-6 col-lg-6 col-xl-5 d-flex align-items-center position-relative overflow-hidden"
                   >
                     <img
                       src="https://cdn.myoperator.com/img/otp/Website-banners.png"
@@ -108,7 +123,10 @@
                     />
                   </div>
                 </div>
+
+
               </div>
+
             </div>
           </div>
         </div>

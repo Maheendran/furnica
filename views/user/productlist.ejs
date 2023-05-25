@@ -116,17 +116,16 @@
         <% for( let index = 0; index <locals.productList.length; index++ ) { %>
         <div class="col-9 col-sm-4 col-md-4 col-lg-3 mt-3 Main_box " style="margin-top: 1rem;">
           <a
-            style="color: rgb(106, 102, 102)"
+            style="color: rgb(63, 60, 60)"
             href="/detail/<%= locals.productList[index]._id  %>">
             <div class="prod_img">
               <img
-                src="/uploads/<%= locals.productList[index].imageUrl[0]  %>"
+                src="<%= locals.productList[index].imageUrl[0]  %>"
                 alt=""/>
             </div>
             <div class="product_card">
               <div class="detail_btm">
                 <p id="name"><%= productList[index].name %></p>
-
                 <% if (productList[index].outofstock==true) { %>
                   <p style="color: grey; font-size: 0.7rem">By <%= productList[index].brand %></p>
                   Rs <%= productList[index].price %>

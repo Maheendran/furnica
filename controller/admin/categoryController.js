@@ -3,6 +3,7 @@
 /* eslint-disable linebreak-style */
 const Category = require('../../models/categoryModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
+const cloudinary = require('cloudinary').v2;
 // ************************Category list section*************************//
 const categorylist = async (req, res) => {
   try {
@@ -16,7 +17,18 @@ const categorylist = async (req, res) => {
 // ************************add category section*************************//
 const addcategory = async (req, res) => {
   const category = await Category.find();
-  const images = req.files.map((file) => file.filename);
+  // const images = req.files.map((file) => file.filename);
+  const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(file.path, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result.secure_url);
+      }
+    });
+  }));
+
+  const images = await Promise.all(uploadPromises);
   if (req.body.category !== '') {
     const exist = await Category.find({
       category: { $regex: new RegExp(req.body.category, 'i') },
@@ -73,7 +85,17 @@ const updatecategory = async (req, res) => {
     });
     if (exist.length === 0) {
       if (files && files.length > 0) {
-        const newImages = req.files.map((file) => file.filename);
+        const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(file.path, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result.secure_url);
+            }
+          });
+        }));
+        const newImages = await Promise.all(uploadPromises);
+        // const newImages = req.files.map((file) => file.filename);
         updImages = [...newImages];
         categorys.imageUrl = updImages;
       } else {
