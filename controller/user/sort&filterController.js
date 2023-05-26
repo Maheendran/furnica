@@ -4,15 +4,17 @@
 const { ObjectId } = require('mongodb');
 const Product = require('../../models/productModel');
 const errorHandler = require('../../middleware/errorHandler.js');
-const Category =require('../../models/categoryModel')
+const Category = require('../../models/categoryModel');
 // ************************sortby section*************************//
 const sortby = async (req, res) => {
   try {
-    const categoryId = req.query.category ? new ObjectId(req.query.category) : null;
+    const categoryId = req.query.category
+      ? new ObjectId(req.query.category)
+      : null;
     const sortValue = req.query.sortBy;
     const searchValue = req.query.search;
     const pageNumber = parseInt(req.query.page || 1);
-   
+
     const pageSize = 4;
     let sortType = 1;
     const pipeline = [];

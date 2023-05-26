@@ -12,15 +12,17 @@ const banner = async (req, res) => {
 };
 const newbanner = async (req, res) => {
   try {
-    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-      cloudinary.uploader.upload(file.path, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result.secure_url);
-        }
-      });
-    }));
+    const uploadPromises = req.files.map(
+      (file) => new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      }),
+    );
     const images = await Promise.all(uploadPromises);
     const BannerData = new Banner({
       imageUrl: images,
@@ -52,15 +54,17 @@ const postupdatebanner = async (req, res) => {
     const { files } = req;
     let updImages = [];
     if (files && files.length > 0) {
-      const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(file.path, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result.secure_url);
-          }
-        });
-      }));
+      const uploadPromises = req.files.map(
+        (file) => new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(file.path, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result.secure_url);
+            }
+          });
+        }),
+      );
 
       const newImages = await Promise.all(uploadPromises);
       updImages = [...newImages];
@@ -93,8 +97,6 @@ const deletebanner = async (req, res) => {
   }
 };
 
-// sliders=========================
-
 const slider = async (req, res) => {
   try {
     const category = await Category.find();
@@ -107,15 +109,17 @@ const slider = async (req, res) => {
 
 const addslider = async (req, res) => {
   try {
-    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-      cloudinary.uploader.upload(file.path, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result.secure_url);
-        }
-      });
-    }));
+    const uploadPromises = req.files.map(
+      (file) => new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(file.path, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result.secure_url);
+          }
+        });
+      }),
+    );
 
     const images = await Promise.all(uploadPromises);
     const sliderdata = new Slider({

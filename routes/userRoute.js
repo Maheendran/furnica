@@ -22,7 +22,6 @@ const {
 
 dotenv.config();
 const userRoute = express.Router();
-// userRoute.get('/',userController.homePage);
 // =====================signup section=================//
 userRoute.get('/signup', isLogin, userController.usersignup);
 userRoute.post('/signup', userController.doSignup);
@@ -72,7 +71,6 @@ userRoute.get('/removeWishlist/:id/:index', loggedin, cartController.removeWishl
 userRoute.get('/wishlistToCart/:id/:index', loggedin, cartController.wishlistToCart);
 // ===============user profile===============//
 userRoute.get('/profile', loggedin, profileController.profile);
-// userRoute.get('/updateprofile/:id', loggedin, profileController.updateprofile);
 userRoute.post('/updatedprofile/:id', loggedin, profileController.updatedprofile);
 //= ============== address===============//
 userRoute.post('/createAddress', loggedin, profileController.createAddress);
@@ -101,10 +99,6 @@ userRoute.get('/sorting', sortFilterController.sortby);
 // ===================payment section===========================//
 userRoute.post('/walletamount', checkoutController.walletamount);
 userRoute.get('/DownloadInvoice', checkoutController.invoicedownload);
-userRoute.get('/invoice', (req, res) => {
-  res.render('user/invoice');
-});
-
 userRoute.post('/payment', async (req, res) => {
   const { amount } = req.body;
   const instance = new Razorpay({ key_id: 'rzp_test_PDb2mkTumdooCe', key_secret: 'L67cmkeEu1lbBkv9S7uSuWcg' });

@@ -13,9 +13,6 @@ const Upload = require('../middleware/multer.js');
 const adminAuth = require('../middleware/adminAuth.js');
 
 const adminRoute = express.Router();
-adminRoute.get('/image', (req, res) => {
-  res.render('admin/images');
-});
 // ************************login section*************************//
 
 adminRoute.get('/login', adminAuth.isLogout, userController.adminlogin);

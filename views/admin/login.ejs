@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/css/login.css" />
-    <link rel="shortcut icon" type="x-icon" href="/assests/adminlogo.png">
+    <link rel="shortcut icon" type="x-icon" href="/assests/adminlogo.png" />
     <title>login</title>
   </head>
 
@@ -50,7 +50,7 @@
                     ></path>
                   </svg>
                 </div>
-                <div class="row  m-auto">
+                <div class="row m-auto">
                   <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1">
                     <p class="h2 mb-5 me-auto mx-1 mx-md-4 mt-4">login</p>
 
@@ -70,13 +70,12 @@
                           id="email"
                           placeholder="email"
                           name="username"
-                        
                           onchange="emailvalidate()"
                         />
                         <span
-                        id="emailError"
-                        style="color: red; font-size: 0.8rem"
-                      ></span>
+                          id="emailError"
+                          style="color: red; font-size: 0.8rem"
+                        ></span>
                       </div>
 
                       <div class="form-outline mb-4">
@@ -89,22 +88,30 @@
                           id="password"
                           placeholder="password"
                           name="password"
-                         
                           onkeyup="passvalidate()"
                         />
                         <span
-                        id="passError"
-                        style="color: red; font-size: 0.8rem"
-                      ></span>
+                          id="passError"
+                          style="color: red; font-size: 0.8rem"
+                        ></span>
                       </div>
 
                       <div class="col-6 m-auto text-center">
-                        <button type="submit" class="btn logintbn btn-block"    id="signup_btn">
+                        <button
+                          type="submit"
+                          class="btn logintbn btn-block"
+                          id="signup_btn"
+                        >
                           Sign in
                         </button>
                       </div>
                     </form>
-                    <p  style="color: red; font-size: 0.8rem" class="text-center"><%= locals.errorDetail  %></p>
+                    <p
+                      style="color: red; font-size: 0.8rem"
+                      class="text-center"
+                    >
+                      <%= locals.errorDetail %>
+                    </p>
                     <!--  -->
                   </div>
                   <div
@@ -134,7 +141,6 @@
   crossorigin="anonymous"
 ></script>
 <script>
-  
   const uemail = document.getElementById("email");
   const upass = document.getElementById("password");
 
@@ -143,8 +149,7 @@
   const signup_btn = document.getElementById("signup_btn");
 
   const emailregx = /\b^[^ ][a-z.\-_0-9]+@[a-z0-9]+\.[a-z]{2,3}\b/;
-  const passregx=/^(?!.*\s).{4,12}$/
-
+  const passregx = /^(?!.*\s).{4,12}$/;
 
   var email_correct = false;
   var pass_correct = false(
@@ -153,7 +158,6 @@
     })()
   );
 
-  //email validation
   function emailvalidate() {
     if (uemail.value.match(emailregx)) {
       emailError.innerHTML = "";
@@ -164,8 +168,7 @@
     }
     finalcheck();
   }
-  // }mobile
-  // password
+
   function passvalidate() {
     if (upass.value.match(passregx)) {
       passError.innerHTML = "";
@@ -176,9 +179,7 @@
     }
     finalcheck();
   }
-  // confornpass
   function removedisable() {
-    console.log("call for remove diasl");
     signup_btn.removeAttribute("disabled");
   }
 

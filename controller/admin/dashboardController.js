@@ -1,20 +1,17 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-use-before-define */
-/* eslint-disable linebreak-style */
 /* eslint-disable no-redeclare */
 /* eslint-disable vars-on-top */
-/* eslint-disable no-var */
 /* eslint-disable no-unused-vars */
 /* eslint-disable linebreak-style */
 /* eslint-disable import/extensions */
 const fs = require('fs');
 const ejs = require('ejs');
-const pdf = require('html-pdf');
 const path = require('path');
 const puppeteer = require('puppeteer');
 const Orders = require('../../models/orderModel.js');
 const User = require('../../models/userModel.js');
-const Category = require('../../models/categoryModel.js');
 const Product = require('../../models/productModel.js');
 const errorHandler = require('../../middleware/errorHandler.js');
 // ************************Dashboard section*************************//
@@ -156,48 +153,6 @@ const chartdata = async (req, res) => {
 };
 
 // ************************Pdf section*************************//
-// const pdfconvert = async (req, res) => {
-//   try {
-//     const { duration } = req.query;
-
-//     const today = new Date();
-//     let durationDate;
-//     if (duration === 'Daily') {
-//       durationDate = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-//     } else if (duration === 'Weekly') {
-//       durationDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-//     } else if (duration === 'Yearly') {
-//       durationDate = new Date(
-//         today.getFullYear() - 1,
-//         today.getMonth(),
-//         today.getDate(),
-//       );
-//     }
-//     const filteredDocs = await Orders.find({
-//       status: { $ne: 'cancelled' },
-//       createdAt: { $gte: durationDate },
-//     }).sort({ createdAt: -1 });
-//     const data = {
-//       orders: filteredDocs,
-//     };
-//     const filePathName = path.resolve(__dirname, '../../views/admin/htmltopdf.ejs');
-//     const htmlString = fs.readFileSync(filePathName).toString();
-
-//     const ejsData = ejs.render(htmlString, data);
-
-//     await createDailySalesPdf(ejsData);
-
-//     const pdfFilePath = 'DailySalesReport.pdf';
-//     const pdfData = fs.readFileSync(pdfFilePath);
-
-//     res.setHeader('Content-Type', 'application/pdf');
-//     res.setHeader('Content-Disposition', 'attachment; filename="DailySalesReport.pdf"');
-
-//     res.send(pdfData);
-//   } catch (error) {
-//     errorHandler(error, req, res);
-//   }
-// };
 const pdfconvert = async (req, res) => {
   try {
     const { duration } = req.query;
@@ -222,12 +177,12 @@ const pdfconvert = async (req, res) => {
     const data = {
       orders: filteredDocs,
     };
-    const filePathName = path.resolve(__dirname, '../../views/admin/htmltopdf.ejs');
+    const filePathName = path.resolve(
+      __dirname,
+      '../../views/admin/htmltopdf.ejs',
+    );
     const htmlString = fs.readFileSync(filePathName).toString();
-
     const ejsData = ejs.render(htmlString, data);
-
-    // Update the code to use Puppeteer for generating the PDF
     const browser = await puppeteer.launch({ headless: 'new' });
     const page = await browser.newPage();
     await page.setContent(ejsData, { waitUntil: 'networkidle0' });
@@ -243,45 +198,16 @@ const pdfconvert = async (req, res) => {
     const pdfData = fs.readFileSync(pdfFilePath);
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="DailySalesReport.pdf"');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="DailySalesReport.pdf"',
+    );
 
     res.send(pdfData);
   } catch (error) {
-    // errorHandler(error, req, res);
-    console.log(error.message)
+    errorHandler(error, req, res);
   }
 };
-
-// const createDailySalesPdf = async (html) => {
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
-//   await page.setContent(html);
-//   await page.pdf({ path: 'DailySalesReport.pdf' });
-//   await browser.close();
-// };
-// ==========
-
-//   const filePathName = path.resolve(
-//     __dirname,
-//     '../../views/admin/htmltopdf.ejs',
-//   );
-//   const htmlString = fs.readFileSync(filePathName).toString();
-//   const options = {
-//     format: 'Letter',
-//   };
-//   const ejsData = ejs.render(htmlString, data);
-//   // eslint-disable-next-line no-shadow
-//   pdf.create(ejsData, options).toFile('Order.pdf', (err, res) => {
-//     if (err) {
-//       res.render('user/error');
-//     }
-//   });
-
-//   res.json('success');
-// } catch (error) {
-//   errorHandler(error, req, res);
-// }
-// };
 
 // ************************sales report section*************************//
 const salesreport = async (req, res) => {

@@ -61,7 +61,11 @@ const orderdetail = async (req, res) => {
     const param = req.params.id;
     const orders = await Orders.findById(param);
     const address = await Address.findById(orders.address);
-    res.render('admin/orderdetails', { orders, address, title: 'Order detail' });
+    res.render('admin/orderdetails', {
+      orders,
+      address,
+      title: 'Order detail',
+    });
   } catch (error) {
     errorHandler(error, req, res);
   }

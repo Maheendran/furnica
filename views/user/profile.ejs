@@ -414,8 +414,8 @@ function handlewallet(){
 }
 
 // reffferal
-const referralCode = document.getElementById("refferalCode").innerHTML; // Replace with your actual referral code
-const baseUrl = "http://localhost:3000/referral"; // Replace with your base referral URL
+const referralCode = document.getElementById("refferalCode").innerHTML; 
+const baseUrl = "http://localhost:3000/referral";
 
 const referralLink = `${baseUrl}?code=${referralCode}`;
 document.getElementById("showCode").style.display="none"
@@ -468,7 +468,7 @@ const handleRemove=async(id)=>{
 
 const modelchange=()=>{
     var umobile=document.getElementById("umobile").value;
-    console.log(umobile)
+
 }
 
 
@@ -522,16 +522,6 @@ modalupdatebtn.addEventListener('click', async function() {
 });
 
 }
-
-// update profile
-// const handleUpdateProfile=async(id)=>{
-//     await fetch(`/updateprofile/${id}`, {
-//  method: 'POST',
-//  headers: {
-//    'Content-Type': 'application/json'
-//  },
-// })
-// }
 
 // create new address
 const handleaddress=async(id)=>{

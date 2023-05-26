@@ -18,15 +18,17 @@ const categorylist = async (req, res) => {
 const addcategory = async (req, res) => {
   const category = await Category.find();
   // const images = req.files.map((file) => file.filename);
-  const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(file.path, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result.secure_url);
-      }
-    });
-  }));
+  const uploadPromises = req.files.map(
+    (file) => new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(file.path, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      });
+    }),
+  );
 
   const images = await Promise.all(uploadPromises);
   if (req.body.category !== '') {
@@ -63,7 +65,10 @@ const updateCategorypage = async (req, res) => {
   try {
     const category = await Category.findOne({ _id: param });
     res.render('admin/updatecategory', {
-      category, param, errorDetail: '', title: 'Update category',
+      category,
+      param,
+      errorDetail: '',
+      title: 'Update category',
     });
   } catch (error) {
     errorHandler(error, req, res);
@@ -85,17 +90,18 @@ const updatecategory = async (req, res) => {
     });
     if (exist.length === 0) {
       if (files && files.length > 0) {
-        const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-          cloudinary.uploader.upload(file.path, (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(result.secure_url);
-            }
-          });
-        }));
+        const uploadPromises = req.files.map(
+          (file) => new Promise((resolve, reject) => {
+            cloudinary.uploader.upload(file.path, (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result.secure_url);
+              }
+            });
+          }),
+        );
         const newImages = await Promise.all(uploadPromises);
-        // const newImages = req.files.map((file) => file.filename);
         updImages = [...newImages];
         categorys.imageUrl = updImages;
       } else {

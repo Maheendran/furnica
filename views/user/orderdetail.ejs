@@ -127,7 +127,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
           <img  class="img-fluid " style="height: 100%;width: 100%;"  src="<%= orders.product[index].image  %>" alt="">
           </div>
 
-          <div class="col-lg-6 col-5">
+          <div class="col-lg-5 mt-3 mt-sm-0 col-10 ">
             <p>Name:
                 <%= orders.product[index].name  %>
             </p>
@@ -137,7 +137,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
             <p>Quantity:  <%= orders.product[index].quantity  %>
                 </p>
             </div> 
-            <div class="col-lg-2 col-md-6 mb-4 col-2 me-auto text-center">
+            <div class="col-lg-2 col-md-6 col-10  mb-4  ms-auto m-lg-auto text-right ">
    
               <% if (orders.status!="Order Arrived" && orders.status!="Returned") { %>
                   <div class="col-12 m-auto ">
@@ -177,9 +177,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 
 </div>
 
-    <!--  -->
-   
-    <div class="col-md-12 col-sm-12 col-lg-3 mx-auto">
+    <div class="col-md-12 col-sm-12 col-lg-4 mx-auto">
         <div class="card mb-4">
           <div class="card-header py-3">
             <h5 class="mb-0">Summary</h5>
@@ -358,7 +356,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
 <script>
 
   const handleinvoice=async(id)=>{
- console.log(id)
+
         await fetch(`/DownloadInvoice?orderId=${id}`, {
  method: 'GET',
  headers: {
@@ -414,7 +412,7 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
   )
   }).then((res)=>res.json()).then((data)=>{
   if(data==="success"){
-      console.log("data",data)
+    
   window.location.reload()
   }
   })

@@ -1,336 +1,303 @@
 
-<%- include('../htmlbody/Adminheader') -%>
-<style>
+  <%- include('../htmlbody/Adminheader') -%>
+  <style>
   .canvasbody{
-    height: 500px;
-    border: 3px solid;
+  height: 500px;
+  border: 3px solid;
   }
-</style>
-<div class="container-fluid px-4 mt-3">
+  </style>
+  <div class="container-fluid px-4 mt-3">
   <div class="col-12 col-sm-6">
-  
-  
-                          <div class="row">
-    
-                              <div class="col-xl-6 col-md-6  col-12 m-auto text-center" >
-                                  <div class="card bg-warning text-white mb-4 rounded-pill">
-                                      <div class="card-body">Weekly Earning  <i class="fa-solid fa-sack-dollar"></i>  <h2  class="mt-2" style="font-weight: 600;">
-                                          <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                                        <%= locals.totalPrice  %>  /-
-                                      </h2>
-                                  </div>
-                                    
-                                  </div>
-                              </div>
-  
-  
-                              <div class="col-xl-6 col-md-6 col-12 m-auto text-center">
-                                  <div class="card bg-success text-white mb-4 rounded-pill">
-                                      <div class="card-body">Total Earnings  <i class="fa-solid fa-sack-dollar"></i><h2 class="mt-2" style="font-weight: 600;">
-                                          <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                                        <%= locals.overallprice  %>  /-
-                                      </h2></div>
-                                     
-                                  </div>
-                              </div>
-                             
-                          </div>  
-                        </div> 
-                         
-                          <div class="row">
-                           
-                              <!-- per day earning -->
-                              <div class="col-xl-6">
-                                  <div class="card mb-4">
-                                      <div class="card-header">
-                                          <i class="fas fa-chart-area me-1"></i>
-                                          Per Day Earnings 
-                                      </div>
-                                      <div  class="card-body"><canvas id="myChart" width="100%" height="50px"></canvas></div>
-                                  </div>
-                              </div>
-  
-                               <!-- payment mode -->
-                               <div class="col-xl-6 col-12">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        payment mode monthly
-                                    </div>
-                                    <div  class="card-body"><canvas id="monthlypayment" width="100%" height="50px"></canvas></div>
-                                </div>
-                            </div>
-                            <!-- per day orders -->
-                              <div class="col-xl-6">
-                                  <div class="card mb-4">
-                                      <div class="card-header">
-                                          <i class="fas fa-chart-bar me-1"></i>
-                                        Per Day Orders 
-                                      </div>
-                                      <div class="card-body"><canvas id="myordercart" width="100%" height="50"></canvas></div>
-                                  </div>
-                              </div>
-                             
-                             
-                                <!-- per day user growth -->
-                                <div class="col-xl-6">
-                                  <div class="card mb-4">
-                                      <div class="card-header">
-                                          <i class="fas fa-chart-area me-1"></i>
-                                          Per Day User growth 
-                                      </div>
-                                      <div   class="card-body"><canvas id="grpahPerdayUser" width="100%" height="50px"></canvas></div>
-                                  </div>
-                              </div>
-                              <!-- most selling category -->
-                              <div class="col-xl-6">
-                                  <div class="card mb-4">
-                                      <div class="card-header">
-                                          <i class="fas fa-chart-area me-1"></i>
-                                          most selling category
-                                      </div>
-                                      <div   class="card-body"><canvas id="sellingcategory" width="100%" height="50px"></canvas></div>
-                                  </div>
-                              </div>
-                              <!-- stovk list -->
-                              <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                       least stock
-                                    </div>
-                                    <div class="card-body"><canvas id="leaststock" width="100%" height="50px"></canvas></div>
-                                </div>
-                            </div>
-  
-                          </div>
-                          
-                      </div>
-                   
-<%- include('../htmlbody/AdminFooter') -%>
 
-<script>
-      
-chartting()
-async function chartting(){
-    await fetch("/admin/chart" ,{
- method: 'POST',
- headers: {
-   'Content-Type': 'application/json'
- },
- body: JSON.stringify(
-   {}
- )
-}).then((res)=>res.json()).then((res)=>{
-// count and total
-const totals = res.result.map(item => item.total);
-const dates = res.result.map(item => item.date);
-const count = res.result.map(item => item.count);
-const usercount = res.perdayuser.map(item => item.count);
-const userdate = res.perdayuser.map(item => item._id);
-const cod = res.paymentmethod.map(item => item._id);
-const gpay = res.paymentmethod.map(item => item.count);
-const product = res.mostSellingProduct.map(item => item._id);
-const prodcount = res.mostSellingProduct.map(item => item.count);
-const stockname=res.leaststock.map(item => item.name);
-const stockcount=res.leaststock.map(item => item.stock);
 
-earningChart(dates,totals)
-orderChart(dates,count)
-perdayUser(userdate,usercount)
-monthlypayment(cod,gpay)
-sellingcat(product,prodcount)
-leaststock(stockname,stockcount)
-})
-}
+  <div class="row">
 
-const myordercart=document.getElementById('myordercart')
-function orderChart(dates,count){
-    new Chart(myordercart, {
-    type: 'bar',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: 'Orders',
-        data: count,
-        borderWidth: 3,
-        backgroundColor: '#70b606',
-            borderColor: '#70b606',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+  <div class="col-xl-6 col-md-6  col-12 m-auto text-center" >
+  <div class="card bg-warning text-white mb-4 rounded-pill">
+  <div class="card-body">Weekly Earning  <i class="fa-solid fa-sack-dollar"></i>  <h2  class="mt-2" style="font-weight: 600;">
+  <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
+  <%= locals.totalPrice  %>  /-
+  </h2>
+  </div>
+
+  </div>
+  </div>
+
+
+  <div class="col-xl-6 col-md-6 col-12 m-auto text-center">
+  <div class="card bg-success text-white mb-4 rounded-pill">
+  <div class="card-body">Total Earnings  <i class="fa-solid fa-sack-dollar"></i><h2 class="mt-2" style="font-weight: 600;">
+  <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
+  <%= locals.overallprice  %>  /-
+  </h2></div>
+
+  </div>
+  </div>
+
+  </div>  
+  </div> 
+  <div class="row">
+  <!-- per day earning -->
+  <div class="col-xl-6">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-area me-1"></i>
+  Per Day Earnings 
+  </div>
+  <div  class="card-body"><canvas id="myChart" width="100%" height="50px"></canvas></div>
+  </div>
+  </div>
+  <!-- payment mode -->
+  <div class="col-xl-6 col-12">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-area me-1"></i>
+  payment mode monthly
+  </div>
+  <div  class="card-body"><canvas id="monthlypayment" width="100%" height="50px"></canvas></div>
+  </div>
+  </div>
+  <!-- per day orders -->
+  <div class="col-xl-6">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-bar me-1"></i>
+  Per Day Orders 
+  </div>
+  <div class="card-body"><canvas id="myordercart" width="100%" height="50"></canvas></div>
+  </div>
+  </div>
+  <!-- per day user growth -->
+  <div class="col-xl-6">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-area me-1"></i>
+  Per Day User growth 
+  </div>
+  <div   class="card-body"><canvas id="grpahPerdayUser" width="100%" height="50px"></canvas></div>
+  </div>
+  </div>
+  <!-- most selling category -->
+  <div class="col-xl-6">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-area me-1"></i>
+  most selling category
+  </div>
+  <div   class="card-body"><canvas id="sellingcategory" width="100%" height="50px"></canvas></div>
+  </div>
+  </div>
+  <!-- stock list -->
+  <div class="col-xl-6">
+  <div class="card mb-4">
+  <div class="card-header">
+  <i class="fas fa-chart-area me-1"></i>
+  least stock
+  </div>
+  <div class="card-body"><canvas id="leaststock" width="100%" height="50px"></canvas></div>
+  </div>
+  </div>
+
+  </div>
+
+  </div>
+
+  <%- include('../htmlbody/AdminFooter') -%>
+
+  <script>
+
+  chartting()
+  async function chartting(){
+  await fetch("/admin/chart" ,{
+  method: 'POST',
+  headers: {
+  'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(
+  {}
+  )
+  }).then((res)=>res.json()).then((res)=>{
+
+  const totals = res.result.map(item => item.total);
+  const dates = res.result.map(item => item.date);
+  const count = res.result.map(item => item.count);
+  const usercount = res.perdayuser.map(item => item.count);
+  const userdate = res.perdayuser.map(item => item._id);
+  const cod = res.paymentmethod.map(item => item._id);
+  const gpay = res.paymentmethod.map(item => item.count);
+  const product = res.mostSellingProduct.map(item => item._id);
+  const prodcount = res.mostSellingProduct.map(item => item.count);
+  const stockname=res.leaststock.map(item => item.name);
+  const stockcount=res.leaststock.map(item => item.stock);
+
+  earningChart(dates,totals)
+  orderChart(dates,count)
+  perdayUser(userdate,usercount)
+  monthlypayment(cod,gpay)
+  sellingcat(product,prodcount)
+  leaststock(stockname,stockcount)
+  })
+  }
+
+  const myordercart=document.getElementById('myordercart')
+  function orderChart(dates,count){
+  new Chart(myordercart, {
+  type: 'bar',
+  data: {
+  labels: dates,
+  datasets: [{
+  label: 'Orders',
+  data: count,
+  borderWidth: 3,
+  backgroundColor: '#70b606',
+  borderColor: '#70b606',
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true
+  }
+  }
+  }
   });
-}
-// ============
-const ctx = document.getElementById('myChart');;
-function earningChart(dates,totals){
-    new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: 'Revenue',
-        data: totals,
-        borderWidth: 1,
-        backgroundColor: '#aa2ae8',
-            borderColor: '#aa2ae8',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+  }
+  const ctx = document.getElementById('myChart');;
+  function earningChart(dates,totals){
+  new Chart(ctx, {
+  type: 'bar',
+  data: {
+  labels: dates,
+  datasets: [{
+  label: 'Revenue',
+  data: totals,
+  borderWidth: 1,
+  backgroundColor: '#aa2ae8',
+  borderColor: '#aa2ae8',
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true
+  }
+  }
+  }
   });
 
 
 
 
 
-}
+  }
 
-//  ================
-const grpahPerdayUser=document.getElementById('grpahPerdayUser')
-function perdayUser(dates,count){
-    new Chart(grpahPerdayUser, {
-    type: 'line',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: 'users',
-        data: count,
-        borderWidth: 3,
-        backgroundColor: 'transparent',
-            borderColor: 'red',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+  const grpahPerdayUser=document.getElementById('grpahPerdayUser')
+  function perdayUser(dates,count){
+  new Chart(grpahPerdayUser, {
+  type: 'line',
+  data: {
+  labels: dates,
+  datasets: [{
+  label: 'users',
+  data: count,
+  borderWidth: 3,
+  backgroundColor: 'transparent',
+  borderColor: 'red',
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true
+  }
+  }
+  }
   });
-}
-// 
-
-const monthlypayments=document.getElementById('monthlypayment')
-function monthlypayment(dates,count){
-    new Chart(monthlypayments, {
-    type: 'pie',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: 'Orders',
-        data: count,
-        borderWidth: 3,
-          backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      "#89a02c"
+  }
   
-    ],
-         
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+
+  const monthlypayments=document.getElementById('monthlypayment')
+  function monthlypayment(dates,count){
+  new Chart(monthlypayments, {
+  type: 'pie',
+  data: {
+  labels: dates,
+  datasets: [{
+  label: 'Orders',
+  data: count,
+  borderWidth: 3,
+  backgroundColor: [
+  'rgb(255, 99, 132)',
+  'rgb(54, 162, 235)',
+  "#89a02c"
+
+  ],
+
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true
+  }
+  }
+  }
   });
-}
-// most selling category
-const sellingcategory=document.getElementById('sellingcategory')
-function sellingcat(dates,count){
-    new Chart(sellingcategory, {
-    type: 'doughnut',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: 'Orders',
-        data: count,
-        borderWidth: 3,
-        backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',"#6d9236","violet"
-    ],
-        
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+  }
+ 
+  const sellingcategory=document.getElementById('sellingcategory')
+  function sellingcat(dates,count){
+  new Chart(sellingcategory, {
+  type: 'doughnut',
+  data: {
+  labels: dates,
+  datasets: [{
+  label: 'Orders',
+  data: count,
+  borderWidth: 3,
+  backgroundColor: [
+  'rgb(255, 99, 132)',
+  'rgb(54, 162, 235)',
+  'rgb(255, 205, 86)',"#6d9236","violet"
+  ],
+
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true
+  }
+  }
+  }
   });
-}
-const leaststockid=document.getElementById('leaststock')
+  }
+  const leaststockid=document.getElementById('leaststock')
 
-function leaststock(stockname,stockcount){
-    new Chart(leaststockid, {
-    type: 'polarArea',
-    data: {
-      labels: stockname,
-      datasets: [{
-        label: 'stock',
-        data: stockcount,
-        borderWidth: 3,
-        backgroundColor: [
-      '#ff6600',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',"#6d9236","violet"
-    ],
-        
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+  function leaststock(stockname,stockcount){
+  new Chart(leaststockid, {
+  type: 'polarArea',
+  data: {
+  labels: stockname,
+  datasets: [{
+  label: 'stock',
+  data: stockcount,
+  borderWidth: 3,
+  backgroundColor: [
+  '#ff6600',
+  'rgb(54, 162, 235)',
+  'rgb(255, 205, 86)',"#6d9236","violet"
+  ],
+
+  }]
+  },
+  options: {
+  scales: {
+  y: {
+  beginAtZero: true }}}
   });
-}
+  }
 
-
-
-// 
-// pdf
-//     const handlepdf=async(duration)=>{
-//         await fetch(`/admin/pdfconvert?durations=${duration}`, {
-//  method: 'GET',
-//  headers: {
-//    'Content-Type': 'application/json'
-//  },
-
-// }).then((res)=>res.json())
-// .then((data)=>{
-
-//     if(data=="success"){
-//       document.getElementById("pdfpopup").innerHTML="pdf download"
-
-//       setTimeout(()=>{
-//         document.getElementById("pdfpopup").innerHTML=""
-//       },3000)
-//     }
-// })
-//     }
-</script>
+  </script>
 
 

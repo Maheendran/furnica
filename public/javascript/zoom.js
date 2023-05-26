@@ -1,81 +1,70 @@
 (function () {
-console.log("wokring")
-	if (typeof $ !== "function")
-		throw Error('JQuery is not present.');
+  if (typeof $ !== 'function') { throw Error('JQuery is not present.'); }
+  let times = 2; let
+    handler;
+  const init = function () {
+    const t = $(this);
+    const p = t.parent();
+    const v = p.next();
+    const cs = v.next();
+    const iw = v.children();
 
-	var times = 2, handler;
+    handler = function (e) {
+      const [w, h] = ['width', 'height'].map((x) => $.fn[x].call(t));
+      const nw = w * times; const nh = h * times; const cw = w / times; const
+        ch = h / times;
 
-	var init = function () {
+      const eventMap = {
+        mousemove(e) {
+          e = e.originalEvent;
 
-		var t = $(this),
-			p = t.parent(),
-			v = p.next(),
-			cs = v.next(),
-			iw = v.children();
+          const x = e.layerX;
+						 const y = e.layerY;
+						 const rx = cw / 2;
+						 const ry = ch / 2;
+						 const cx = x - rx;
+						 const cy = y - ry;
+						 const canY = cy >= 0 && cy <= h - ch;
+						 const canX = cx >= 0 && cx <= w - cw;
 
-		handler = function (e) {
+          cs.css({
+            top: canY ? cy : cy < 0 ? 0 : h - ch,
+            left: canX ? cx : cx < 0 ? 0 : w - cw,
+          });
 
-			var [w, h] = ['width', 'height'].map(x => $.fn[x].call(t)),
-				nw = w * times, nh = h * times, cw = w / times, ch = h / times;
+          iw.css({
+            top: canY ? -cy / (h - ch) * (nh - h) : cy < 0 ? 0 : -(nh - h),
+            left: canX ? -cx / (w - cw) * (nw - w) : cx < 0 ? 0 : -(nw - w),
+          });
+        },
+      };
 
-			var eventMap = {
-				mousemove: function (e) {
+      p.width(w).height(h);
+      cs.width(cw).height(ch);
+      iw.width(nw).height(nh);
 
-					e = e.originalEvent;
+      for (const k in eventMap) { p.on(k, eventMap[k]); }
+    };
 
-					var x = e.layerX,
-						 y = e.layerY,
-						 rx = cw / 2,
-						 ry = ch / 2,
-						 cx = x - rx,
-						 cy = y - ry,
-						 canY = cy >= 0 && cy <= h - ch,
-						 canX = cx >= 0 && cx <= w - cw
+    t.on('load', handler);
+  };
 
-					cs.css({
-						top: canY ? cy : cy < 0 ? 0 : h - ch,
-						left: canX ? cx : cx < 0 ? 0 : w - cw
-					});
+  $.fn.extend({
 
-					iw.css({
-						top: canY ? -cy / (h - ch) * (nh - h) : cy < 0 ? 0 : -(nh - h),
-						left: canX ? -cx / (w - cw) * (nw - w) : cx < 0 ? 0 : -(nw - w)
-					});
-				}
-			};
+    zoom(t) {
+      times = t || times;
 
-			p.width(w).height(h);
-			cs.width(cw).height(ch);
-			iw.width(nw).height(nh);
+      for (const x of this) { init.call(x); }
 
-			for (let k in eventMap)
-				p.on(k, eventMap[k]);
-		};
+      return this;
+    },
+    setZoom(t) {
+      times = t || times;
 
-		t.on('load', handler);
-	};
+      if (handler === void 0) { throw Error('Zoom not initialized.'); }
 
-	$.fn.extend({
+      handler();
+    },
 
-		zoom: function (t) {
-			times = t || times;
-
-			for (let x of this)
-				init.call(x);
-
-			return this;
-		},
-		setZoom: function (t) {
-
-			times = t || times;
-
-			if (handler === void 0)
-				throw Error('Zoom not initialized.');
-
-			handler();
-
-		}
-
-	});
-
+  });
 }());

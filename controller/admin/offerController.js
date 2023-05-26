@@ -18,7 +18,10 @@ const offerManagement = async (req, res) => {
     const products = await Product.find();
     const category = await Category.find();
     res.render('admin/offerManagement', {
-      category, offer, products, title: 'Offers',
+      category,
+      offer,
+      products,
+      title: 'Offers',
     });
   } catch (error) {
     errorHandler(error, req, res);

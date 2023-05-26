@@ -178,8 +178,6 @@
       </div>
     </div>
   </div>
-
-  
             <!--create address  -->
   <div class="modal fade" id="exampleModalCentera" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -277,9 +275,6 @@
        
  </div>
       </div>
-
-
-
       <div class="col-md-4">
         <div class="card mb-4">
           <div class="card-header py-3">
@@ -309,8 +304,6 @@
                 <strong><i class="fa-solid fa-indian-rupee-sign"></i> <span id="lastprice"> <%= lastprice %></span></strong>
               </li>
             </ul>
-
-          <!-- last section -->
             <button type="button" onclick="popuptotal()" id="placeorder_btn" class="btndesign btn-sm me-1 mb-2" data-toggle="modal" data-target="#exampleModalCenter">
               Place order
 </button>
@@ -399,7 +392,6 @@ var city=document.getElementById(`city${index}`).innerText;
 var state=document.getElementById(`state${index}`).innerText;
 var pin=document.getElementById(`pin${index}`).innerText;
 var country=document.getElementById(`country${index}`).innerText;
-console.log(name)
 // update modal id gettting
 var uname=document.getElementById("uname").value=name;
 var umobile=document.getElementById("umobile").value=mobile;
@@ -627,19 +619,26 @@ let response= await fetch("/payment", {
    }),
  })
 let orderData=await response.json()
+
   var options = {
   "key": "rzp_test_PDb2mkTumdooCe", 
   "amount": subtotal*100,
   "currency": "INR",
   "order_id": orderData.id,
+ 
 };
-if(orderData.success===true){
+var rzp1 = new Razorpay(options);
+
+  rzp1.open();
+setTimeout(()=>{
+  if(orderData.success===true){
   handleOrders(subtotal)
 }
-var rzp1 = new Razorpay(options);
-  rzp1.open();
+},15000)
  
+
 }
+
 
 
 const handleOrders=async(subtotal)=>{

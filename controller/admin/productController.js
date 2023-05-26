@@ -11,7 +11,11 @@ const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
     const category = await Category.find();
-    res.render('admin/newProduct', { products, category, title: 'Add product' });
+    res.render('admin/newProduct', {
+      products,
+      category,
+      title: 'Add product',
+    });
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -22,19 +26,23 @@ const createProduct = async (req, res) => {
     const existName = await Product.find({
       name: { $regex: new RegExp(req.body.name, 'i') },
     });
-    const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-      cloudinary.uploader.upload(file.path, {
-        transformation: [
-          { width: 500, height: 600, crop: 'crop' },
-        ],
-      }, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result.secure_url);
-        }
-      });
-    }));
+    const uploadPromises = req.files.map(
+      (file) => new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(
+          file.path,
+          {
+            transformation: [{ width: 500, height: 600, crop: 'crop' }],
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result.secure_url);
+            }
+          },
+        );
+      }),
+    );
 
     const images = await Promise.all(uploadPromises);
     //
@@ -43,14 +51,14 @@ const createProduct = async (req, res) => {
     if (existName.length === 0) {
       if (
         req.body.name !== ''
-      && req.body.price !== ''
-      && req.body.description !== ''
-      && req.body.stock !== ''
-      && req.body.color !== ''
-      && req.body.material !== ''
-      && req.body.brand !== ''
-      && req.body.overview !== ''
-      && req.body.category !== ''
+        && req.body.price !== ''
+        && req.body.description !== ''
+        && req.body.stock !== ''
+        && req.body.color !== ''
+        && req.body.material !== ''
+        && req.body.brand !== ''
+        && req.body.overview !== ''
+        && req.body.category !== ''
       ) {
         const productData = new Product({
           name: req.body.name,
@@ -66,7 +74,8 @@ const createProduct = async (req, res) => {
           'offer.offerpercent': 0,
           'offer.realprice': req.body.price,
         });
-        productData.save()
+        productData
+          .save()
           .then(() => {
             res.redirect('/admin/productlist');
           })
@@ -118,7 +127,11 @@ const updateproduct = async (req, res) => {
     const { imageUrl } = product;
     const category = await Category.find();
     res.render('admin/updateProduct', {
-      param, product, category, imageUrl, title: 'Update product',
+      param,
+      product,
+      category,
+      imageUrl,
+      title: 'Update product',
     });
   } catch (error) {
     errorHandler(error, req, res);
@@ -134,15 +147,17 @@ const productUpdated = async (req, res) => {
     const { files } = req;
     let updImages = [];
     if (files && files.length > 0) {
-      const uploadPromises = req.files.map((file) => new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(file.path, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result.secure_url);
-          }
-        });
-      }));
+      const uploadPromises = req.files.map(
+        (file) => new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(file.path, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result.secure_url);
+            }
+          });
+        }),
+      );
       const newImages = await Promise.all(uploadPromises);
       updImages = [...exImage, ...newImages];
       product.imageUrl = updImages;

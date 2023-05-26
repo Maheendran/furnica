@@ -39,10 +39,7 @@ justify-content: center;
 
 
   </style>
- 
  <nav class="navbar navbar-expand-lg navbar-light bg-light text-center">
-
-
       <div class="col-5 col-sm-3 col-md-2 text-start  px-1">
 
         <a class="navbar-brand" href="/">
@@ -50,20 +47,14 @@ justify-content: center;
         </a>    
 
         </div>
-
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse mt-3 mt-sm-0" id="navbarNavDropdown">
-    
         <div class="input_search col-12 col-sm-7  col-md-4 mx-auto">
-
-    
         <input id="searchinput" type="text" class="form-control" placeholder="search">
         <button onclick="handlesearch()" class="btn "><i class="fa-solid fa-magnifying-glass"></i></button> 
-      
           </div>
-      
       <ul class="navbar-nav mx-lg-auto mb-2 mb-lg-0 ">
         <li class="nav-item mx-lg-4">
           <a class="nav-link" href="#"  onclick="handleproduct()">Products</a>
@@ -147,7 +138,6 @@ justify-content: center;
   
 <script>
   
-  // var sortValue="price"//
 var categoryId=''
 var searchValue=''
 var sortedtype = JSON.parse(localStorage.getItem('sortType'))||"";
@@ -166,7 +156,7 @@ const handleproduct=()=>{
     const url=`/Allproducts?page=${pagevalue}`;
     window.location.href = url;
 }
-    // 
+
 const handlesearch=async()=>{
 var searchinput=document.getElementById("searchinput").value;
 localStorage.setItem('search', JSON.stringify(searchinput));

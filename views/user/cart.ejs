@@ -73,8 +73,6 @@ border-radius: 10px;
 
 <p>Price:  <span style="font-weight: 600;" class="text-muted"><i class="fa-solid fa-indian-rupee-sign"></i> <%= locals.cart[index].product.price %></span> </p>
 
-
-
 <div class="d-flex " style="max-width: 300px">
 
   <button class="btndesign btn-sm me-1 mb-2"
@@ -95,7 +93,6 @@ border-radius: 10px;
 </div>
 </div>
 <% } %>
-
 </div>
 </div>
 </div>
@@ -218,7 +215,7 @@ if(outofstock){
   localStorage.removeItem('outofstock');
 
 }
-// (function(){
+
   localStorage.setItem('selectedCoupons',JSON.stringify(""));
 const applycouponBtn=document.getElementById("applycouponBtn")
 let applyhidding=document.querySelector(".applyhiddingbtn")
@@ -227,10 +224,10 @@ let totalamount=document.getElementById("totalamount")
 
 applyhidding.style.display="none"
 clearhidding.style.display="none"
-// }())
+
 const handleinputvalue=()=>{
   let couponvalue=document.getElementById("inputCouponName").value
-  console.log(couponvalue)
+
   if(couponvalue.length==0){
     applyhidding.style.display="none"
 clearhidding.style.display="none"
@@ -250,7 +247,7 @@ radioButtons.forEach(radioButton => {
 clearhidding.style.display="block"
   });
 });
-// apply coupon
+
 const handleApplyCoupon=async()=>{
 const couponvalue=document.getElementById("inputCouponName").value
   await fetch('/mycoupon', {
@@ -290,7 +287,6 @@ localStorage.setItem('selectedCoupons',JSON.stringify(data.couponname));
 .catch(error => console.error(error));
 }
 
-// clear coupon
 const handleClearCoupon=async()=>{
   const couponvalue=document.getElementById("inputCouponName").value
 
@@ -326,7 +322,7 @@ document.getElementById("inputCouponName").value=""
 
 }
 
-  // ====================================
+
 const removercart=async(id)=>{
 await fetch('/removeCart', {
 method: 'POST',
@@ -366,7 +362,6 @@ coupon:selectedCoupons
 })
 .then(response => response.json())
 .then((data)=>{
-  console.log("data",data)
 if(data=='success'){
 window.location.reload()
 

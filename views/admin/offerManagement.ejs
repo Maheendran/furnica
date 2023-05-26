@@ -165,7 +165,6 @@
 
 <script>
 
-// deleete pro
 const handledeleteProoffer=async(id)=>{
     await fetch("/admin/deleteProductOffer", {
    method: "POST",
@@ -184,8 +183,6 @@ const handledeleteProoffer=async(id)=>{
 
 }
 
-// add product
-
 const handleProductOffer=async()=>{
     const productname=document.getElementById("productname").value
     const offeramount=document.getElementById("proofferamount").value
@@ -202,7 +199,7 @@ const handleProductOffer=async()=>{
    }),
  }).then((res)=>res.json())
  .then((data)=>{
-    console.log("data",data)
+ 
     if(data=="success"){
         window.location.reload()
     }
@@ -220,10 +217,6 @@ const handleProductSelect=(name)=>{
     document.getElementById("productname").value=name
 }
 
-
-
-// /=============================
-// delete offer
 const handledeleteCatoffer=async(id)=>{
 
     await fetch("/admin/deleteOffer", {
@@ -243,7 +236,6 @@ const handledeleteCatoffer=async(id)=>{
 
 }
 
-    // show hide category
     const categorydata=document.getElementById("categorydata")
     const productdata=document.getElementById("productdata")
     categorydata.style.display="none"
@@ -261,9 +253,6 @@ const handleproductoffer=()=>{
     productdata.style.display="block"
 }
 
-
-
-// add category offer
 const handleCategoryOffer=async()=>{
     const categoryId=document.getElementById("categoryId").value
     const offeramount=document.getElementById("offeramount").value
@@ -279,7 +268,7 @@ const handleCategoryOffer=async()=>{
    }),
  }).then((res)=>res.json())
  .then((data)=>{
-    console.log("data",data)
+  
     if(data=="success"){
         window.location.reload()
     }

@@ -1,12 +1,11 @@
-/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
+/* eslint-disable no-undef */
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/extensions */
 const fs = require('fs');
 const ejs = require('ejs');
-const pdf = require('html-pdf');
 const path = require('path');
 const puppeteer = require('puppeteer');
 const User = require('../../models/userModel.js');
@@ -35,7 +34,8 @@ const checkout = async (req, res) => {
     );
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
     const formattedDate = fiveDaysLater.toLocaleDateString('en-GB', options);
-    let discounamount; let lastprice;
+    let discounamount;
+    let lastprice;
     if (req.session.mycoupon != null) {
       const couponId = req.session.mycoupon;
       const coupondata = await Coupon.findById(couponId._id);
@@ -120,7 +120,9 @@ const orderConfirm = async (req, res) => {
         date: formattedDate,
         time: currentDate,
       };
-      await User.findByIdAndUpdate(userData._id, { $push: { walletHistory: history } });
+      await User.findByIdAndUpdate(userData._id, {
+        $push: { walletHistory: history },
+      });
     }
     order.product.forEach(async (prod) => {
       const updatedProd = await Product.findOneAndUpdate(
@@ -165,7 +167,9 @@ const checkStock = async (req, res) => {
       .lean();
     const { cart } = user;
     cart.forEach((item) => {
-      const product = products.find((p) => p._id.toString() === item.product._id.toString());
+      const product = products.find(
+        (p) => p._id.toString() === item.product._id.toString(),
+      );
       if (item.quantity <= product.stock) {
         res.json('success');
       } else {
@@ -187,7 +191,10 @@ const orderlist = async (req, res) => {
     });
     const currentDate = new Date();
     res.render('user/orderslist', {
-      orders: orderData, userdata, currentDate, title: 'Orders',
+      orders: orderData,
+      userdata,
+      currentDate,
+      title: 'Orders',
     });
   } catch (error) {
     errorHandler(error, req, res);
@@ -224,7 +231,9 @@ const ordercancel = async (req, res) => {
         date: formattedDate,
         time: currentDate,
       };
-      await User.findByIdAndUpdate(userId, { $push: { walletHistory: history } });
+      await User.findByIdAndUpdate(userId, {
+        $push: { walletHistory: history },
+      });
     }
 
     await Order.findByIdAndUpdate(
@@ -295,7 +304,11 @@ const orderdetail = async (req, res) => {
     const userdata = req.session.user;
     const currentDate = new Date();
     res.render('user/orderdetail', {
-      orders, userdata, currentDate, address, title: 'Order detail',
+      orders,
+      userdata,
+      currentDate,
+      address,
+      title: 'Order detail',
     });
   } catch (error) {
     errorHandler(error, req, res);
@@ -330,7 +343,10 @@ const invoicedownload = async (req, res) => {
       orders,
       address,
     };
-    const filePathName = path.resolve(__dirname, '../../views/user/invoice.ejs');
+    const filePathName = path.resolve(
+      __dirname,
+      '../../views/user/invoice.ejs',
+    );
     const htmlString = fs.readFileSync(filePathName).toString();
     const ejsData = ejs.render(htmlString, data);
 
@@ -353,51 +369,10 @@ const invoicedownload = async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="Invoice.pdf"');
 
     res.send(pdfData);
-    // const ejsData = ejs.render(htmlString, data);
-
-    // await createDailySalesPdf(ejsData);
-
-    // const pdfFilePath = 'Invoice.pdf';
-    // const pdfData = fs.readFileSync(pdfFilePath);
-
-    // res.setHeader('Content-Type', 'application/pdf');
-    // res.setHeader('Content-Disposition', 'attachment; filename="Invoice.pdf"');
-
-    // res.send(pdfData);
   } catch (error) {
     errorHandler(error, req, res);
   }
 };
-
-// const createDailySalesPdf = async (html) => {
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
-//   await page.setContent(html);
-//   await page.pdf({ path: 'Invoice.pdf' });
-//   await browser.close();
-// };
-
-// ==========================
-// const filePathName = path.resolve(
-//   __dirname,
-//   '../../views/user/invoice.ejs',
-// );
-// const htmlString = fs.readFileSync(filePathName).toString();
-// const options = {
-//   format: 'Letter',
-// };
-// const ejsData = ejs.render(htmlString, data);
-// pdf.create(ejsData, options).toFile('Invoice.pdf', (err, res) => {
-//   if (err) {
-//     res.render('user/error');
-//   }
-// });
-
-// res.json('success');
-//   } catch (error) {
-//     errorHandler(error, req, res);
-//   }
-// };
 module.exports = {
   checkout,
   orderConfirm,

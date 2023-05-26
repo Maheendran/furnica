@@ -16,9 +16,14 @@ const mailSubmit = async (req, res) => {
     if (req.session.forgotmail) {
       const emailErr = 'Invalid email';
       req.session.forgotmail = false;
-      res.render('user/forgotpassword/mailSubmittion', { emailErr, title: 'Registred Email' });
+      res.render('user/forgotpassword/mailSubmittion', {
+        emailErr,
+        title: 'Registred Email',
+      });
     } else {
-      res.render('user/forgotpassword/mailSubmittion', { title: 'Registred Email' });
+      res.render('user/forgotpassword/mailSubmittion', {
+        title: 'Registred Email',
+      });
     }
   } catch (error) {
     errorHandler(error, req, res);
@@ -110,7 +115,9 @@ const resendOtp = async (req, res) => {
 // ************************reset password section*************************//
 const resetPasswordpage = async (req, res) => {
   try {
-    res.render('user/forgotpassword/resetPassword', { title: 'Reset password' });
+    res.render('user/forgotpassword/resetPassword', {
+      title: 'Reset password',
+    });
   } catch (error) {
     errorHandler(error, req, res);
   }
@@ -119,24 +126,25 @@ const resetPasswordpage = async (req, res) => {
 // ************************post rest password section*************************//
 const postResetpass = async (req, res) => {
   const newPassword = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+  const { confirmPassword } = req.body;
   try {
-
-if(newPassword==confirmPassword){
-  const hashedPassword = await userHelper.hashPassword(newPassword);
-    const userData = await usermodel.findOne({ email: req.session.otpEmail });
-    await usermodel.updateOne(
-      { email: req.session.otpEmail },
-      { $set: { password: hashedPassword } },
-    );
-    req.session.user = userData;
-    req.session.otpEmail = null;
-    req.session.otpsession = null;
-    res.redirect('/login');
-}else{
-  res.render('user/forgotpassword/resetPassword', { title: 'Reset password', errorDetail:"password not matching" });
-}
-    
+    if (newPassword == confirmPassword) {
+      const hashedPassword = await userHelper.hashPassword(newPassword);
+      const userData = await usermodel.findOne({ email: req.session.otpEmail });
+      await usermodel.updateOne(
+        { email: req.session.otpEmail },
+        { $set: { password: hashedPassword } },
+      );
+      req.session.user = userData;
+      req.session.otpEmail = null;
+      req.session.otpsession = null;
+      res.redirect('/login');
+    } else {
+      res.render('user/forgotpassword/resetPassword', {
+        title: 'Reset password',
+        errorDetail: 'password not matching',
+      });
+    }
   } catch (error) {
     errorHandler(error, req, res);
   }

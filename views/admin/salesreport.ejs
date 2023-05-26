@@ -52,8 +52,6 @@
             <tbody>
                   
               <%if(orders.length>0)  {%>
-              
-              
                 <%for(let i=0;i <orders.length; i++){%>
                 <tr>
                   <td><%= orders[i]._id  %></td>
@@ -64,7 +62,7 @@
            
                   <% } %>
                 </td>
-                  <!-- ========== -->
+             
                   <td>
                     <% for( let index = 0; index < orders[i].product.length; index++) { %>
                   <p> <%= orders[i].product[index].price  %> </p> 
@@ -72,7 +70,7 @@
              
                     <% } %>
                   </td>
-                  <!--  -->
+
                   <td class="text-center">
                     <% for( let index = 0; index < orders[i].product.length; index++) { %>
                   <p> <%= orders[i].product[index].quantity  %> </p> 
@@ -80,7 +78,7 @@
              
                     <% } %>
                   </td>
-                  <!--  -->
+
                   <td>
                     <%= orders[i].name %>
                   </td>
@@ -90,7 +88,7 @@
                   <td>
                     <%= orders[i].status %>
                   </td>
-                  
+
                 </tr>
                 <% } %>
                 <%}else{%>
@@ -115,7 +113,7 @@
 <script>
 
 
-    // pdf
+ 
     const handlepdf=async(duration)=>{   
         await fetch(`/admin/pdfconvert?duration=${duration}`, {
  method: 'GET',

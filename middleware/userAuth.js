@@ -17,10 +17,10 @@ const isLogin = async (req, res, next) => {
 
 const loggedin = async (req, res, next) => {
   try {
-    if (!req.session.user) {
-      res.redirect('/login');
-    } else {
+    if (req.session.user) {
       next();
+    } else {
+      res.redirect('/login');
     }
   } catch (error) {
     errorHandler(error, req, res);
