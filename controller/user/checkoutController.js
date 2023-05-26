@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
@@ -7,6 +8,7 @@ const fs = require('fs');
 const ejs = require('ejs');
 const pdf = require('html-pdf');
 const path = require('path');
+const puppeteer = require('puppeteer');
 const User = require('../../models/userModel.js');
 const Address = require('../../models/addressMode');
 const Order = require('../../models/orderModel.js');
@@ -328,25 +330,54 @@ const invoicedownload = async (req, res) => {
       orders,
       address,
     };
-    const filePathName = path.resolve(
-      __dirname,
-      '../../views/user/invoice.ejs',
-    );
+    const filePathName = path.resolve(__dirname, '../../views/user/invoice.ejs');
     const htmlString = fs.readFileSync(filePathName).toString();
-    const options = {
-      format: 'Letter',
-    };
+
     const ejsData = ejs.render(htmlString, data);
-    pdf.create(ejsData, options).toFile('Invoice.pdf', (err, res) => {
-      if (err) {
-        res.render('user/error');
-      }
-    });
-    res.json('success');
+
+    await createDailySalesPdf(ejsData);
+
+    const pdfFilePath = 'Invoice.pdf';
+    const pdfData = fs.readFileSync(pdfFilePath);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="Invoice.pdf"');
+
+    res.send(pdfData);
   } catch (error) {
     errorHandler(error, req, res);
   }
 };
+
+const createDailySalesPdf = async (html) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(html);
+  await page.pdf({ path: 'Invoice.pdf' });
+  await browser.close();
+};
+
+// ==========================
+// const filePathName = path.resolve(
+//   __dirname,
+//   '../../views/user/invoice.ejs',
+// );
+// const htmlString = fs.readFileSync(filePathName).toString();
+// const options = {
+//   format: 'Letter',
+// };
+// const ejsData = ejs.render(htmlString, data);
+// pdf.create(ejsData, options).toFile('Invoice.pdf', (err, res) => {
+//   if (err) {
+//     res.render('user/error');
+//   }
+// });
+
+// res.json('success');
+//   } catch (error) {
+//     errorHandler(error, req, res);
+//   }
+// };
 module.exports = {
   checkout,
   orderConfirm,

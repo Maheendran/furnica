@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-use-before-define */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-redeclare */
 /* eslint-disable vars-on-top */
@@ -9,6 +11,7 @@ const fs = require('fs');
 const ejs = require('ejs');
 const pdf = require('html-pdf');
 const path = require('path');
+const puppeteer = require('puppeteer');
 const Orders = require('../../models/orderModel.js');
 const User = require('../../models/userModel.js');
 const Category = require('../../models/categoryModel.js');
@@ -156,6 +159,7 @@ const chartdata = async (req, res) => {
 const pdfconvert = async (req, res) => {
   try {
     const { duration } = req.query;
+
     const today = new Date();
     let durationDate;
     if (duration === 'Daily') {
@@ -176,26 +180,58 @@ const pdfconvert = async (req, res) => {
     const data = {
       orders: filteredDocs,
     };
-    const filePathName = path.resolve(
-      __dirname,
-      '../../views/admin/htmltopdf.ejs',
-    );
+    const filePathName = path.resolve(__dirname, '../../views/admin/htmltopdf.ejs');
     const htmlString = fs.readFileSync(filePathName).toString();
     const options = {
-      format: 'Letter',
+      format: 'A4',
     };
     const ejsData = ejs.render(htmlString, data);
-    // eslint-disable-next-line no-shadow
-    pdf.create(ejsData, options).toFile('Order.pdf', (err, res) => {
-      if (err) {
-        res.render('user/error');
-      }
-    });
-    res.json('success');
+
+    await createDailySalesPdf(ejsData);
+
+    const pdfFilePath = 'DailySalesReport.pdf';
+    const pdfData = fs.readFileSync(pdfFilePath);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="DailySalesReport.pdf"');
+
+    res.send(pdfData);
   } catch (error) {
     errorHandler(error, req, res);
   }
 };
+
+const createDailySalesPdf = async (html) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(html);
+  await page.pdf({ path: 'DailySalesReport.pdf' });
+  await browser.close();
+};
+// ==========
+
+//   const filePathName = path.resolve(
+//     __dirname,
+//     '../../views/admin/htmltopdf.ejs',
+//   );
+//   const htmlString = fs.readFileSync(filePathName).toString();
+//   const options = {
+//     format: 'Letter',
+//   };
+//   const ejsData = ejs.render(htmlString, data);
+//   // eslint-disable-next-line no-shadow
+//   pdf.create(ejsData, options).toFile('Order.pdf', (err, res) => {
+//     if (err) {
+//       res.render('user/error');
+//     }
+//   });
+
+//   res.json('success');
+// } catch (error) {
+//   errorHandler(error, req, res);
+// }
+// };
+
 // ************************sales report section*************************//
 const salesreport = async (req, res) => {
   const { duration } = req.params;

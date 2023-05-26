@@ -256,7 +256,11 @@ box-shadow:inset rgba(249, 249, 249, 0.769) 0px 2px 4px 0px;
     <%= orders.paymentMethod %>
     </p>
 <% if (orders.status=="Order Arrived") { %>
-     <p>Download Invoice</p> <button class="btn btn-success" onclick="handleinvoice('<%= orders._id %>')">Download</button>
+
+     <p>Download Invoice</p> 
+     <a href="/DownloadInvoice?orderId=<%= orders._id %>">
+      <button class="btn btn-success">Download</button>
+    </a>
      <p id="downloaded" style="color: rgb(8, 133, 8);" class="mt-3"></p>
 <% } %>
   </div>
