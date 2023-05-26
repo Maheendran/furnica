@@ -332,10 +332,19 @@ const invoicedownload = async (req, res) => {
     };
     const filePathName = path.resolve(__dirname, '../../views/user/invoice.ejs');
     const htmlString = fs.readFileSync(filePathName).toString();
-
     const ejsData = ejs.render(htmlString, data);
 
-    await createDailySalesPdf(ejsData);
+    // Update the code to use Puppeteer for generating the PDF
+    const browser = await puppeteer.launch({ headless: 'new' });
+    const page = await browser.newPage();
+    await page.setContent(ejsData, { waitUntil: 'networkidle0' });
+    await page.emulateMediaType('print');
+    await page.pdf({
+      path: 'Invoice.pdf',
+      format: 'A4',
+      printBackground: true,
+    });
+    await browser.close();
 
     const pdfFilePath = 'Invoice.pdf';
     const pdfData = fs.readFileSync(pdfFilePath);
@@ -344,18 +353,29 @@ const invoicedownload = async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="Invoice.pdf"');
 
     res.send(pdfData);
+    // const ejsData = ejs.render(htmlString, data);
+
+    // await createDailySalesPdf(ejsData);
+
+    // const pdfFilePath = 'Invoice.pdf';
+    // const pdfData = fs.readFileSync(pdfFilePath);
+
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader('Content-Disposition', 'attachment; filename="Invoice.pdf"');
+
+    // res.send(pdfData);
   } catch (error) {
     errorHandler(error, req, res);
   }
 };
 
-const createDailySalesPdf = async (html) => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.setContent(html);
-  await page.pdf({ path: 'Invoice.pdf' });
-  await browser.close();
-};
+// const createDailySalesPdf = async (html) => {
+//   const browser = await puppeteer.launch();
+//   const page = await browser.newPage();
+//   await page.setContent(html);
+//   await page.pdf({ path: 'Invoice.pdf' });
+//   await browser.close();
+// };
 
 // ==========================
 // const filePathName = path.resolve(
