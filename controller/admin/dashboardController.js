@@ -247,7 +247,7 @@ const pdfconvert = async (req, res) => {
 
     res.send(pdfData);
   } catch (error) {
-    errorHandler(error, req, res);
+    // errorHandler(error, req, res);
     console.log(error.message)
   }
 };
