@@ -167,7 +167,8 @@
   const signup_btn = document.getElementById("signup_btn");
 
   const emailregx = /\b^[^ ][a-z.\-_0-9]+@[a-z0-9]+\.[a-z]{2,3}\b/;
-  const passregx = /^(?=.*\d)(?=.*[a-zA-Z]).{4,14}$/;
+  // const passregx = /^(?=.*\d)(?=.*[a-zA-Z]).{4,14}$/;
+ const passregx=/^(?!.*\s).{4,12}$/
 
   var email_correct = false;
   var pass_correct = false(
@@ -187,14 +188,13 @@
     }
     finalcheck();
   }
-  // }mobile
-  // password
+
   function passvalidate() {
     if (upass.value.match(passregx)) {
       passError.innerHTML = "";
       pass_correct = true;
     } else {
-      passError.innerHTML = "Minimum 3 characters";
+      passError.innerHTML = "Minimum 4 characters";
       pass_correct = false;
     }
     finalcheck();

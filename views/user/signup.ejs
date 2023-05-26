@@ -246,13 +246,10 @@
     const passError = document.getElementById("passError");
     const conpassError = document.getElementById("conpassError");
 
-    // const nameregx = /^[A-Za-z]{3,12}$/;
     const nameregx=/^[A-Za-z]+([-\']?[A-Za-z]+)*(\s[A-Za-z]+([-\']?[A-Za-z]+)*)*$/
-
-
     const numregx = /^[6-9]\d{9}$/;
     const emailregx = /\b^[^ ][a-z.\-_0-9]+@[a-z0-9]+\.[a-z]{2,3}\b/;
-    const passregx = /^(?=.*\d)(?=.*[a-zA-Z]).{4,14}$/;
+    const passregx=/^(?!.*\s).{4,12}$/
 
     var name_correct = false;
     var email_correct = false;
@@ -305,7 +302,7 @@
         pass_correct = true;
       } else {
         passError.innerHTML =
-          "Must contain lowecase,uppercase,digits,special character ";
+          "Minimum 4 characters";
         pass_correct = false;
       }
       finalcheck();

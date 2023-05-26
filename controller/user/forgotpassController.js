@@ -119,8 +119,11 @@ const resetPasswordpage = async (req, res) => {
 // ************************post rest password section*************************//
 const postResetpass = async (req, res) => {
   const newPassword = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
   try {
-    const hashedPassword = await userHelper.hashPassword(newPassword);
+
+if(newPassword==confirmPassword){
+  const hashedPassword = await userHelper.hashPassword(newPassword);
     const userData = await usermodel.findOne({ email: req.session.otpEmail });
     await usermodel.updateOne(
       { email: req.session.otpEmail },
@@ -130,6 +133,10 @@ const postResetpass = async (req, res) => {
     req.session.otpEmail = null;
     req.session.otpsession = null;
     res.redirect('/login');
+}else{
+  res.render('user/forgotpassword/resetPassword', { title: 'Reset password', errorDetail:"password not matching" });
+}
+    
   } catch (error) {
     errorHandler(error, req, res);
   }
