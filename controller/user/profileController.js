@@ -24,25 +24,31 @@ const profile = async (req, res) => {
 const updatedprofile = async (req, res) => {
   try {
     const { id } = req.params;
-    await User.findByIdAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          name: req.body.name,
-          email: req.body.email,
-          mobile: req.body.mobile,
+    const emailexist = await User.find({ email: req.body.email, _id: { $ne: req.params.id } });
+    if (emailexist.length==0) {
+      await User.findByIdAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            name: req.body.name,
+            email: req.body.email,
+            mobile: req.body.mobile,
+          },
         },
-      },
-    );
-    const user = await User.findById(id);
-    req.session.user = user;
-    const userdata = req.session.user;
-    const userdetail = await User.findById(userdata._id);
-    const historysort = userdetail.walletHistory.sort((a, b) => new Date(b.time) - new Date(a.time));
-    const address = await Address.find({ userId: userdata._id });
-    res.render('user/profile', {
-      userdata: userdetail, address, walletamount: userdetail.wallet, wallethistory: historysort, title: 'Profile',
-    });
+      );
+      const user = await User.findById(id);
+      req.session.user = user;
+      const userdata = req.session.user;
+      const userdetail = await User.findById(userdata._id);
+      const historysort = userdetail.walletHistory.sort((a, b) => new Date(b.time) - new Date(a.time));
+      const address = await Address.find({ userId: userdata._id });
+      res.render('user/profile', {
+        userdata: userdetail, address, walletamount: userdetail.wallet, wallethistory: historysort, title: 'Profile',
+      });
+    }
+    else{
+      res.redirect("/profile")
+    }
   } catch (error) {
     errorHandler(error, req, res);
   }

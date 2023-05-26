@@ -94,13 +94,13 @@
                           </a>
                         </label>
                       </div>
-                      <p style="color: rgb(239, 74, 74)">
+                      <p id="errordetailid" style="color: rgb(239, 74, 74)" >
                         <%= locals.mailErr %>
                       </p>
-                      <p style="color: rgb(239, 74, 74)">
+                      <p id="errorblock" style="color: rgb(239, 74, 74)">
                         <%= locals.accountBlock %>
                       </p>
-                      <p style="color: rgb(239, 74, 74)">
+                      <p class="errordetail"style="color: rgb(100, 155, 18)">
                         <%= locals.successMsg %>
                       </p>
                       <div
@@ -158,6 +158,13 @@
 ></script>
 
 <script>
+
+setTimeout(()=>{
+  document.getElementById('errordetailid').innerHTML="";
+  document.getElementById('errorblock').innerHTML="";
+  
+},2000)
+
 
   const uemail = document.getElementById("email");
   const upass = document.getElementById("password");
