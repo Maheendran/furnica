@@ -156,16 +156,16 @@ const userLogin = async (req, res) => {
     const accountBlock = 'Temporarily account blocked';
     const mailErr = 'Incorrect email or password';
     if (req.session.successMsg) {
-      res.render('user/login', { successMsg });
       req.session.successMsg = false;
+      res.render('user/login', { successMsg });
     } else if (req.session.userBlocked) {
+      req.session.userBlocked = false;
       res.render('user/login', { accountBlock });
-      req.session.accountBlock = false;
     } else if (req.session.mailErr) {
-      res.render('user/login', { mailErr });
       req.session.mailErr = false;
+      res.render('user/login', { mailErr });
     } else {
-      res.render('user/login');
+      res.render('user/login', { mailErr: ' ', accountBlock: ' ' });
     }
   } catch (error) {
     errorHandler(error, req, res);
